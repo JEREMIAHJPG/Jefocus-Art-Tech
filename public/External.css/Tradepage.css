@@ -1,0 +1,126 @@
+*{box-sizing: border-box;}
+.bottom1 {font-family: Arial, Helvetica, sans-serif;
+    padding-top:250px;}
+.base1 {float:left; 
+    text-align: center;
+    width:100%;
+    justify-content: center;
+    color: black;
+     padding: 10px;
+      height: auto;}
+      .row1 {
+        height: auto;
+        width: 100%;
+      }
+      .tradeh{
+        font-size:x-large;
+      }
+      .insidebox {float:left; 
+    text-align: center;
+    width:50%;
+    justify-content: center;
+    color: black;
+     padding: 10px;
+      height: 400px;}
+      .row1 {
+        height: auto;
+        width: 100%;
+      }
+
+      .benefits{float:left; 
+    text-align: center;
+    width:100%;
+    justify-content: center;
+    color: black;
+    background-color: #bbb;
+     padding: 10px;
+     margin-top: 10px;
+     border-radius: 10px;
+      height: auto;}
+
+      .row1 {
+        height: auto;
+        width: 100%;
+      }
+      .emailregister{
+        position: relative;
+        float: left;
+        height: 15%;
+        width:100%;
+        top:90px;
+      }
+      .commenttoregister{
+        position: relative;
+        float: left;
+        height: 50%;
+        width:100%;
+        bottom: -50px;
+      }
+      .catalog{
+        float: left;
+        width: 100%;
+        height: auto;
+        position: relative;
+    
+      }
+      .base1:after{content: ""; display: table; clear: both;}
+.row1:after{content: ""; display: table; clear: both;}
+.footer {background-color: #f1f1f1; padding: 10px; text-align: center;}
+
+           
+           .email {position: relative;
+            width: 70%;
+            height: 100%;
+            float: left;
+            border: 1px black solid;
+            border-radius: 10px;
+            font-size: small;
+           }
+           .email:focus {
+            background-color: greenyellow;
+            color: black;
+            
+           }
+           .btn2{
+            background-color: burlywood;
+            color: white;
+            width: 30%;
+            height: 100%;
+            float: left;
+            border-radius: 5%;
+            box-shadow: 10px #cfc;
+            font-size: large;
+           }
+
+           @media screen and (min-width: 321px) and (max-width: 768px){
+            .insidebox {
+    text-align: center;
+    width:100%;
+    justify-content: center;
+    color: black;
+     padding: 10px;
+      height: 400px;}
+      
+      }
+      
+            
+           
+           @media screen and (max-width: 320px){
+            .insidebox {
+    text-align: center;
+    width:100%;
+    justify-content: center;
+    color: black;
+     padding: 10px;
+      height: 400px;}
+      .tradeh{
+        font-size:medium;}
+        .btn2{
+        
+            font-size: medium;
+           }
+
+
+            
+           }  
+           

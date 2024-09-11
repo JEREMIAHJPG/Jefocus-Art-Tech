@@ -1,0 +1,24 @@
+{
+    "landscapepaintingprofile":[
+        {"Title":  "The Lord is with you", "Size": "2 by 3 ft ", "Price":"200000", "img": "/assets/galaxy_image.jpg", "isfav":"false", "buy":"false", "addtocart":"false", "display":"false"},
+        {"Title":   "The Lord is with us", "Size": "3 by 4ft", "Price": "500000", "img": "/assets/Boss_UMC_picture.jpg", "isfav":"false", "buy":"false", "addtocart":"false", "display":"false"},
+        {"Title":   "The Lord is with you", "Size": "1 by 2 ft", "Price": "100000", "img": "/assets/fitness_image_for_Logo3.jpg", "isfav":"false", "buy":"false", "addtocart":"false", "display":"false"},
+        {"Title":   "The Lord is with you", "Size": "1 by 2 ft", "Price": "100000", "img": "/assets/fitness_image_for_Logo4.jpg", "isfav":"false", "buy":"false", "addtocart":"false", "display":"false"},
+        {"Title":   "The Lord is with you", "Size": "1 by 2 ft", "Price": "100000", "img": "/assets/fitness3.jpg", "isfav":"false", "buy":"false", "addtocart":"false", "display":"false"},
+        {"Title":   "The Lord is with you", "Size": "1 by 2 ft", "Price": "100000", "img": "/assets/fitness4.jpg", "isfav":"false", "buy":"false", "addtocart":"false", "display":"false"},
+        {"Title":   "The Lord is with you", "Size": "1 by 2 ft", "Price": "100000", "img": "/assets/Fitness5.jpg", "isfav":"false", "buy":"false", "addtocart":"false", "display":"false"},
+        {"Title":   "The Lord is with you", "Size": "1 by 2 ft", "Price": "100000", "img": "/assets/fitness6.jpg", "isfav":"false", "buy":"false", "addtocart":"false", "display":"false"},
+        {"Title":   "The Lord is with you", "Size": "1 by 2 ft", "Price": "100000", "img": "/assets/frame_1.webp", "isfav":"false", "buy":"false", "addtocart":"false", "display":"false"},
+        {"Title":   "The Lord is with you", "Size": "1 by 2 ft", "Price": "100000", "img": "/assets/frame_2.jpg", "isfav":"false", "buy":"false", "addtocart":"false", "display":"false"},
+        {"Title":   "The Lord is with you", "Size": "1 by 2 ft", "Price": "100000", "img": "/assets/frame_3.jpg", "isfav":"false", "buy":"false", "addtocart":"false", "display":"false"},
+        {"Title":   "The Lord is with you", "Size": "1 by 2 ft", "Price": "100000", "img": "/assets/free-healthy-green-apple-image.jpg", "isfav":"false", "buy":"false", "addtocart":"false", "display":"false"},
+        {"Title":   "The Lord is with you", "Size": "1 by 2 ft", "Price": "100000", "img": "/assets/Apartment.jpg", "isfav":"false", "buy":"false", "addtocart":"false", "display":"false"},
+        {"Title":   "The Lord is with you", "Size": "1 by 2 ft", "Price": "100000", "img": "/assets/health.jpg", "isfav":"false", "buy":"false", "addtocart":"false", "display":"false"},
+        {"Title":   "The Lord is with you", "Size": "1 by 2 ft", "Price": "100000", "img": "/assets/Health1.jpg", "isfav":"false", "buy":"false", "addtocart":"false", "display":"false"},
+        {"Title":   "The Lord is with you", "Size": "1 by 2 ft", "Price": "100000", "img": "/assets/Laptop_Image1.jpg", "isfav":"false", "buy":"false", "addtocart":"false", "display":"false"},
+        {"Title":   "The Lord is with you", "Size": "1 by 2 ft", "Price": "100000", "img": "/assets/lion.jpeg", "isfav":"false", "buy":"false", "addtocart":"false", "display":"false"},
+        {"Title":   "The Lord is with you", "Size": "1 by 2 ft", "Price": "100000", "img": "/assets/Tayo_Unilag_Interior_Decorator2.jpg", "isfav":"false", "buy":"false", "addtocart":"false", "display":"false"},
+        {"Title":   "The Lord is with you", "Size": "1 by 2 ft", "Price": "100000", "img": "/assets/Yoga1.jpg", "isfav":"false", "buy":"false", "addtocart":"false", "display":"false"}
+       
+    ]
+}
