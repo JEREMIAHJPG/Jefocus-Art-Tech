@@ -23,6 +23,7 @@ import store from '../store/store';
 import { IS_USER_AUTHENTICATE_GETTER } from '@/store/storeconstants';
 import Validationcode from '../views/Validationcode.vue';
 import Changepassword from '@/views/Changepassword.vue';
+import Replycontactformpage from '@/views/Replycontactformpage.vue';
 
 //  Vue.use(router);
 const routes = [
@@ -84,6 +85,12 @@ const routes = [
     name: 'Contactformpage',
     component: Contactformpage
   },
+  {
+    path: '/Replycontactformpage',
+    name: 'Replycontactformpage',
+    component: Replycontactformpage
+  },
+
 
   {
     path: '/Itemstoorder',
