@@ -19,14 +19,7 @@
                   <h1 style="color: green">{{ response }}</h1>
               </center>
           </div>
-          <!-- <div class="row">
-              <div class="col-25">
-              <label for="lname">Last Name</label>
-              </div>
-              <div class="col-75">
-                  <input type="text" :value="full_name" disabled id="lname" name="lastname" placeholder="your last name...">
-              </div>
-          </div> -->
+        
           <div class="row">
               <div class="col-25">
                   <label for="email">Email</label>
@@ -35,20 +28,7 @@
                   <input type="text" :value = reply_guest_email disabled id="email" name="Email" placeholder="example@gmail.com..." required>
               </div>
           </div>
-          <!-- <div class="row">
-          <div class="col-25">
-              <label for="Profession">Profession</label>
-          </div>
-              <div class="col-75">
-                  <select id="profession" :v-model="profession" name="profession">
-                      <option value=""></option>
-                      <option value="ID">Interior Designer</option>
-                      <option value="AC">Art Collector</option>
-                      <option value="BC">Building Contractor</option>
-                      <option value="OT">Others</option>
-                  </select>
-              </div>
-          </div> -->
+         
   
           <div class="row">
               <div class="col-25">
@@ -72,10 +52,10 @@
     
     <!-- form display  -->
 
-  <div class="admin_container_contact" v-for="(view_message, index) in view_replycontactlist " :key="index">
+  <div class="admin_container_contact_message" v-for="(view_message, index) in view_replycontactlist " :key="index">
    
    <!-- <router-link :to="{name:'Replycontactformpage', params:{Replycontactformpage: view_message.guest_emai}}"> -->
-       <div class= "admin_profile_container_contact_message">
+       <div class= "admin_profile_container_contact_message" @click="view_message_for_reply()">
    <div class="admin_profile_contact_message">
        
        <div class="admin_details_contact_message">
@@ -118,6 +98,7 @@ export default {
                 reply_my_email_response:'',                       
                 reply_time:'',
                 response:'',
+                Contact_Page_users_list_ID:''
         }},
 
         created(){
@@ -125,7 +106,8 @@ export default {
         },
         methods:{
             async load_replycontactlist_collection(){
-                await onSnapshot(query(collection(db,'Contact Page users'),
+
+              await onSnapshot(query(collection(db,'Contact Page users'),
             where('guest_email', '==' , this.$route.params.Replycontactformpage))
             ,(Replycontact)=>{ 
                 Replycontact.forEach ((doc)=>{
@@ -139,7 +121,18 @@ export default {
             }
 
             this.view_replycontactlist.push(view_replycontactlist_data);
-         })});
+         })}
+        
+        );
+
+        await onSnapshot(query(collection(db,'Contact_Page_users_list'),
+            where('guest_email', '==' , this.$route.params.Replycontactformpage))
+            ,(reply_Page_users_list)=>{ 
+                reply_Page_users_list.forEach ((doc)=>{                
+               this.Contact_Page_users_list_ID = doc.id
+         })}
+        
+        );
 
             //     onSnapshot(query(collection(db,'Contact_Page_users_list')), (snap) =>{snap.forEach((doc)=>{
                 
@@ -148,7 +141,7 @@ export default {
             },
             view_message_for_reply(){
                 this.show_reply_form = true,
-                this.reply_id=              view_message.ID ;
+                this.reply_id=          view_message.ID ;
                 this.reply_full_name = view_message.full_name;                      
                 this.reply_guest_email = view_message.guest_email;                    
                 this.reply_profession = view_message.profession;                  
@@ -196,20 +189,26 @@ export default {
                     this.profession ='';
                     this.subject ='';
                     this.response ='';
+            //delete document after successfull sending of reply
 
                 deleteDoc(doc(db, 'Contact Page users', this.reply_id))
-
-                console.log("Admin post deleted from admin_current_database with ID:", this.delete_post_id);
-
+                console.log("recieved message deleted from Contact Page users with ID:", this.delete_post_id);
+                if(this.view_replycontactlist = []){
+                    deleteDoc(doc(db, 'Contact_Page_users_list', this.Contact_Page_users_list_ID));
+                    this.$router.push('/Replycontactformpage');
+                    alert("messenger data deleted fromContact_Page_users_list with ID:",this.Contact_Page_users_list_ID);                    
+                };
             })
         .catch((error)=>{
             this.showLoading(false);
             setInterval(()=>{alert('error occurred please resend');
             this.response = error.response +""+ error.message + "please resend"},3000)
             return false;
-        })
-               // set Doc newID
-               ;                                   
+        });
+        //
+        this.show_reply_form = false   
+        // set Doc newID
+                                                  
             
             //
         }   
@@ -231,7 +230,7 @@ export default {
     width:100%;
     height:100%;
 }
-.admin_container_contact{
+.admin_container_contact_message{
     padding-left: 10%;
     padding-right: 10%;
 position: relative;
@@ -269,7 +268,7 @@ border-radius: 10px;
 
 }
 /* @keyframes expansion {from{margin:10%} to {margin:0}} */
-.circle_image_contact:hover{
+.circle_image_contact_message:hover{
     position: relative;
 float: left;
 max-width: 120px;
@@ -279,7 +278,7 @@ height:120px;
 max-height: 120px;
 border-radius: 50%;
 }
-.circle_image_contact{
+.circle_image_contact_message{
     position: relative;
 float: left;
 max-width: 100px;
@@ -290,7 +289,7 @@ max-height: 100px;
 border-radius: 50%;
 }
 
-.admin_image_contact{
+.admin_image_contact_message{
     position: relative;
     background-size: contain;
     border-radius: 100%;
@@ -300,7 +299,7 @@ border: 3px solid black;
 
 }
 
-.admin_image_contact:hover{
+.admin_image_contact_message:hover{
     position: relative;
     background-size: contain;
     border-radius: 100%;
