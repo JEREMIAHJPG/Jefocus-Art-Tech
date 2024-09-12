@@ -73,15 +73,14 @@
       .col-75{float: left; width: 75%; margin-top: 6px;}
       .col-75:hover{float: left; width: 75%; margin-top: 6px; box-shadow: 0px 0px 10px green}
       .row:after {content:""; display: table; clear:both;}
-      @media screen and(max-width: 600px){.col-25,.col-75, input[type=submit]{width: 100%; margin-top:0;}}
+      @media screen and (max-width: 600px){.col-25,.col-75, input[type=submit]{width: 100%; margin-top:0;}}
       @media screen and (max-width: 320px){ .container{ padding: 0px; margin-right: 0; margin-left: 0;}}
       @media screen and (min-width: 360px) and (max-width: 768px){.container{margin: 0; width: 100%;}}
       @media screen and (width: 400px) and (max-width: 768px){.container{ margin: 0; width: 100%;}}
   </style>
   <script>
  
-  import {LOADING_SPINNER_SHOW_MUTATION, LOGIN_ACTION } from '@/store/storeconstants';
-
+import {LOADING_SPINNER_SHOW_MUTATION, LOGIN_ACTION } from '@/store/storeconstants';
 import axios from 'axios';
 import { mapActions, mapMutations } from 'vuex';
 import {storage, db} from "@/firebase"

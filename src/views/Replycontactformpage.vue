@@ -62,8 +62,8 @@ export default {
 
 <style>
 .admin_container_contact{
-    padding-left: 10%;
-    padding-right: 10%;
+padding-left: 10%;
+padding-right: 10%;
 position: relative;
 background-color:rgb(167, 167, 167,0.2) ;
 

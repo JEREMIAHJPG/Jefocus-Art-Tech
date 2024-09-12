@@ -7,13 +7,13 @@
         <center>
             <div class=container style="margin-top: 95px;">
       <h1 style="text-align: center;"> Contact Us </h1>
-      <form action="/action_page.php" @submit.prevent="contact_form()">
+      <form action="/action_page.php" @submit.prevent="reply_contact_form()">
           <div class="row">
               <div class="col-25">
                   <label for="fname">Full Name</label>
               </div>
               <div class="col-75">
-                  <input type="text" :value="full_name" disabled id="fname" name="firstname" placeholder="your name...">
+                  <input type="text" :value = reply_full_name disabled id="fname" name="firstname" placeholder="your name...">
               </div>
               <center>
                   <h1 style="color: green">{{ response }}</h1>
@@ -32,7 +32,7 @@
                   <label for="email">Email</label>
               </div>
               <div class="col-75">
-                  <input type="text" :value="guest_email" disabled id="email" name="Email" placeholder="example@gmail.com..." required>
+                  <input type="text" :value = reply_guest_email disabled id="email" name="Email" placeholder="example@gmail.com..." required>
               </div>
           </div>
           <!-- <div class="row">
@@ -55,10 +55,10 @@
                       <label for="subject">Subject</label>
               </div>
               <div class="col-75">
-                  <textarea id="subject" name="subject" :value="subject" disabled placeholder="Write Something.." style="height:200px"></textarea>
+                  <textarea id="subject" name="subject" :value= reply_subject disabled style="height:200px"></textarea>
               </div>
               <div class="col-75">
-                  <textarea id="subject" name="subject" :value="my_email_response" disabled placeholder="Write Something.." style="height:200px"></textarea>
+                  <textarea id="subject" name="subject" v-model = my_email_response placeholder="Write Something.." style="height:200px"></textarea>
               </div>
           </div>
           <br>
@@ -108,11 +108,13 @@ export default {
     data() {
         return{
             view_replycontactlist:[],
-                full_name:'',                       
-                guest_email: '',                         
-                profession:   '',                    
-                subject: '',                       
-                time:'',
+                reply_full_name:'',                       
+                reply_guest_email:'',                         
+                reply_profession:'',                    
+                reply_subject:'',
+                reply_my_email_response:'',                       
+                reply_time:'',
+                response:'',
         }},
 
         created(){
@@ -139,7 +141,57 @@ export default {
                 
                 
             // })} )
-            }
+            },
+
+            //submit reply to email
+            async reply_contact_form(){
+        this.showLoading(true);
+        let currentTime = new Date()
+            var hoursT = currentTime.getHours();
+            var minsT  = currentTime.getMinutes();
+            var secT    = currentTime.getSeconds();
+             var reply_time = hoursT + ":" + minsT + ":" + secT ;
+
+        var contact_form_content_reply = await {
+                reply_full_name:            this.reply_full_name,                       
+                reply_guest_email:          this.reply_guest_email,                         
+                reply_profession:           this.reply_profession,                    
+                reply_subject:              this.reply_subject,
+                reply_my_email_response:    this.reply_my_email_response,                       
+                reply_time:                 this.reply_time
+        };
+
+        //adddoc to firbase firestore database
+        const contact_message_list_reply = collection(db,'Contact_Page_users_list_reply');
+        
+        await getDocs(query(collection(db, 'Contact_Page_users_list'), where('guest_email', '==' , this.guest_email))). 
+            then(Contact => Contact.forEach((doc)=>{this.find_Contact = doc.id; 
+                console.log(this.find_Contact)}));
+                //fetch if it exists already
+                    
+        
+         await addDoc(contact_message_list_reply, contact_form_content_reply).then(()=>{
+                    this.showLoading(false);              
+                    setInterval(()=>{alert('Your message has been successfully sent and will reply your within 24hrs please check reply in your email Thankyou');
+                    this.response = "Your message has been successfully sent and will reply your within 24hrs please check reply in your email Thankyou"},3000)
+                    
+                    this.fname ='',
+                    this.lname ='',
+                    this.guest_email ='',
+                    this.profession ='',
+                    this.subject ='',
+                    this.response =''
+            })
+        .catch((error)=>{
+            this.showLoading(false);
+            setInterval(()=>{alert('error occurred please resend');
+            this.response = error.response +""+ error.message + "please resend"},3000)
+        })
+               // set Doc newID
+               ;                                   
+            
+            //
+        }   
         }
 }
 </script>
