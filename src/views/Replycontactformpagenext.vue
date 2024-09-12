@@ -1,7 +1,7 @@
 <template>
     <!-- form display  -->
      <!-- view monitor adverts -->
-     <div class="reply_form_view" v-if="show_advert_monitor">
+     <div class="reply_form_view" v-if="show_reply_form">
         <div class="reply_form_view_background">
         </div>
         <center>
@@ -58,7 +58,7 @@
                   <textarea id="subject" name="subject" :value= reply_subject disabled style="height:200px"></textarea>
               </div>
               <div class="col-75">
-                  <textarea id="subject" name="subject" v-model = my_email_response placeholder="Write Something.." style="height:200px"></textarea>
+                  <textarea id="subject" name="subject" :value = reply_my_email_response placeholder="Write Something.." style="height:200px"></textarea>
               </div>
           </div>
           <br>
@@ -85,7 +85,7 @@
            <div class= "email_admin_contact_message"><h>Email:</h> <h class="email_contact_message">{{view_message.guest_email}}</h></div>            
        </div> 
        <div class="post_time_contact_message"><span class="material-symbols-outlined">nest_clock_farsight_analog</span> <h>{{view_message.time}}</h></div>
-       <!-- <div class="post"><center><button class="post_button" @click="post_item_from_this_admin()"> check message</button></center></div> -->
+       <div class="post"><center><button class="post_button" @click="view_message_for_reply()"> check message</button></center></div> 
        <!-- <div class="post"><center><button class="post_button" @click="migrate_to_monitor_admin(view_message)"> Check posts</button></center></div> -->
                    
    </div>
@@ -108,6 +108,9 @@ export default {
     data() {
         return{
             view_replycontactlist:[],
+
+            show_reply_form:'',
+
                 reply_full_name:'',                       
                 reply_guest_email:'',                         
                 reply_profession:'',                    
@@ -127,6 +130,7 @@ export default {
             ,(Replycontact)=>{ 
                 Replycontact.forEach ((doc)=>{
                     var view_replycontactlist_data = {
+                ID:                          doc.id,
                 full_name:                        doc.data().full_name,
                 guest_email:                           doc.data().guest_email,
                 profession:                        doc.data().profession ,
@@ -141,6 +145,17 @@ export default {
                 
                 
             // })} )
+            },
+            view_message_for_reply(){
+                this.show_reply_form = true,
+                this.reply_id=              view_message.ID ;
+                this.reply_full_name = view_message.full_name;                      
+                this.reply_guest_email = view_message.guest_email;                    
+                this.reply_profession = view_message.profession;                  
+                this.reply_subject = view_message.subject;
+                                    
+                this.reply_time = view_message.time;
+
             },
 
             //submit reply to email
@@ -158,7 +173,7 @@ export default {
                 reply_profession:           this.reply_profession,                    
                 reply_subject:              this.reply_subject,
                 reply_my_email_response:    this.reply_my_email_response,                       
-                reply_time:                 this.reply_time
+                reply_time:                 reply_time
         };
 
         //adddoc to firbase firestore database
@@ -175,17 +190,23 @@ export default {
                     setInterval(()=>{alert('Your message has been successfully sent and will reply your within 24hrs please check reply in your email Thankyou');
                     this.response = "Your message has been successfully sent and will reply your within 24hrs please check reply in your email Thankyou"},3000)
                     
-                    this.fname ='',
-                    this.lname ='',
-                    this.guest_email ='',
-                    this.profession ='',
-                    this.subject ='',
-                    this.response =''
+                    this.fname ='';
+                    this.lname ='';
+                    this.guest_email ='';
+                    this.profession ='';
+                    this.subject ='';
+                    this.response ='';
+
+                deleteDoc(doc(db, 'Contact Page users', this.reply_id))
+
+                console.log("Admin post deleted from admin_current_database with ID:", this.delete_post_id);
+
             })
         .catch((error)=>{
             this.showLoading(false);
             setInterval(()=>{alert('error occurred please resend');
             this.response = error.response +""+ error.message + "please resend"},3000)
+            return false;
         })
                // set Doc newID
                ;                                   
