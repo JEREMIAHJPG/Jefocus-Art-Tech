@@ -1,10 +1,10 @@
 import Validations from "./Validations";
-
 export default class SignupValidations{
     constructor(email,password) {
         this.email = email;
         this.password = password;
     }
+
     checkValidations(){
         let errors=[];
         // email validation
@@ -19,7 +19,7 @@ export default class SignupValidations{
         }
         return errors;
     }
-
+    
     static getErrorMessageFromCode(errorCode){
         switch (errorCode){
             case 'EMAIL_EXISTS':

@@ -150,6 +150,7 @@ import { doc,collection, addDoc, getDocs,getDoc, query, where, setDoc } from 'fi
      last_name:'',
      profession:'',
      get_ID:'',
+     info:'',
      
      
   };
@@ -186,17 +187,16 @@ import { doc,collection, addDoc, getDocs,getDoc, query, where, setDoc } from 'fi
 
          //make spinner true
          this.showLoading(true);
+
+        
+              
          //signup registeration
         this.signup({
              email: this.email,
              password: this.password,
-            }).catch((e)=>{
-                this.error = e;
-                this.showLoading(false);
-            });
-             this.showLoading(false);
-
-             var creating_user_id = {
+             
+            }).then(()=>{
+                var creating_user_id = {
             name: this.first_name + '' + this.last_name,
             email: this.email,
             profession: this.profession,
@@ -218,23 +218,38 @@ import { doc,collection, addDoc, getDocs,getDoc, query, where, setDoc } from 'fi
                 
                
             // data to send
-                var colRef_creating_user_id_upload_database = await addDoc(colRef_creating_user_id, creating_user_id);
+                var colRef_creating_user_id_upload_database
+                 = 
+                //  await 
+                 addDoc(colRef_creating_user_id, creating_user_id);
             
               //access auto-generated ID with '.id'
             console.log('Document was created with NAME:',  colRef_creating_user_id_upload_database.name);
             //FETCH THE GETTING_USER_ID DOC ID
-            await getDocs(query(collection(db,'getting_user_id'),
+            // await 
+            getDocs(query(collection(db,'getting_user_id'),
                 where('email', '==', this.email))).then(get_id=>{ 
                 get_id.forEach ((doc)=>{
                this.get_ID =  doc.id;
                 console.log("user IDTOKEN found with email:", this.email);
                 })
                 });
+                this.showLoading(false);
+                this.$router.push('/LoginPage');
                 // console.log(this.getterstoken)
             //GET USER_ID_TOKEN from firebase AUTH
             //  await setDoc(doc(db,'getting_user_id', doc.id),{idToken:this.getterstoken},{merge:true})
             //make spinner false
-              this.$router.push('/LoginPage');
+            }).catch((e)=>{
+                this.error = e;
+                this.showLoading(false);
+                this.info = false;
+                return false;
+            });
+            //  this.showLoading(false);
+             
+            
+            
      },
  },
     };

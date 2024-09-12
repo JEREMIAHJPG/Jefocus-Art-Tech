@@ -231,13 +231,11 @@ import router from '@/router';
            //Login check
            try{await this.login({email: this.email, password: this.password,});           
             // localStorage.setItem(`client_email`,this.email);
-                }
-           catch(e){this.error = e; this.showLoading(false);
-            // console.log(this.email)
-            
-           }
-        //    var recieved_user_id = [];
-             await getDocs(query(collection(db, 'getting_user_id'),
+
+            //firebase actions
+
+            //    var recieved_user_id = [];
+            await getDocs(query(collection(db, 'getting_user_id'),
             where('email', '==' , this.email))).then (recieved_getting_user_id => {recieved_getting_user_id.forEach((doc)=> {
             this.recieved_user_id_id =  doc.id;
             this.recieved_user_id_name= doc.data().name;
@@ -281,6 +279,12 @@ import router from '@/router';
         localStorage.setItem(`client_email`,this.email);
         // console.log("add");
 
+
+                }
+           catch(e){this.error = e; this.showLoading(false);
+            return false;
+           }
+        
         },
         
     },
