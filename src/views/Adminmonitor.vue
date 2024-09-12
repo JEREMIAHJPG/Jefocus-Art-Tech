@@ -292,12 +292,15 @@ padding:5px;
 // build an Admin page for displaying their items
 // in the Adminmonitor page as items are posted to new database it is deleted in the current database,
 // settimeout for random display of items posted from 1 to 10 or more after indexing firestore database - 
-// HOW TO get userid from signup and login o ech i and delee om oopasswod pocess--
-// code for sending SMS and email to clients for forgot password, orders placed, adverts notifications etc ---
+// HOW TO get userid from signup and login o ech i and delee om oopasswod pocess
 // apply git to your project for authentification 
-// check how to launch website with GitHub(use brad traversy) ---   
-// work on date and time structure, showloading, catch(err){} for all uploads to databases - 
-// try code for analytics in vue and in firebase 
+// work on date and time structure, showloading, catch(err){} for all uploads to databases
+// try code for analytics in vue and in firebase
+// code for admin to edit their approved items---
+// check for contact us page function --- 
+// code for sending SMS and email to clients for forgot password, orders placed, adverts notifications etc --
+// add backend to artwork page use pagenation---
+// check how to launch website with GitHub(use brad traversy) ---     
 // create view-order history, view artworks page ---
 // create a confirm recieve item button on the receipt page ---
 // add payment stack using flutterwave documentation ---
