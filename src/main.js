@@ -3,7 +3,7 @@ import App from './App.vue';
 import router from './router';
 import store from './store/store';
 import './firebase.js';
-import './Twilio.js';
+// import './Twilio.js'
 import posthogPlugin from "./plugins/posthog"; //import the plugin. 
 
 

@@ -79,7 +79,7 @@
       @media screen and (width: 400px) and (max-width: 768px){.container{ margin: 0; width: 100%;}}
   </style>
   <script>
-  import axios from 'axios';
+ 
   import {LOADING_SPINNER_SHOW_MUTATION, LOGIN_ACTION } from '@/store/storeconstants';
 
 import axios from 'axios';
@@ -109,15 +109,33 @@ import { collection, addDoc, setDoc, getDoc, getDocs, query, where, doc } from '
     }),
        async contact_form(){
         this.showLoading(true);
+        let currentTime = new Date()
+            var hoursT = currentTime.getHours();
+            var minsT  = currentTime.getMinutes();
+            var secT    = currentTime.getSeconds();
+             var time = hoursT + ":" + minsT + ":" + secT ;
+
         var contact_form_content = await {
             full_name : this.fname +""+ this.lname,
             guest_email:this.guest_email,
             profession: this.profession,
-            message:    this.subject
+            message:    this.subject,
+            time:       time
         };
         //adddoc to firbase firestore database
-        const contact_message = collection(db,'Contact Page');
-        await addDoc(contact_message, contact_form_content).then(()=>{
+        const contact_message_list = collection(db,'Contact_Page_users_list');
+        const contact_message = collection(db,'Contact Page users');
+        await getDocs(query(collection(db, 'Contact_Page_users_list'), where('guest_email', '==' , this.guest_email))). 
+            then(Contact => Contact.forEach((doc)=>{this.find_Contact = doc.id; 
+                console.log(this.find_Contact)}));
+                //fetch if it exists already
+                switch(this.find_Contact){      
+        case '' : await addDoc(contact_message, contact_form_content),
+         await addDoc(contact_message_list, contact_form_content).then(()=>{
+                                               })
+                         
+            break;
+            default: await addDoc(contact_message, contact_form_content).then(()=>{
                     this.showLoading(false);              
                     setInterval(()=>{alert('Your message has been successfully sent and will reply your within 24hrs please check reply in your email Thankyou');
                     this.response = "Your message has been successfully sent and will reply your within 24hrs please check reply in your email Thankyou"},3000)
@@ -134,7 +152,10 @@ import { collection, addDoc, setDoc, getDoc, getDocs, query, where, doc } from '
             setInterval(()=>{alert('error occurred please resend');
             this.response = error.response +""+ error.message + "please resend"},3000)
         })
-
+               // set Doc newID
+               ;                                   
+            }
+            //
         } 
     },
     mounted(){

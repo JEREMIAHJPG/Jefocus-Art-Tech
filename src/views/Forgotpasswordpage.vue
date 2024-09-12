@@ -106,7 +106,7 @@ import { ref,uploadBytes,uploadBytesResumable,getDownloadURL } from "firebase/st
 import { collection, addDoc, setDoc, getDoc, getDocs, query, where, doc } from 'firebase/firestore';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import {auth} from '@/firebase';
-import {sendVerificationcodeSMS} from '@/Twilio';
+// import {sendVerificationcodeSMS} from '@/Twilio';
 
 
 
@@ -212,14 +212,14 @@ import {sendVerificationcodeSMS} from '@/Twilio';
 
              //involve twillio for sending sms
 
-             await sendVerificationcodeSMS(this.fetched_phonenumber,this.verification_code).then(()=>{
-                    alert('A verification Code has been sent via SMS to your Phonenumber');
-                    setInterval(()=>{ this.sent_verification_code = true;},3000)
-            })
-        .catch((error)=>{
-            setInterval(()=>{ this.error_sending_verification = true;},3000)
-            alert(error.message);
-        })
+        //      await sendVerificationcodeSMS(this.fetched_phonenumber,this.verification_code).then(()=>{
+        //             alert('A verification Code has been sent via SMS to your Phonenumber');
+        //             setInterval(()=>{ this.sent_verification_code = true;},3000)
+        //     })
+        // .catch((error)=>{
+        //     setInterval(()=>{ this.error_sending_verification = true;},3000)
+        //     alert(error.message);
+        // })
 
         //send the verification code to 'getting_token_user_id' using setdoc and doc.id
         // await setDoc(doc(db,'admin_current_database', this.adminspage_database_id), 

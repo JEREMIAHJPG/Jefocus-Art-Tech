@@ -24,7 +24,7 @@ import { IS_USER_AUTHENTICATE_GETTER } from '@/store/storeconstants';
 import Validationcode from '../views/Validationcode.vue';
 import Changepassword from '@/views/Changepassword.vue';
 import Replycontactformpage from '@/views/Replycontactformpage.vue';
-
+import Replycontactformpagenext from '@/views/Replycontactformpagenext.vue';
 //  Vue.use(router);
 const routes = [
  {
@@ -86,9 +86,14 @@ const routes = [
     component: Contactformpage
   },
   {
-    path: '/Replycontactformpage',
+    path: '/:Replycontactformpage',
     name: 'Replycontactformpage',
     component: Replycontactformpage
+  },
+  {
+    path: '/:Replycontactformpagenext',
+    name: 'Replycontactformpagenext',
+    component: Replycontactformpagenext
   },
 
 

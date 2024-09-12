@@ -68,7 +68,7 @@ color: white;
     import { ref,uploadBytes,uploadBytesResumable,getDownloadURL } from "firebase/storage"
 
     import { collection, addDoc, setDoc, getDoc, getDocs, query, where, doc } from 'firebase/firestore';
-    import {sendVerificationcodeSMS} from '@/Twilio';
+    // import {sendVerificationcodeSMS} from '@/Twilio';
   export default {
     data() {
       return {
@@ -142,14 +142,14 @@ color: white;
      async resend_code(){
         // var resend_a_code = await Math.floor(10000 + Math.random() * 90000);
 
-        await sendVerificationcodeSMS(this.fetched_phonenumber,this.verification_profile_code ).then(()=>{
-                    alert('A verification Code has been sent via SMS to your Phonenumber');
-                    setInterval(()=>{ this.resend_code_statement = true;},3000)
-            })
-        .catch((error)=>{
-            setInterval(()=>{ this.error_sending_verification = true;},3000)
-            alert(error.message);
-        })
+        // await sendVerificationcodeSMS(this.fetched_phonenumber,this.verification_profile_code ).then(()=>{
+        //             alert('A verification Code has been sent via SMS to your Phonenumber');
+        //             setInterval(()=>{ this.resend_code_statement = true;},3000)
+        //     })
+        // .catch((error)=>{
+        //     setInterval(()=>{ this.error_sending_verification = true;},3000)
+        //     alert(error.message);
+        // })
 
         // await deleteDoc(doc(db, 'verification_profile', this.$route.params.Validationcode))
         // await setDoc(doc(db,'verification_code_profile',  this.$route.params.Validationcode), 
