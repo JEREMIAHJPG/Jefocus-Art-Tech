@@ -391,14 +391,195 @@ width: 500px;
 height:700px;
 padding:5px;
 }
+.edit_advert_edit{
+    border-radius:15px;
+background-color: white;
+position: relative;
+top:30px;
+margin-left: 0%;
+margin-right: 0%;
+width: 500px;
+height:700px;
+padding:5px;
+}
 
-.image_view_back_button{
+.image_view_back_button_edit{
     border-radius: 5px solid blue;
     background-color:yellow;
     color:black;
     width: 50px;
     height:25px;
 }
+.btn_postad_edit{        
+background-color:black;
+color:white;
+width:100%;
+height:30px;
+border-radius:5px;
+margin-top:10px;
+}
+.policy_checkbox_input_category_form_edit{
+float:left;
+width:70%;
+left:0;
+position: relative;
+margin-left:20%;
+margin-right:20%;
+}
+
+.input_category_form_edit {
+float:left;
+width:70%;
+left:-10%;
+position: relative;
+margin-left:20%;
+margin-right:20%;
+}
+
+.social_media_link_input_position_edit{
+    float:left;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left:7%;
+    margin-right:0%;
+    width:70%;
+    height:50px;
+}
+
+.input_div_social_media_link_edit {
+        position:relative;
+    margin-top: 10px;
+    top:5px;
+    float:left;
+    justify-content: center;
+    margin-left:10%;
+    margin-right:10%;
+    width:100%;
+    height:70px;
+    }
+
+    .admin_description_edit{
+        position:relative;
+    margin-top: 10px;
+    top:5px;
+    float:left;
+    justify-content: center;
+    margin-left:17%;
+    margin-right:15%;
+    width:70%;
+    height:100%;
+    }
+
+    .category_input_position2_edit{
+    float:left;
+    margin-top: 10px;
+    margin-left:0%;
+    margin-right:20%;
+    width:100%;
+    height:50px;
+}
+.category_input_position3_edit{
+    float:left;
+    margin-top: 10px;
+    margin-left:0%;
+    margin-right:20%;
+    width:100%;
+    height:50px;
+}
+.input_div1_edit {
+        position:relative;
+    margin-top: 10px;
+    top:5px;
+    float:left;
+    justify-content: center;
+    margin-left:10%;
+    margin-right:10%;
+    width:100%;
+    height:70px;
+    }
+
+    .input_div2_edit {
+        position:relative;
+    margin-top: 10px;
+    top:5px;
+    float:left;
+    justify-content: center;
+    margin-left:10%;
+    margin-right:10%;
+    width:100%;
+    height:70px;
+    }
+
+    .select-image_edit{
+    position:relative;
+    border: 3px solid grey;
+    border-radius: 10px;
+    background-color: white;
+    width: 100px;
+    height: 100px;
+    float:left;
+    margin: 10px;
+
+}
+
+.file_input_category_form_edit {
+float:left;
+width:100%;
+margin-top:0%;
+margin-left:0%;
+position: relative;
+padding-top:10px;
+padding-left:20%;
+padding-right:20%;
+}
+
+.direct_right_edit
+{
+float:left;
+width:10%;
+height:auto;
+display:float;
+position: relative;
+left:40%;
+}
+
+.direct_left_edit
+{
+float:left;
+width:40%;
+height:auto;
+display:float;
+position: relative;
+}
+
+.btn_postad_top_edit{        
+
+color:black;
+width:100%;
+height:30px;
+border-radius:5px;
+}
+
+.admin_container_edit{
+border-radius:5px;
+background-color: #f2f2f2;
+ padding: 20px; 
+ margin-right: 20%; 
+ margin-bottom: 100px;
+  margin-left: 20%;}
+
+  .price_edit{
+    
+    float:left;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left:10%;
+    margin-right:10%;
+    width:100%;
+    height:10px;
+
+}
+
 </style>
 <template>
 
@@ -425,7 +606,7 @@ padding:5px;
   Your browser does not support the video tag.
 </video>
     <!-- </div> -->
-    <button class="image_view_back_button" @click="back_button()">Back</button>
+    <button class="image_view_back_button_edit" @click="back_button()">Back</button>
         </div>
     </center>
     </div>
@@ -436,70 +617,50 @@ padding:5px;
         <div class="advert_background">
         </div>
         <center>
-            <div class="edit_advert">
-                <form class="admin_container" id="adminspage" @submit.prevent="onsubmit_category()" action="/action_page.php" >
-    <div class="btn_postad_top">
+            <div class="edit_advert_edit">
+                <form class="admin_container_edit" id="adminspage" @submit.prevent="onsubmit_edit()" action="/action_page.php" >
+    <div class="btn_postad_top_edit">
         
-         <div class="direct_left"><h2 class= "postad_left" style="margin-top:1px;">Edit Ad</h2></div>
-         <div class="direct_right"><button class="btn_clear">Clear</button></div>
+         <div class="direct_left_edit"><h2 class= "postad_left_edit" style="margin-top:1px;">Edit Ad</h2></div>
+         <div class="direct_right_edit"><button class="btn_clear_edit">Clear</button></div>
     </div>
-    <div class="input_category_form">
-        <div class="input_div1">
-           
-            <select type="text" v-model="select_category_now" @click="select_category()" id="select_category_here" name="select_category" placeholder="Select Category" class="category_input_position1" required>
-                            <!-- <option value=""> </option> 
-                            <option value="Visual Art Service">Visual Art Services</option>
-                            <option value="Graphics Art and Technology">Graphics Art and Technology</option> -->
-                            
-            </select>
-                    </div>
-                    <!-- <div :class = "[select_category_now = "Visual Art Service" ? 'input_div2':'input_div2_display_none']" v-if="Visuals_Art_Services_selected"> -->
-                    <div class = "input_div2" v-if="Visuals_Art_Services_selected">
-                      
-                         <select  @click="visuals_subcategory()" type="text" name="visuals_subcateory" v-model="visuals_subcategory_data" placeholder=" Select Visuals Sub-category" class="category_input_position2" required>
-                         
-                        </select>
-                    </div>
-                    <div class="input_div3" v-if="Graphics_Art_and_Technology">
-                       
-                        <select @click="graphics_subcategory()" type="text" name="graphics_subcategory" v-model="graphics_subcategory_data" placeholder=" Select Graphics Sub-category" class="category_input_position3" required>
-                           
-                        </select>
-                    </div>
-                    <div v-else></div>
-                    
-    </div>
-
-    <div class="file_input_category_form">
-        <img v-if="img_show"  class="select-image"  :src="url1"  >
-        <img v-if="img_show" class="select-image"   :src="url2"  >
+    <div class="input_category_form_edit">
+        <div class="file_input_category_form_edit">
+        <img v-if="img_show"  class="select-image_edit"  :src="url1">
+        <img v-if="img_show" class="select-image_edit"   :src="url2">
         <video v-if="video_show" width="250" height="150" controls>
   <source :src=url_video type="video/mp4">
   <source :src="url_video" type="video/ogg">
   Your browser does not support the video tag.
 </video>
         <!-- class="select-image_choose" -->
-
     </div>
-  
+        <div class="input_div1_edit">
+         <input type="text" name = "graphics_subcategory" :value = category disabled class ="category_input_position3_edit" required> 
+         </div>
+                    <!-- <div :class = "[select_category_now = "Visual Art Service" ? 'input_div2':'input_div2_display_none']" v-if="Visuals_Art_Services_selected"> -->
+         <div class = "input_div2_edit">                      
+         <input type="text" name = "subcateory" :value = subcategory disabled class ="category_input_position2_edit" required>                                           
+         </div>               
+    </div>
 
-    <div class="admin_description">
-                  <textarea maxlength = "777" id="Admin_description" name="Admin_description" v-model="Admin_description" placeholder="Describe the Item uploaded with maximum of 777 words" style="min-width: 100%; height: 100px;" required></textarea>
-              </div>
+    <div class="admin_description_edit">
+         <textarea maxlength = "777" id="Admin_description" name="Admin_description" v-model = Admin_description placeholder="Describe the Item uploaded with maximum of 777 words" style="min-width: 100%; height: 100px;" required></textarea>
+         </div>
    
-    <div class="input_div_social_media_link">
-                    <input type = "text" v-model="youtubelink" class="social_media_link_input_position"  placeholder="YouTube or Any Social Media Link" required>
-                </div>
-    <div class="input_category_form">
-    <input type="number"  name="price" v-model="main_price" @input="price_input" placeholder="Price" class="price" required>
+    <div class="input_div_social_media_link_edit">
+    <input type = "text" :value= youtubelink disabled class="social_media_link_input_position_edit" required>
+     </div>
+    <div class="input_category_form_edit">
+    <input type="number"  name="price" v-model="price" @input="price_input" :placeholder="main_price" class="price_edit" required>
     </div>
                     
-                    <div class = "policy_checkbox_input_category_form" >
-                        <input class = "policy_checkbox" style="margin-top: 2%; margin-left: 2%;" type="checkbox" id="checkbox" required>
-                        <label for = "termsandcondions" > I Accept Terms and Conditions </label>
-                    </div>
+    <div class = "policy_checkbox_input_category_form_edit" >
+    <input class = "policy_checkbox_edit" style="margin-top: 2%; margin-left: 2%;" type="checkbox" id="checkbox" required>
+    <label for = "termsandcondions" > I Accept Terms and Conditions </label>
+    </div>
                                       
-    <input class="btn_postad" type="submit" value="Post Ad">
+    <input class="btn_postad_edit" type="submit" value="Post Ad">
 
     </form>
             <!-- <div class="image_view_view1"> -->
@@ -511,7 +672,7 @@ padding:5px;
   Your browser does not support the video tag.
 </video> -->
     <!-- </div> -->
-    <button class="image_view_back_button" @click="back_button()">Back</button>
+    <button class="image_view_back_button_edit" @click="back_button()">Back</button>
         </div>
     </center>
     </div>
@@ -634,8 +795,15 @@ this.load_Adminviewadverts_page()
         first_image:false,
         second_image:false,
         show_video: false,
-        video_display: false
-
+        video_display: false,
+        //edit info
+        select_category:'',
+        subcategory:'',
+        youtubelink:'',
+        main_price:'',
+        //edit input new info
+        price:'',
+        Admin_description:'',
       };
     },
     
@@ -694,7 +862,8 @@ this.load_Adminviewadverts_page()
                     this.show_video= false,
                     this.video_display= false
                     }else{
-                        this.show_advert_image=false,
+                    
+                    this.show_advert_image=false,
                     this.show_advert_view_image=false,
                     this.first_image=false,
                     this.second_image=false,
@@ -764,9 +933,23 @@ this.load_Adminviewadverts_page()
         console.log("Admin Item withdrawn have been deleted with admin_monitor_new_id:", view_withdrawn_items.admin_monitor_new_id);
         },
 
-        approved_advert_edit_button(view_approved_items){
+       async approved_advert_edit_button(view_approved_items){
+            this.category       =  view_approved_items.category,
+            this.subcategory    =   view_approved_items.subcategory,
+            this.youtubelink    =    view_approved_items.youtubelink,
+            this.main_price     =     view_approved_items.price,
+            this.adminnew_id    =      view_approved_items.adminnew_id,
+            this.Admin_item_token    =      view_approved_items.Admin_item_token,
+            // Admin_description:'',
+         //query the doc id from the Admin_item_token
+         await getDocs(query(collection(db, 'admin_current_database'), where('user_ID', '==' , this.user_ID))). 
+            then(sellers_snap => sellers_snap.forEach((doc)=>{this.find_admin_seller = doc.data().user_ID; 
+                console.log(this.find_admin_seller)}));
+        },
 
-        }
+     onsubmit_edit(){
+        
+     }
 
 
         // async withdrawn_advert_edit_button(view_withdrawn_items){

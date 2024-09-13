@@ -841,7 +841,7 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
         this.showLoading(true);
 
      //try{   
-        var Admin_token = ((Math.random(777777777,999999999))*10000000000).toFixed(0);
+        var Admin_item_token = ((Math.random(777777777,999999999))*10000000000).toFixed(0);
         //storing of Admin_token
         localStorage.setItem(`admin_token`, Admin_token);
         //this.generate_first_file_name;
@@ -889,8 +889,9 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
                 Second_image_selected:  this.url2,
                 video_selected:         this.url_video,
                 price_tag:              this.main_price*1.33,
-                price:                  this.main_price,   
-                Admin_token:            Admin_token,
+                price:                  this.main_price,
+                youtubelink:            this.youtubelink,
+                Admin_item_token:       Admin_item_token,
                 Admin_upload_date:      new Date(),
                 admin_time:             time
                 
