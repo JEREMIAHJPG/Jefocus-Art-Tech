@@ -801,9 +801,32 @@ this.load_Adminviewadverts_page()
         subcategory:'',
         youtubelink:'',
         main_price:'',
+
+        user_ID:                this.user_ID, 
+                admin_email:            localStorage.getItem(`client_email`),
+                category:               this.select_category_now,
+                visuals_subcategory:    this.visuals_subcategory_data,
+                graphics_subcategory:   this.graphics_subcategory_data,
+                Admin_description:      this.Admin_description,
+                admin_image_url:        this.admin_image_url,
+                adminnew_id:            this.adminnew_id,
+                admin_name:             this.admin_name,
+                admin_profession:       this.admin_profession,
+                
+                First_image_selected:   this.url1,
+                Second_image_selected:  this.url2,
+                video_selected:         this.url_video,
+                price_tag:              this.main_price*1.33,
+                price:                  this.main_price,
+               
+                Admin_item_token:       Admin_item_token,
+                Admin_upload_date:      new Date(),
+                admin_time:             time,
+
         //edit input new info
         price:'',
         Admin_description:'',
+        
       };
     },
     
@@ -939,15 +962,40 @@ this.load_Adminviewadverts_page()
             this.youtubelink    =    view_approved_items.youtubelink,
             this.main_price     =     view_approved_items.price,
             this.adminnew_id    =      view_approved_items.adminnew_id,
-            this.Admin_item_token    =      view_approved_items.Admin_item_token,
+            this.Admin_item_token =      view_approved_items.Admin_item_token,
+            this.product_id      =         view_approved_items.product_id
             // Admin_description:'',
          //query the doc id from the Admin_item_token
-         await getDocs(query(collection(db, 'admin_current_database'), where('user_ID', '==' , this.user_ID))). 
+
+        await getDocs(query(collection(db, 'admin_current_database'), where('user_ID', '==' , this.user_ID))). 
             then(sellers_snap => sellers_snap.forEach((doc)=>{this.find_admin_seller = doc.data().user_ID; 
                 console.log(this.find_admin_seller)}));
         },
 
      onsubmit_edit(){
+        setDoc(doc(db, 'admin_current_database' , this.adminspage_database_id), 
+        {      
+                user_ID:                this.user_ID, 
+                admin_email:            localStorage.getItem(`client_email`),
+                category:               this.select_category_now,
+                visuals_subcategory:    this.visuals_subcategory_data,
+                graphics_subcategory:   this.graphics_subcategory_data,
+
+                admin_image_url:        this.admin_image_url,
+                adminnew_id:            this.adminnew_id,
+                admin_name:             this.admin_name,
+                admin_profession:       this.admin_profession,
+                subcategory:            this.subcategory,
+                First_image_selected:   this.url1,
+                Second_image_selected:  this.url2,
+                video_selected:         this.url_video,
+                product_id:             this.adminspage_database_id,
+                admin_current_database_adminnew_id: this.admin_current_database_adminnew_id,
+                youtubelink:            this.youtubelink,
+                Admin_item_token:       Admin_item_token,
+                Admin_upload_date:      new Date(),
+                admin_time:             time          
+            })
         
      }
 
