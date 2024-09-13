@@ -802,30 +802,34 @@ this.load_Adminviewadverts_page()
         youtubelink:'',
         main_price:'',
 
-        user_ID:                this.user_ID, 
-                admin_email:            localStorage.getItem(`client_email`),
-                category:               this.select_category_now,
-                visuals_subcategory:    this.visuals_subcategory_data,
-                graphics_subcategory:   this.graphics_subcategory_data,
-                Admin_description:      this.Admin_description,
-                admin_image_url:        this.admin_image_url,
-                adminnew_id:            this.adminnew_id,
-                admin_name:             this.admin_name,
-                admin_profession:       this.admin_profession,
+                user_ID:                '', 
+                admin_email:            '',
+                category:               '',
+                visuals_subcategory:    '',
+                graphics_subcategory:   '',
                 
-                First_image_selected:   this.url1,
-                Second_image_selected:  this.url2,
-                video_selected:         this.url_video,
-                price_tag:              this.main_price*1.33,
-                price:                  this.main_price,
-               
-                Admin_item_token:       Admin_item_token,
-                Admin_upload_date:      new Date(),
-                admin_time:             time,
+                admin_image_url:        '',
+                adminnew_id:            '',
+                admin_name:             '',
+                admin_profession:       '',               
+                First_image_selected:   '',
+                Second_image_selected:  '',
+                video_selected:         '',
+                          
+                Admin_item_token:       '',
+                product_id:             '',
+                Admin_upload_date:      '',
+                admin_time:             '',
+                adminspage_database_id: '',
+                admin_current_database_adminnew_id:'',
 
-        //edit input new info
-        price:'',
-        Admin_description:'',
+                new_actionid:'',
+                //find seller ID
+                find_admin_seller_id:'',
+
+                //edit input new info
+                price:'',
+                Admin_description:'',
         
       };
     },
@@ -957,54 +961,109 @@ this.load_Adminviewadverts_page()
         },
 
        async approved_advert_edit_button(view_approved_items){
-            this.category       =  view_approved_items.category,
-            this.subcategory    =   view_approved_items.subcategory,
-            this.youtubelink    =    view_approved_items.youtubelink,
-            this.main_price     =     view_approved_items.price,
-            this.adminnew_id    =      view_approved_items.adminnew_id,
-            this.Admin_item_token =      view_approved_items.Admin_item_token,
-            this.product_id      =         view_approved_items.product_id
+            this.category       =  view_approved_items.category;
+            this.subcategory    =   view_approved_items.subcategory;
+            this.youtubelink    =    view_approved_items.youtubelink;
+            this.main_price     =     view_approved_items.price;
+            this.adminnew_id    =      view_approved_items.adminnew_id;
+            this.Admin_item_token =      view_approved_items.Admin_item_token;
+            this.product_id      =         view_approved_items.product_id;
+
+            this.user_ID =              view_approved_items.user_ID;
+            this.admin_email=           view_approved_items.admin_email;
+            this.category=              view_approved_items.category;
+            this.visuals_subcategory=  view_approved_items.visuals_subcategory;
+            this.graphics_subcategory = view_approved_items.graphics_subcategory;
+            this.admin_image_url=       view_approved_items.admin_image_url;
+            this.adminnew_id=           view_approved_items.adminnew_id;
+            this.admin_name=            view_approved_items.admin_name;
+            this.admin_profession=      view_approved_items.admin_profession;
+            this.subcategory=           view_approved_items.subcategory;
+            this.First_image_selected=  view_approved_items.First_image_selected;
+            this.Second_image_selected=  view_approved_items.Second_image_selected;
+            this.video_selected=        view_approved_items.video_selected;
+            this.adminspage_database_id =  view_approved_items.adminspage_database_id;
+            this.admin_current_database_adminnew_id =  view_approved_items.admin_current_database_adminnew_id;
+            this.youtubelink=           view_approved_items.youtubelink;
+            this.Admin_item_token=     view_approved_items.Admin_item_token;
+            this.Admin_upload_date=    view_approved_items.Admin_upload_date;
+            this.admin_time =            view_approved_items.admin_time;
             // Admin_description:'',
          //query the doc id from the Admin_item_token
+                //edit input new info
+               
+            await getDocs(query(collection(db, 'admin_sellers_database'), where('user_ID', '==' , this.user_ID))). 
+            then(sellers_snap => sellers_snap.forEach((doc)=>{this.find_admin_seller_id = doc.id; 
+                console.log(this.find_admin_seller_id)}));
 
-        await getDocs(query(collection(db, 'admin_current_database'), where('user_ID', '==' , this.user_ID))). 
-            then(sellers_snap => sellers_snap.forEach((doc)=>{this.find_admin_seller = doc.data().user_ID; 
-                console.log(this.find_admin_seller)}));
-        },
+            },
 
-     onsubmit_edit(){
-        setDoc(doc(db, 'admin_current_database' , this.adminspage_database_id), 
-        {      
-                user_ID:                this.user_ID, 
-                admin_email:            localStorage.getItem(`client_email`),
-                category:               this.select_category_now,
-                visuals_subcategory:    this.visuals_subcategory_data,
-                graphics_subcategory:   this.graphics_subcategory_data,
+       async onsubmit_edit(){
+            this.new_actionid = "edited" + "=" + new Date();
 
-                admin_image_url:        this.admin_image_url,
-                adminnew_id:            this.adminnew_id,
-                admin_name:             this.admin_name,
-                admin_profession:       this.admin_profession,
-                subcategory:            this.subcategory,
-                First_image_selected:   this.url1,
-                Second_image_selected:  this.url2,
-                video_selected:         this.url_video,
-                product_id:             this.adminspage_database_id,
-                admin_current_database_adminnew_id: this.admin_current_database_adminnew_id,
-                youtubelink:            this.youtubelink,
-                Admin_item_token:       Admin_item_token,
+            let currentTime = new Date()
+            var hoursT = currentTime.getHours();
+            var minsT  = currentTime.getMinutes();
+            var secT    = currentTime.getSeconds();
+             var time = hoursT + ":" + minsT + ":" + secT ; 
+
+              //create array for new collection
+              var edited_advert_data = {
+                
+                user_ID:            this.user_ID, 
+                admin_email:        this.admin_email,
+                category:           this.category,
+                visuals_subcategory:  this.visuals_subcategory,
+                graphics_subcategory: this.graphics_subcategor,            
+                admin_image_url:     this.admin_image_url,
+                adminnew_id:         this.adminnew_id,
+                admin_name:          this.admin_name,
+                admin_profession:    this.admin_profession,               
+                First_image_selected: this.First_image_selected,
+                Second_image_selected:  this.Second_image_selected,
+                video_selected:         this.video_selected,                        
+                Admin_item_token:       this.Admin_item_token,
+                product_id:             this.product_id,
+                Admin_upload_date:      this.Admin_upload_date,
+                admin_time:             this.admin_time,
+                adminspage_database_id: this.adminspage_database_id,
+                admin_current_database_adminnew_id: this.admin_current_database_adminnew_id + this.new_actionid,
+                price:                  this.price,
+                Admin_description:      this.Admin_description,
                 Admin_upload_date:      new Date(),
-                admin_time:             time          
-            })
-        
-     }
+                admin_time:             time
 
+              };
+
+              const col_ref_admin_sellers_database = collection(db, 'admin_sellers_database');
+              const colRef = collection(db,'admin_current_database');
+              try{
+            switch(this.find_admin_seller_id){ 
+            case '' : await addDoc(col_ref_admin_sellers_database, edited_advert_data ), 
+             await addDoc(collection(db,'admin_current_database'), edited_advert_data );
+             
+            break;
+            default: await addDoc(colRef, edited_advert_data ) 
+                 };
+
+                 this.price = '',
+                 this.Admin_description = ''
+                }catch(error){
+                    alert(error.message + "edit not successful please try again ")
+                }
+        // setDoc(doc(db, 'admin_current_database' , this.adminspage_database_id), 
+        // {      
+                  
+        //     })
+        
+    
+    }
 
         // async withdrawn_advert_edit_button(view_withdrawn_items){
 
         // }
 
-        }
-        
+}
+    
         }
 </script>

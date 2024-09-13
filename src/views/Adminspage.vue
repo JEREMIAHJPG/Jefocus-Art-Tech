@@ -888,7 +888,6 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
                 First_image_selected:   this.url1,
                 Second_image_selected:  this.url2,
                 video_selected:         this.url_video,
-                price_tag:              this.main_price*1.33,
                 price:                  this.main_price,
                 youtubelink:            this.youtubelink,
                 Admin_item_token:       Admin_item_token,
@@ -923,7 +922,7 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
 
             await getDocs(query(collection(db,'admin_current_database'),
             where('Admin_token', '==', Admin_token))).then(adminspage_admin_id=>{ 
-            adminspage_admin_id.forEach ((doc)=>{
+            adminspage_admin_id.forEach ((doc)=>{ed
                 this.adminspage_database_id = doc.id;
                 this.admin_current_database_adminnew_id = doc.data().adminnew_id +"/"+ "checkadvert" + "=" + doc.id ;
 
