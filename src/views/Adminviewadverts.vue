@@ -429,6 +429,93 @@ padding:5px;
         </div>
     </center>
     </div>
+    <!-- --- -->
+
+    <!-- edit advert -->
+    <div class="advert_view" v-if="show_advert">
+        <div class="advert_background">
+        </div>
+        <center>
+            <div class="edit_advert">
+                <form class="admin_container" id="adminspage" @submit.prevent="onsubmit_category()" action="/action_page.php" >
+    <div class="btn_postad_top">
+        
+         <div class="direct_left"><h2 class= "postad_left" style="margin-top:1px;">Edit Ad</h2></div>
+         <div class="direct_right"><button class="btn_clear">Clear</button></div>
+    </div>
+    <div class="input_category_form">
+        <div class="input_div1">
+           
+            <select type="text" v-model="select_category_now" @click="select_category()" id="select_category_here" name="select_category" placeholder="Select Category" class="category_input_position1" required>
+                            <!-- <option value=""> </option> 
+                            <option value="Visual Art Service">Visual Art Services</option>
+                            <option value="Graphics Art and Technology">Graphics Art and Technology</option> -->
+                            
+            </select>
+                    </div>
+                    <!-- <div :class = "[select_category_now = "Visual Art Service" ? 'input_div2':'input_div2_display_none']" v-if="Visuals_Art_Services_selected"> -->
+                    <div class = "input_div2" v-if="Visuals_Art_Services_selected">
+                      
+                         <select  @click="visuals_subcategory()" type="text" name="visuals_subcateory" v-model="visuals_subcategory_data" placeholder=" Select Visuals Sub-category" class="category_input_position2" required>
+                         
+                        </select>
+                    </div>
+                    <div class="input_div3" v-if="Graphics_Art_and_Technology">
+                       
+                        <select @click="graphics_subcategory()" type="text" name="graphics_subcategory" v-model="graphics_subcategory_data" placeholder=" Select Graphics Sub-category" class="category_input_position3" required>
+                           
+                        </select>
+                    </div>
+                    <div v-else></div>
+                    
+    </div>
+
+    <div class="file_input_category_form">
+        <img v-if="img_show"  class="select-image"  :src="url1"  >
+        <img v-if="img_show" class="select-image"   :src="url2"  >
+        <video v-if="video_show" width="250" height="150" controls>
+  <source :src=url_video type="video/mp4">
+  <source :src="url_video" type="video/ogg">
+  Your browser does not support the video tag.
+</video>
+        <!-- class="select-image_choose" -->
+
+    </div>
+  
+
+    <div class="admin_description">
+                  <textarea maxlength = "777" id="Admin_description" name="Admin_description" v-model="Admin_description" placeholder="Describe the Item uploaded with maximum of 777 words" style="min-width: 100%; height: 100px;" required></textarea>
+              </div>
+   
+    <div class="input_div_social_media_link">
+                    <input type = "text" v-model="youtubelink" class="social_media_link_input_position"  placeholder="YouTube or Any Social Media Link" required>
+                </div>
+    <div class="input_category_form">
+    <input type="number"  name="price" v-model="main_price" @input="price_input" placeholder="Price" class="price" required>
+    </div>
+                    
+                    <div class = "policy_checkbox_input_category_form" >
+                        <input class = "policy_checkbox" style="margin-top: 2%; margin-left: 2%;" type="checkbox" id="checkbox" required>
+                        <label for = "termsandcondions" > I Accept Terms and Conditions </label>
+                    </div>
+                                      
+    <input class="btn_postad" type="submit" value="Post Ad">
+
+    </form>
+            <!-- <div class="image_view_view1"> -->
+    <!-- <img v-if="show_advert_view_image" :src="first_image" title="image_view_content" class="first_image_view_content_view1" >
+    <img  v-if="show_advert_view_image" :src="second_image" title="image_view_content" class="second_image_view_content_view1" >
+    <video  v-if="show_advert_video" width="320" height="240" controls>
+  <source :src="video_display" type="video/mp4">
+  <source :src="video_display" type="video/ogg">
+  Your browser does not support the video tag.
+</video> -->
+    <!-- </div> -->
+    <button class="image_view_back_button" @click="back_button()">Back</button>
+        </div>
+    </center>
+    </div>
+                <!-- --- -->
 
     <div class="monitor_background_view1" v-if="show_Adminviewadverts" >
        <center><h1 class="top_text_view1">View items and services Page</h1> </center>
@@ -466,7 +553,7 @@ padding:5px;
     <div class="monitor_buttons_view1">
         <button class="view_button_view1"  @click=  "approved_advert_view_button(view_approved_items)">View</button>       
         <button class="delete_button_view1" @click= "approved_advert_delete_button(view_approved_items)">Delete</button>
-        <!-- <button class="edit_button_view1"  @click=  "approved_advert_edit_button(view_approved_items)">Edit</button> -->
+        <button class="edit_button_view1"  @click=  "approved_advert_edit_button(view_approved_items)">Edit</button>
         <!-- check for how to handle query in Firebase console -->
     </div>
 
@@ -573,9 +660,7 @@ this.load_Adminviewadverts_page()
     //             //     }
     //                 // console.log("items uploaded");
     //         })  })
-   
-
-               
+              
             await onSnapshot(query(collection(db, 'approved_checked_adverts'), where('adminnew_id', '==' , this.$route.params.Adminviewadverts)),
             
                    (check_id)=>{ 
@@ -634,15 +719,11 @@ this.load_Adminviewadverts_page()
                    // }
                    // console.log("Admin advert APPROVED with admin_monitor_new_id:", this.admin_monitor_new_id);
             })   }  )           
-            
-
-            
+                  
             console.log(this.view_withdrawn_items_data);
             // check if video exists in the adverts
            
-        this.showLoading(false)
-        
-                       
+        this.showLoading(false)                      
         },
         async back_button(){
             this.show_advert = false;
@@ -681,6 +762,10 @@ this.load_Adminviewadverts_page()
             await deleteDoc(doc(db, 'withdrawn_checked_adverts', view_withdrawn_items.admin_monitor_new_id))
 
         console.log("Admin Item withdrawn have been deleted with admin_monitor_new_id:", view_withdrawn_items.admin_monitor_new_id);
+        },
+
+        approved_advert_edit_button(view_approved_items){
+
         }
 
 
