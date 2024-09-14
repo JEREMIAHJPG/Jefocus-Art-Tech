@@ -341,7 +341,7 @@ padding-right:20%;
                     </div>
                     <!-- <div :class = "[select_category_now = "Visual Art Service" ? 'input_div2':'input_div2_display_none']" v-if="Visuals_Art_Services_selected"> -->
                     <div class = "input_div2" v-if="Visuals_Art_Services_selected">
-                        <h v-if="display_Select_Visuals_Sub_category" id= "Visual_Art_Service" class="category_style_Visual_Art_Service" value="Visual Art Service">Select Visuals Sub-category</h>
+                        <sup v-if="display_Select_Visuals_Sub_category" id= "Visual_Art_Service" class="category_style_Visual_Art_Service" value="Visual Art Service">Select Visuals Sub-category</sup>
                         <h v-else></h>
                          <select  @click="visuals_subcategory()" type="text" name="visuals_subcateory" v-model="visuals_subcategory_data" placeholder=" Select Visuals Sub-category" class="category_input_position2" required>
                             <option value=""></option>
@@ -357,7 +357,7 @@ padding-right:20%;
                         </select>
                     </div>
                     <div class="input_div3" v-if="Graphics_Art_and_Technology">
-                        <h v-if="display_Select_Graphics_Sub_category" class="category_style_Graphics_Art_and_Technology">Select Graphics Sub-category</h>
+                        <sup v-if="display_Select_Graphics_Sub_category" class="category_style_Graphics_Art_and_Technology">Select Graphics Sub-category</sup>
                         <h v-else></h>
                         <select @click="graphics_subcategory()" type="text" name="graphics_subcategory" v-model="graphics_subcategory_data" placeholder=" Select Graphics Sub-category" class="category_input_position3" required>
                             <option value=""></option>      
