@@ -108,6 +108,7 @@ import router from '@/router';
         admin_image_url:'',
         recieved_user_id_id:'',
         recieved_user_id_name:'',
+        recieved_user_id_email:'',
         recieved_user_id_profession:'',
         get_ID:'',
         tokenData:[],
@@ -234,6 +235,19 @@ import router from '@/router';
 
             //firebase actions
 
+           
+        this.showLoading(false);
+        //
+         this.$router.push('/Artworkpage');
+        // this.$router.push( {name:'Artworkpage', params:{Artworkpage_id: this.recieved_user_id_id}});
+        localStorage.setItem(`client_email`,this.email);
+        // console.log("add");
+
+
+                }
+           catch(e){this.error = e; this.showLoading(false);
+            return false;
+           };
             //    var recieved_user_id = [];
             await getDocs(query(collection(db, 'getting_user_id'),
             where('email', '==' , this.email))).then (recieved_getting_user_id => {recieved_getting_user_id.forEach((doc)=> {
@@ -272,18 +286,6 @@ import router from '@/router';
 
                                        console.log("Users Document created with name:", this.recieved_user_id_name );
  
-        this.showLoading(false);
-        //
-         this.$router.push('/Artworkpage');
-        // this.$router.push( {name:'Artworkpage', params:{Artworkpage_id: this.recieved_user_id_id}});
-        localStorage.setItem(`client_email`,this.email);
-        // console.log("add");
-
-
-                }
-           catch(e){this.error = e; this.showLoading(false);
-            return false;
-           }
         
         },
         

@@ -1,5 +1,5 @@
 // Download the helper library from https://www.twilio.com/docs/node/install
-import twilio from "@/Twilio"; // Or, for ESM: import twilio from "twilio";
+import twilio from "twilio"; // Or, for ESM: import twilio from "twilio";
 
 // Find your Account SID and Auth Token at twilio.com/console
 // and set the environment variables. See http://twil.io/secure
