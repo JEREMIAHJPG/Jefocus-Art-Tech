@@ -123,134 +123,128 @@
             </form>
         </div>
     </template>
-    <script>
-    import {storage, db} from "@/firebase"
-
-import { ref,uploadBytes,getDownloadURL } from "firebase/storage"
-
-import { doc,collection, addDoc, getDocs,getDoc, query, where, setDoc } from 'firebase/firestore';
-    import SignupValidations from '/services/SignupValidations';
-    import { mapActions, mapMutations, mapGetters, mapState } from 'vuex';
-    import{LOADING_SPINNER_SHOW_MUTATION,
-         SIGNUP_ACTION,
-         GET_USER_TOKEN_GETTER,
-          IS_USER_AUTHENTICATE_GETTER} from '../store/storeconstants';
-   
-
-    export default{
-  data(){
-     return{
-     existed:'',
-     email:'',
-     password:'',
-     phonenumber:'',
-     errors:[],
-     error:'',
-     first_name:'',
-     last_name:'',
-     profession:'',
-     get_ID:'',
-     info:'',
-     
-     
-  };
- },
- created(){
-    console.log(JSON.stringify(localStorage.getItem(`userData`)));
- },
- methods:{
-       
-    ...mapActions('auth',{
-        signup:SIGNUP_ACTION,
-    }),
-
-    ...mapMutations({
-        showLoading: LOADING_SPINNER_SHOW_MUTATION,
-    }),
-
-    ...mapGetters('auth',
-      {
-        getterstoken: GET_USER_TOKEN_GETTER,
-        isAuthenticated: IS_USER_AUTHENTICATE_GETTER
-      }),
-
-     async onSignup(){
-         let validations = new SignupValidations(
-             this.email,
-             this.password,
-         );
-
-         this.errors = validations.checkValidations();
-         if('email' in this.errors || 'password' in this.errors){
-             return false;
-         }
-
-         //make spinner true
-         this.showLoading(true);
-
+     <script>
+     import {storage, db} from "@/firebase"
+ 
+ import { ref,uploadBytes,getDownloadURL } from "firebase/storage"
+ 
+ import { doc,collection, addDoc, getDocs,getDoc, query, where, setDoc } from 'firebase/firestore';
+     import SignupValidations from '/services/SignupValidations';
+     import { mapActions, mapMutations, mapGetters, mapState } from 'vuex';
+     import{LOADING_SPINNER_SHOW_MUTATION,
+          SIGNUP_ACTION,
+          GET_USER_TOKEN_GETTER,
+           IS_USER_AUTHENTICATE_GETTER} from '../store/storeconstants';
+    
+ 
+     export default{
+   data(){
+      return{
+      existed:'',
+      email:'',
+      password:'',
+      phonenumber:'',
+      errors:[],
+      error:'',
+      first_name:'',
+      last_name:'',
+      profession:'',
+      get_ID:'',
+      
+      
+   };
+  },
+  created(){
+     console.log(JSON.stringify(localStorage.getItem(`userData`)));
+  },
+  methods:{
         
-              
-         //signup registeration
-        this.signup({
-             email: this.email,
-             password: this.password,
-             
-            }).then(()=>{
-                var creating_user_id = {
-            name: this.first_name + '' + this.last_name,
-            email: this.email,
-            profession: this.profession,
-            idToken: '',
-            password: this.password,
-            phonenumber: "+234" + this.phonenumber
-            }
+     ...mapActions('auth',{
+         signup:SIGNUP_ACTION,
+     }),
+ 
+     ...mapMutations({
+         showLoading: LOADING_SPINNER_SHOW_MUTATION,
+     }),
+ 
+     ...mapGetters('auth',
+       {
+         getterstoken: GET_USER_TOKEN_GETTER,
+         isAuthenticated: IS_USER_AUTHENTICATE_GETTER
+       }),
+ 
+      async onSignup(){
+          let validations = new SignupValidations(
+              this.email,
+              this.password,
+          );
+ 
+          this.errors = validations.checkValidations();
+          if('email' in this.errors || 'password' in this.errors){
+              return false;
+          }
+ 
+          //make spinner true
+          this.showLoading(true);
+          //signup registeration
+          try{await this.signup({
+              email: this.email,
+              password: this.password,
 
-             // users collection  reference
-                const colRef_creating_user_id = collection(db,'getting_user_id');
-                //check if email exist already in getting_user_id already
-            //     await getDocs(query(collection(db,'admin_current_database'),
-            // where('email', '==', this.email))).then(email_exist=>{ 
-            // email_exist.forEach ((doc)=>{
-            //     this.existed= doc.id;
-            //     console.log("Email already exist with ID:", this.existed);
-            //     })
-            //     });
+             });
+          //initiate database
+          //------//
+          var creating_user_id = await{
+             name: this.first_name + '' + this.last_name,
+             email: this.email,
+             profession: this.profession,
+             idToken: '',
+             password: this.password,
+             phonenumber: "+234" + this.phonenumber
+             }
+ 
+              // users collection  reference
+                 const colRef_creating_user_id = collection(db,'getting_user_id');
+                 //check if email exist already in getting_user_id already
+             //     await getDocs(query(collection(db,'admin_current_database'),
+             // where('email', '==', this.email))).then(email_exist=>{ 
+             // email_exist.forEach ((doc)=>{
+             //     this.existed= doc.id;
+             //     console.log("Email already exist with ID:", this.existed);
+             //     })
+             //     });
+                 
+                //tokenData
                 
-               
-            // data to send
-                var colRef_creating_user_id_upload_database
-                 = 
-                //  await 
-                 addDoc(colRef_creating_user_id, creating_user_id);
-            
-              //access auto-generated ID with '.id'
-            console.log('Document was created with NAME:',  colRef_creating_user_id_upload_database.name);
-            //FETCH THE GETTING_USER_ID DOC ID
-            // await 
-            getDocs(query(collection(db,'getting_user_id'),
-                where('email', '==', this.email))).then(get_id=>{ 
-                get_id.forEach ((doc)=>{
-               this.get_ID =  doc.id;
-                console.log("user IDTOKEN found with email:", this.email);
-                })
-                });
-                this.showLoading(false);
-                this.$router.push('/LoginPage');
-                // console.log(this.getterstoken)
-            //GET USER_ID_TOKEN from firebase AUTH
-            //  await setDoc(doc(db,'getting_user_id', doc.id),{idToken:this.getterstoken},{merge:true})
-            //make spinner false
-            }).catch((e)=>{
-                this.error = e;
-                this.showLoading(false);
-                this.info = false;
-                return false;
-            });
-            //  this.showLoading(false);
+             // data to send
+                 var colRef_creating_user_id_upload_database = await addDoc(colRef_creating_user_id, creating_user_id);
              
-            
-            
-     },
- },
-    };
- </script>
+               //access auto-generated ID with '.id'
+             console.log('Document was created with NAME:',  colRef_creating_user_id_upload_database.name);
+             //FETCH THE GETTING_USER_ID DOC ID
+             await getDocs(query(collection(db,'getting_user_id'),
+                 where('email', '==', this.email))).then(get_id=>{ 
+                 get_id.forEach ((doc)=>{
+                this.get_ID =  doc.id;
+                 console.log("user IDTOKEN found with email:", this.email);
+                 })
+                 });
+                 // console.log(this.getterstoken)
+             //GET USER_ID_TOKEN from firebase AUTH
+             //  await setDoc(doc(db,'getting_user_id', doc.id),{idToken:this.getterstoken},{merge:true})
+             //make spinner false
+               this.$router.push('/LoginPage');   
+          //------//
+             this.showLoading(false);
+            }catch(e){
+                 this.error = e;
+                 this.showLoading(false);
+                 return false;
+             };
+             
+ 
+             
+      },
+  },
+     };
+  </script>

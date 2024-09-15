@@ -62,7 +62,7 @@ const routes = [
     path: '/LoginPage',
     name: 'LoginPage',
     component: LoginPage,
-    meta:{auth:true}
+    meta:{auth:false}
   },
   
   {

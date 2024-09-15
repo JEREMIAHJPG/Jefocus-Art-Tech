@@ -85,7 +85,8 @@ color: white;
         timercount: null,
         onloaded:'',
         code_expired:false,
-        error_sending_verification:''
+        error_sending_verification:'',
+        
 
       };
     },
@@ -94,7 +95,7 @@ color: white;
     },
     methods: {
      async on_load(){
-      var fetch_code = await getDoc(doc(db, 'verification_code_profile',this.$route.params.Validationcode))
+      var fetch_code = await getDoc(doc(db, 'verification_profile',this.$route.params.Validationcode))
         this.verification_profile_code =  fetch_code.data().verification_code;
         this.confirm_phonenumber =        fetch_code.data().confirm_phonenumber;
         this.doc_email_ID = this.doc_email_ID;
@@ -124,7 +125,7 @@ color: white;
         if(this.code[4]){
            
             if(this.joining_code=this.verification_profile_code){
-               await deleteDoc(doc(db, 'verification_code_profile', this.$route.params.Validationcode)),
+               await deleteDoc(doc(db, 'verification_profile', this.$route.params.Validationcode)),
                this.resend_code = false,
                 this.$router.replace({name:'Changepassword', params:{Changepassword: this.$route.params.Validationcode}})
                 

@@ -23,8 +23,8 @@ export default{
             url:'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDt8TxIM_m7OaUlxT2WgDhS13jYFp7VvhE'
              }
             );
-            localStorage.setItem('userData',  JSON.stringify(tokenData));
-            context.commit(SET_USER_TOKEN_DATA_MUTATION, tokenData);
+            // localStorage.setItem('userData',  JSON.stringify(tokenData));
+            // context.commit(SET_USER_TOKEN_DATA_MUTATION, tokenData);
 },
 
 async [LOGIN_ACTION](context, payload){ 

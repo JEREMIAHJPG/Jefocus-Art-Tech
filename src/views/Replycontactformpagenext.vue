@@ -85,6 +85,7 @@ import { ref,uploadBytes,uploadBytesResumable,getDownloadURL } from "firebase/st
 
 import { collection, onSnapshot, addDoc, setDoc, getDoc, getDocs, query, where, doc } from 'firebase/firestore';
 export default {
+    name:'Replycontactformpagenext',
     data() {
         return{
             view_replycontactlist:[],
