@@ -8,7 +8,7 @@
                   <label for="fname">First Name</label>
               </div>
               <div class="col-75">
-                  <input type="text" :v-model="fname" id="fname" name="firstname" placeholder="your name...">
+                  <input type="text" v-model=fname id="fname" name="firstname" placeholder="your name..." required>
               </div>
               <center>
                   <h1 style="color: green">{{ response }}</h1>
@@ -19,7 +19,7 @@
               <label for="lname">Last Name</label>
               </div>
               <div class="col-75">
-                  <input type="text" :v-model="lname" id="lname" name="lastname" placeholder="your last name...">
+                  <input type="text" v-model=lname id="lname" name="lastname" placeholder="your last name..." required>
               </div>
           </div>
           <div class="row">
@@ -27,7 +27,7 @@
                   <label for="email">Email</label>
               </div>
               <div class="col-75">
-                  <input type="text" :v-model="guest_email" id="email" name="Email" placeholder="example@gmail.com..." required>
+                  <input type="text" v-model=guest_email id="email" name="Email" placeholder="example@gmail.com..." required>
               </div>
           </div>
           <div class="row">
@@ -35,7 +35,7 @@
               <label for="Profession">Profession</label>
           </div>
               <div class="col-75">
-                  <select id="profession" :v-model="profession" name="profession">
+                  <select id="profession" v-model="profession" name="profession">
                       <option value=""></option>
                       <option value="ID">Interior Designer</option>
                       <option value="AC">Art Collector</option>
@@ -50,7 +50,7 @@
                       <label for="subject">Subject</label>
               </div>
               <div class="col-75">
-                  <textarea id="subject" name="subject" :v-model="subject"  placeholder="Write Something.." style="height:200px"></textarea>
+                  <textarea id="subject" name="subject" v-model="subject"  placeholder="Write Something.." style="height:200px" required></textarea>
               </div>
           </div>
           <br>
@@ -97,6 +97,7 @@ import { collection, addDoc, setDoc, getDoc, getDocs, query, where, doc } from '
             guest_email:'',
             profession:'',
             subject:'',
+            find_Contact:'',
             response:'',
 
         };
@@ -128,15 +129,16 @@ import { collection, addDoc, setDoc, getDoc, getDocs, query, where, doc } from '
             then(Contact => Contact.forEach((doc)=>{this.find_Contact = doc.id; 
                 console.log(this.find_Contact)}));
                 //fetch if it exists already
-                switch(this.find_Contact){      
+      try{ switch(this.find_Contact){      
         case '' : await addDoc(contact_message, contact_form_content),
          await addDoc(contact_message_list, contact_form_content).then(()=>{
                                                })
-                         
+                        
             break;
             default: await addDoc(contact_message, contact_form_content).then(()=>{
-                    this.showLoading(false);              
-                    setInterval(()=>{alert('Your message has been successfully sent and will reply your within 24hrs please check reply in your email Thankyou');
+                               
+                    setTimeout(()=>{
+                        alert('Your message has been successfully sent and will reply your within 24hrs please check reply in your email Thankyou');
                     this.response = "Your message has been successfully sent and will reply your within 24hrs please check reply in your email Thankyou"},3000)
                     
                     this.fname ='',
@@ -145,15 +147,17 @@ import { collection, addDoc, setDoc, getDoc, getDocs, query, where, doc } from '
                     this.profession ='',
                     this.subject ='',
                     this.response =''
-            })
-        .catch((error)=>{
+            })}
+         this.showLoading(false);  
+        }
+        catch(error){
             this.showLoading(false);
             setInterval(()=>{alert('error occurred please resend');
             this.response = error.response +""+ error.message + "please resend"},3000)
-        })
+        }
                // set Doc newID
                ;                                   
-            }
+            
             //
         } 
     },

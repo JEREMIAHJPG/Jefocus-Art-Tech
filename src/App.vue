@@ -92,7 +92,7 @@
             <li v-if="isAuthenticated"><router-link :to="{name:'Adminviewadverts', params:{Adminviewadverts: this.adminnew_id}}" @click="Adminviewadverts_loading" v-if="View_your_Adverts">
             <span class="material-symbols-outlined">gallery_thumbnail</span>View your Adverts</router-link></li>
             <li v-if="isAuthenticated"><router-link to="/Admindatabase" @click="Admindatabase_loading" v-if="Admin_Creation"><span class="material-symbols-outlined">admin_panel_settings</span>Admin Creation</router-link></li>
-            
+            <li v-if="isAuthenticated"><router-link to="/Replycontactformpage" v-if="Admin_Creation"><span class="material-symbols-outlined">admin_panel_settings</span>Reply Guest Message</router-link></li>
             <li v-if="isAuthenticated"><a href="#" @click.prevent="onLogout()" ><span class="material-symbols-outlined">logout</span>Log out</a></li>
         </ul>
         
