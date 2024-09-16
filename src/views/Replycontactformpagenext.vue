@@ -1,16 +1,18 @@
 <template>
     <!-- form display  -->
      <!-- view monitor adverts -->
-     <div class="reply_form_view" v-if="show_reply_form">
-        <div class="reply_form_view_background">
-        </div>
+      <!-- -- -->
+       
+      <!-- -- -->
+     <div class="reply_form_view_background" v-if="show_reply_form">
+        
         <center>
-            <div class=container style="margin-top: 95px;">
-      <h1 style="text-align: center;"> Contact Us </h1>
+            <div class=container style="margin-top: 55px;">
+      <h1 style="text-align: center; color:white;"> Contact Us </h1>
       <form action="/action_page.php" @submit.prevent="reply_contact_form()">
           <div class="row">
               <div class="col-25">
-                  <label for="fname">Full Name</label>
+                  <label for="fname" style="color:white;">Full Name</label>
               </div>
               <div class="col-75">
                   <input type="text" :value = reply_full_name disabled id="fname" name="firstname" placeholder="your name...">
@@ -22,7 +24,7 @@
         
           <div class="row">
               <div class="col-25">
-                  <label for="email">Email</label>
+                  <label for="email" style="color:white;">Email</label>
               </div>
               <div class="col-75">
                   <input type="text" :value = reply_guest_email disabled id="email" name="Email" placeholder="example@gmail.com..." required>
@@ -32,7 +34,7 @@
   
           <div class="row">
               <div class="col-25">
-                      <label for="subject">Subject</label>
+                      <label for="subject" style="color:white;">Subject</label>
               </div>
               <div class="col-75">
                   <textarea id="subject" name="subject" :value= reply_subject disabled style="height:200px"></textarea>
@@ -51,11 +53,11 @@
     </div>
     
     <!-- form display  -->
-
-  <div class="admin_container_contact_message" v-for="(view_message, index) in view_replycontactlist " :key="index">
+<div v-if="show_reply_form_list">
+  <div class="admin_container_contact_message" v-for="(view_message, index) in view_replycontactlist " :key="index" >
    
    <!-- <router-link :to="{name:'Replycontactformpage', params:{Replycontactformpage: view_message.guest_emai}}"> -->
-       <div class= "admin_profile_container_contact_message" @click="view_message_for_reply()">
+       <div class= "admin_profile_container_contact_message" @click="view_message_for_reply(view_message)">
    <div class="admin_profile_contact_message">
        
        <div class="admin_details_contact_message">
@@ -65,12 +67,13 @@
            <div class= "email_admin_contact_message"><h>Email:</h> <h class="email_contact_message">{{view_message.guest_email}}</h></div>            
        </div> 
        <div class="post_time_contact_message"><span class="material-symbols-outlined">nest_clock_farsight_analog</span> <h>{{view_message.time}}</h></div>
-       <div class="post"><center><button class="post_button" @click="view_message_for_reply()"> check message</button></center></div> 
+       <div class="post"><center><button class="post_button" @click="view_message_for_reply(view_message)"> check message</button></center></div> 
        <!-- <div class="post"><center><button class="post_button" @click="migrate_to_monitor_admin(view_message)"> Check posts</button></center></div> -->
                    
    </div>
 </div>
    <!-- </router-link> -->
+</div>
 </div>
 </template>
 
@@ -91,7 +94,7 @@ export default {
             view_replycontactlist:[],
 
             show_reply_form:'',
-
+            show_reply_form_list:true,
                 reply_full_name:'',                       
                 reply_guest_email:'',                         
                 reply_profession:'',                    
@@ -106,10 +109,13 @@ export default {
             this.load_replycontactlist_collection();
         },
         methods:{
+            ...mapMutations({
+        showLoading: LOADING_SPINNER_SHOW_MUTATION,
+                             }),
             async load_replycontactlist_collection(){
 
               await onSnapshot(query(collection(db,'Contact Page users'),
-            where('guest_email', '==' , this.$route.params.Replycontactformpage))
+            where('guest_email', '==' , this.$route.params.Replycontactformpagenext))
             ,(Replycontact)=>{ 
                 Replycontact.forEach ((doc)=>{
                     var view_replycontactlist_data = {
@@ -117,8 +123,8 @@ export default {
                 full_name:                        doc.data().full_name,
                 guest_email:                           doc.data().guest_email,
                 profession:                        doc.data().profession ,
-                subject:                        doc.data().subject,
-                time:                         doc.data().subject,
+                subject:                        doc.data().message,
+                time:                         doc.data().time,
             }
 
             this.view_replycontactlist.push(view_replycontactlist_data);
@@ -127,7 +133,7 @@ export default {
         );
 
         await onSnapshot(query(collection(db,'Contact_Page_users_list'),
-            where('guest_email', '==' , this.$route.params.Replycontactformpage))
+            where('guest_email', '==' , this.$route.params.Replycontactformpagenext))
             ,(reply_Page_users_list)=>{ 
                 reply_Page_users_list.forEach ((doc)=>{                
                this.Contact_Page_users_list_ID = doc.id
@@ -140,8 +146,9 @@ export default {
                 
             // })} )
             },
-            view_message_for_reply(){
+            view_message_for_reply(view_message){
                 this.show_reply_form = true,
+                this.show_reply_form_list = false,
                 this.reply_id=          view_message.ID ;
                 this.reply_full_name = view_message.full_name;                      
                 this.reply_guest_email = view_message.guest_email;                    
@@ -207,7 +214,8 @@ export default {
             return false;
         });
         //
-        this.show_reply_form = false   
+        this.show_reply_form = false,
+        this.show_reply_form_list = true  
         // set Doc newID
                                                   
             
@@ -218,33 +226,38 @@ export default {
 </script>
 
 <style>
-.reply_form_view{
-    z-index: 3;
-    position:fixed;
+/* .reply_form_view{
+   
+} */
+.reply_form_view_background{
+    z-index: 10;
+    background-color: rgb(0,0,0, 0.8);
     width:100%;
-    height:100%;
+    position:relative;
+    height:auto;
+    margin-bottom: 100px;
 }
 
-.reply_form_view_background{
-    background-color: rgb(0,0,0, 0.8);
-    position:fixed;
-    width:100%;
-    height:100%;
+.container{
+z-index: 7;
+width: 80%;
 }
+
 .admin_container_contact_message{
-    padding-left: 10%;
-    padding-right: 10%;
+    padding-left: 5%;
+    padding-right: 5%;
 position: relative;
 background-color:rgb(167, 167, 167,0.2) ;
-
+max-height: 300px;
 }
 .admin_profile_container_contact_message{
 position: relative;
-display: block;
+display: inline-block;
 margin: 0%;
 border: 3px solid rgb(167, 167, 167,0.5);
 border-radius: 15px;
 min-height: 200px;
+height: auto;
 background-color:transparent;
 }
 .admin_profile_contact_message{ 
@@ -253,7 +266,7 @@ display: block;
 margin-top:12px;
 border: 3px solid rgb(167, 167, 167,0.5);
 border-radius: 15px;
-height: auto;
+max-height: 200px;
 background-color:white;
 transition-duration: .3s;
 }
@@ -362,6 +375,10 @@ width: 100%;
     margin-left: 12%;
 }
 .email_contact_message{
+    font-size: large;
+    margin-left: 12%;
+}
+.subject_contact_message{
     font-size: large;
     margin-left: 12%;
 }

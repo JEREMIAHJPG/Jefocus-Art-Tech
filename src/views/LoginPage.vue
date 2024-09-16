@@ -58,7 +58,7 @@
    
                   
            
-                   <div class="row">
+                   <!-- <div class="row">
                        
                        <div class="col-75">
                            <input class= "checkbox" style="margin-top: 2%; margin-left: 2%;" type="checkbox" id="checkbox" required>
@@ -66,13 +66,13 @@
                        <div class="col-25" style="width: 100%;">
                            <label for="termsandcondions">I Accept Terms and Conditions</label>
                            </div>
-                   </div>
+                   </div> -->
    
                    <div class="row">
                        
                        <center>
-                       <div @click="forgotpassword()" >
-                           <span>Forgot password </span>
+                       <div @click="forgotpassword()"  >
+                           <span style="color:blueviolet">Forgot password </span>
                             <!-- or <span>Username?</span> -->
                            </div>
                         </center>

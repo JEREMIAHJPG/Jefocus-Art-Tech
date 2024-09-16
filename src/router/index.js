@@ -86,7 +86,7 @@ const routes = [
     component: Contactformpage
   },
   {
-    path: '/:Replycontactformpage',
+    path: '/Replycontactformpage',
     name: 'Replycontactformpage',
     component: Replycontactformpage
   },
@@ -194,7 +194,7 @@ if('auth' in to.meta &&
   next();
 } else if('auth' in to.meta &&
   !to.meta.auth && store.getters[`auth/${IS_USER_AUTHENTICATE_GETTER}`]){
-  next('');
+  next();
 } else {
   next();
 }

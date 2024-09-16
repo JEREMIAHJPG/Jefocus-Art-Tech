@@ -1,7 +1,7 @@
 <template>
   <div class="admin_container_contact" v-for="(replycontactdata, index) in replycontactlist " :key="index">
    
-        <router-link :to="{name:'Replycontactformpage', params:{Replycontactformpage: replycontactdata.guest_email}}">
+        <router-link :to="{name:'Replycontactformpagenext', params:{Replycontactformpagenext: replycontactdata.guest_email}}">
             <div class= "admin_profile_container_contact">
         <div class="admin_profile_contact">
             
