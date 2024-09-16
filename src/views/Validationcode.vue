@@ -141,7 +141,7 @@ color: white;
         
         if(this.code[4] && this.expiry_time!=0){
            
-            if(this.joining_code=this.verification_profile_code){
+            if((this.joining_code=this.verification_profile_code)||(this.joining_code = this.resend_a_code)){
                await deleteDoc(doc(db, 'verification_profile', this.$route.params.Validationcode)),
                this.resend_code = false,
                 this.$router.replace({name:'Changepassword', params:{Changepassword: this.$route.params.Validationcode}})
@@ -161,13 +161,15 @@ color: white;
 
          var resend_a_code = await Math.floor(10000 + Math.random() * 90000);
          this.resend_a_code = resend_a_code;
-         var set_new_token_profile = {
-            verification_code:             this.resend_a_code,
-            doc_reclaim_email_ID:          this.doc_reclaim_email_ID,
-            reclaimed_get_token:           this.reclaimed_get_token,
-            confirmed_reclaimed_email:     this.confirmed_reclaimed_email,
-            confirm_phonenumber:           this.confirmed_phonenumber
-         }
+
+        //console.log(this.resend_a_code);
+         //  var set_new_token_profile = {
+        //     verification_code:             this.resend_a_code,
+        //     doc_reclaim_email_ID:          this.doc_reclaim_email_ID,
+        //     reclaimed_get_token:           this.reclaimed_get_token,
+        //     confirmed_reclaimed_email:     this.confirmed_reclaimed_email,
+        //     confirm_phonenumber:           this.confirmed_phonenumber
+        //  }
          //setting another code database
         //  var verification_code_profile ={
         //     verification_code:             this.verification_profile_code,
@@ -177,7 +179,7 @@ color: white;
         //     confirm_phonenumber:           this.confirmed_phonenumber
         //  }
 
-         await addDoc(collection(db, 'verification_profile' ), set_new_token_profile) 
+         //await addDoc(collection(db, 'verification_profile' ), set_new_token_profile) 
       //    await setDoc(doc(db,'verification_profile',  this.$route.params.Validationcode), 
         
       // );
@@ -203,12 +205,28 @@ color: white;
         //send the code to email
         
         //remove code_expired statement and //clear code to empty the boxes
-        this.code = '',
+        this.code =  Array(6).fill(''),
         this.code_expired = false;
         this.expiry_time = 180;
         this.onloaded = true;
+        this.resend_code_statement = true;
+
+        this.timercount = await setInterval(()=>{
+          if(this.expiry_time > 0){
+            this.expiry_time--;       
+          }else{
+            clearInterval(this.timercount);
+            this.code_expired = true
+          }
+          if(this.expiry_time <= 170){
+          this.resend_code_statement = false;
+          
+        }
+         }, 1000);
+
+        
         //notifying that a code has been sent
-        this.resend_code_statement = true ;
+        // setTimeout(()=>{},10000) ;
       }
     },
     beforeDestroy(){
