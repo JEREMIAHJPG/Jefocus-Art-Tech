@@ -222,8 +222,8 @@ import {auth} from '@/firebase';
         // })
 
         //send the verification code to 'getting_token_user_id' using setdoc and doc.id
-        // await setDoc(doc(db,'admin_current_database', this.adminspage_database_id), 
-        //         { admin_current_database_adminnew_id: this.admin_current_database_adminnew_id}, {merge:true});
+        // await setDoc(doc(db,'verification_profile', doc_verification_code_profile_ID), 
+        //         { doc_verification_code_profile_ID: this.doc_verification_code_profile_ID}, {merge:true});
             this.$router.replace({name:'Validationcode', params:{Validationcode:this.doc_verification_code_profile_ID}})
         },
 

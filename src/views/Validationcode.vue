@@ -57,7 +57,7 @@ color: white;
         <center v-if="resend_code_statement"> <h1 style="color: blue;">A code has been sent to your email again</h1></center>
         <center v-if="onloaded"> The code will expire in <h1>{{ expiry_time }}</h1></center>
         <center v-if="code_expired"> Code expired please Resend Code and try again</center>
-        <center><button v-if="resend_code" class="resend_code" @click="resend_code">Resend Code</button></center>
+        <center><button v-if="resend_code" class="resend_code" @click="resend_another_code()">Resend Code</button></center>
     </div>
 </center>
   </template>
@@ -67,7 +67,7 @@ color: white;
     import {storage, db} from "@/firebase"
     import { ref,uploadBytes,uploadBytesResumable,getDownloadURL } from "firebase/storage"
 
-    import { collection, addDoc, setDoc, getDoc, getDocs, query, where, doc } from 'firebase/firestore';
+    import { collection, addDoc, setDoc, getDoc, getDocs, query, where, doc, onSnapshot } from 'firebase/firestore';
     // import {sendVerificationcodeSMS} from '@/Twilio';
   export default {
     data() {
@@ -78,14 +78,18 @@ color: white;
         verification_profile_code:'',
         confirm_phonenumber:'',
         doc_reclaim_email_ID:'',
+        reclaimed_get_token:'',
+        confirmed_reclaimed_email:'',
         error_statement: false,
         resend_code: true,
+        resend_a_code:'',
         resend_code_statement:false,
         expiry_time: 180,
         timercount: null,
         onloaded:'',
         code_expired:false,
         error_sending_verification:'',
+        doc_verification_code_profile_ID:'',
         
 
       };
@@ -95,11 +99,16 @@ color: white;
     },
     methods: {
      async on_load(){
-       await getDoc(doc(db, 'verification_profile', this.$route.params.Validationcode)).then(doc => {
+       await onSnapshot(query(collection(db, 'verification_profile'),
+        where('doc_verification_code_profile_ID', '==' , this.$route.params.Validationcode)),
+        (fetch_data) => {fetch_data.forEach((doc)=>{
         this.verification_profile_code =  doc.data().verification_code;
         this.confirm_phonenumber =        doc.data().confirm_phonenumber;
+        this.reclaimed_get_token =        doc.data().reclaimed_get_token;
         this.doc_reclaim_email_ID =       doc.data().doc_reclaim_email_ID;
-      });
+        this.confirmed_reclaimed_email =  doc.data().confirmed_reclaimed_email;
+        this.doc_verification_code_profile_ID = doc.data().doc_verification_code_profile_ID;
+     })});
        
         if(this.doc_reclaim_email_ID){
           this.onloaded = true;
@@ -111,6 +120,10 @@ color: white;
             this.code_expired = true
           }
          }, 1000);
+         //
+          if (this.expiry_time =0){
+           await deleteDoc(doc(db, 'verification_profile', this.$route.params.Validationcode))
+         }
 
         //   if(this.expiry_time=0){
         //   clearInterval(this.timercount);
@@ -126,7 +139,7 @@ color: white;
         console.log(joining_code);
         }
         
-        if(this.code[4]){
+        if(this.code[4] && this.expiry_time!=0){
            
             if(this.joining_code=this.verification_profile_code){
                await deleteDoc(doc(db, 'verification_profile', this.$route.params.Validationcode)),
@@ -144,10 +157,40 @@ color: white;
           this.$refs.inputs[index - 1].focus();
         }
       },
-     async resend_code(){
-        // var resend_a_code = await Math.floor(10000 + Math.random() * 90000);
+     async resend_another_code(){
 
-        // await sendVerificationcodeSMS(this.fetched_phonenumber,this.verification_profile_code ).then(()=>{
+         var resend_a_code = await Math.floor(10000 + Math.random() * 90000);
+         this.resend_a_code = resend_a_code;
+         var set_new_token_profile = {
+            verification_code:             this.resend_a_code,
+            doc_reclaim_email_ID:          this.doc_reclaim_email_ID,
+            reclaimed_get_token:           this.reclaimed_get_token,
+            confirmed_reclaimed_email:     this.confirmed_reclaimed_email,
+            confirm_phonenumber:           this.confirmed_phonenumber
+         }
+         //setting another code database
+        //  var verification_code_profile ={
+        //     verification_code:             this.verification_profile_code,
+        //     doc_reclaim_email_ID:          this.doc_reclaim_email_ID,
+        //     reclaimed_get_token:           this.reclaimed_get_token,
+        //     confirmed_reclaimed_email:     this.confirmed_reclaimed_email,
+        //     confirm_phonenumber:           this.confirmed_phonenumber
+        //  }
+
+         await addDoc(collection(db, 'verification_profile' ), set_new_token_profile) 
+      //    await setDoc(doc(db,'verification_profile',  this.$route.params.Validationcode), 
+        
+      // );
+
+        // await getDocs(query(collection(db, 'verification_profile'), where(
+        //     'verification_code', '==' , this.verification_code))). 
+        //     then(verification_code_snap => verification_code_snap.forEach((doc)=>{
+        //         this.doc_verification_code_profile_ID = doc.id;
+                            
+        //         console.log('user verification id gotten')
+        //      }));
+
+              // await sendVerificationcodeSMS(this.fetched_phonenumber,this.verification_profile_code ).then(()=>{
         //             alert('A verification Code has been sent via SMS to your Phonenumber');
         //             setInterval(()=>{ this.resend_code_statement = true;},3000)
         //     })
@@ -155,10 +198,7 @@ color: white;
         //     setInterval(()=>{ this.error_sending_verification = true;},3000)
         //     alert(error.message);
         // })
-
-        // await deleteDoc(doc(db, 'verification_profile', this.$route.params.Validationcode))
-        // await setDoc(doc(db,'verification_code_profile',  this.$route.params.Validationcode), 
-        // {verification_code: resend_a_code}, {merge:true});
+       
                
         //send the code to email
         
