@@ -35,8 +35,7 @@ export default {
     data() {      
         return{
             replycontactlist:[]
-
-        }},
+           }},
 
         created(){
             this.replycontactlist_collection();

@@ -152,7 +152,7 @@ import {auth} from '@/firebase';
                 this.doc_reclaimed_email_ID = doc.id;
                 this.reclaimed_get_token= doc.data().reclaimed_get_token; 
              console.log(doc.id);
-                if(this.doc_reclaimed_email_ID = ''){
+                if(!this.doc_reclaimed_email_ID){
                 this.reclaimed_email_error = true, 
                 this.unconfirmed_reclaimed_email = false
                     }else{ this.confirmed_reclaimed_email = this.reclaimed_email_unconfirmed,
@@ -193,7 +193,7 @@ import {auth} from '@/firebase';
         //addDoc with the verification code, this.doc_reclaimed_email_ID and this.confirmed_reclaimed_email
          var verification_code_profile ={
             verification_code:             this.verification_code,
-            doc_reclaimed_email_ID:        this.doc_reclaimed_email_ID,
+            doc_reclaim_email_ID:        this.doc_reclaimed_email_ID,
             reclaimed_get_token:           this.reclaimed_get_token,
             confirmed_reclaimed_email:     this.confirmed_reclaimed_email,
             confirm_phonenumber:           this.fetched_phonenumber

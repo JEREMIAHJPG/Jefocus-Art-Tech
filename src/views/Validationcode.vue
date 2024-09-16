@@ -77,7 +77,7 @@ color: white;
         joining_code:'',
         verification_profile_code:'',
         confirm_phonenumber:'',
-        doc_email_ID:'',
+        doc_reclaim_email_ID:'',
         error_statement: false,
         resend_code: true,
         resend_code_statement:false,
@@ -95,11 +95,13 @@ color: white;
     },
     methods: {
      async on_load(){
-      var fetch_code = await getDoc(doc(db, 'verification_profile',this.$route.params.Validationcode))
-        this.verification_profile_code =  fetch_code.data().verification_code;
-        this.confirm_phonenumber =        fetch_code.data().confirm_phonenumber;
-        this.doc_email_ID = this.doc_email_ID;
-        if(this.doc_email_ID){
+       await getDoc(doc(db, 'verification_profile', this.$route.params.Validationcode)).then(doc => {
+        this.verification_profile_code =  doc.data().verification_code;
+        this.confirm_phonenumber =        doc.data().confirm_phonenumber;
+        this.doc_reclaim_email_ID =       doc.data().doc_reclaim_email_ID;
+      });
+       
+        if(this.doc_reclaim_email_ID){
           this.onloaded = true;
           this.timercount = setInterval(()=>{
           if(this.expiry_time > 0){
@@ -109,10 +111,12 @@ color: white;
             this.code_expired = true
           }
          }, 1000);
+
+        //   if(this.expiry_time=0){
+        //   clearInterval(this.timercount);
+        //  }
         }
-         if(this.timercount){
-          clearInterval(this.timercount);
-         }       
+               
            },
      async onInput(index) {
         if (this.code[index].length === 1 && index < this.code.length - 1) {
