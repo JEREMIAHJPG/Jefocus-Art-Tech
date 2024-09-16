@@ -10,8 +10,8 @@
             <div class=container style="margin-top: 55px;">
       <h1 style="text-align: center; color:white;"> Contact Us </h1>
       <form action="/action_page.php" @submit.prevent="reply_contact_form()">
-          <div class="row">
-              <div class="col-25">
+          <div class="row_reply">
+              <div class="col-25_reply">
                   <label for="fname" style="color:white;">Full Name</label>
               </div>
               <div class="col-75">
@@ -22,8 +22,8 @@
               </center>
           </div>
         
-          <div class="row">
-              <div class="col-25">
+          <div class="row_reply">
+              <div class="col-25_reply">
                   <label for="email" style="color:white;">Email</label>
               </div>
               <div class="col-75">
@@ -32,19 +32,19 @@
           </div>
          
   
-          <div class="row">
-              <div class="col-25">
+          <div class="row_reply">
+              <div class="col-25_reply">
                       <label for="subject" style="color:white;">Subject</label>
               </div>
               <div class="col-75">
                   <textarea id="subject" name="subject" :value= reply_subject disabled style="height:200px"></textarea>
               </div>
               <div class="col-75">
-                  <textarea id="subject" name="subject" :value = reply_my_email_response placeholder="Write Something.." style="height:200px"></textarea>
+                  <textarea id="subject" name="subject" v-model = reply_my_email_response placeholder="Write Something.." style="height:200px"></textarea>
               </div>
           </div>
           <br>
-          <div class="row">
+          <div class="row_reply">
               <input type="submit" value="Submit">
           </div>
       </form>
@@ -102,7 +102,8 @@ export default {
                 reply_my_email_response:'',                       
                 reply_time:'',
                 response:'',
-                Contact_Page_users_list_ID:''
+                Contact_Page_users_list_ID:'',
+                reply_params:'',
         }},
 
         created(){
@@ -115,8 +116,8 @@ export default {
             async load_replycontactlist_collection(){
 
               await onSnapshot(query(collection(db,'Contact Page users'),
-            where('guest_email', '==' , this.$route.params.Replycontactformpagenext))
-            ,(Replycontact)=>{ 
+            where('guest_email', '==' , this.$route.params.Replycontactformpagenext)),
+            (Replycontact)=>{ 
                 Replycontact.forEach ((doc)=>{
                     var view_replycontactlist_data = {
                 ID:                          doc.id,
@@ -128,6 +129,7 @@ export default {
             }
 
             this.view_replycontactlist.push(view_replycontactlist_data);
+            console.log(1);
          })}
         
         );
@@ -137,13 +139,13 @@ export default {
             ,(reply_Page_users_list)=>{ 
                 reply_Page_users_list.forEach ((doc)=>{                
                this.Contact_Page_users_list_ID = doc.id
+               console.log(2);
          })}
         
         );
 
             //     onSnapshot(query(collection(db,'Contact_Page_users_list')), (snap) =>{snap.forEach((doc)=>{
-                
-                
+    
             // })} )
             },
             view_message_for_reply(view_message){
@@ -180,7 +182,7 @@ export default {
         //adddoc to firbase firestore database
         const contact_message_list_reply = collection(db,'Contact_Page_users_list_reply');
         
-        await getDocs(query(collection(db, 'Contact_Page_users_list'), where('guest_email', '==' , this.guest_email))). 
+        await getDocs(query(collection(db, 'Contact_Page_users_list'), where('guest_email', '==' , this.$route.params.Replycontactformpagenext))). 
             then(Contact => Contact.forEach((doc)=>{this.find_Contact = doc.id; 
                 console.log(this.find_Contact)}));
                 //fetch if it exists already
@@ -188,8 +190,8 @@ export default {
         
          await addDoc(contact_message_list_reply, contact_form_content_reply).then(()=>{
                     this.showLoading(false);              
-                    setInterval(()=>{alert('Your message has been successfully sent and will reply your within 24hrs please check reply in your email Thankyou');
-                    this.response = "Your message has been successfully sent and will reply your within 24hrs please check reply in your email Thankyou"},3000)
+                    alert('Your message has been successfully sent and will reply your within 24hrs please check reply in your email Thankyou');
+                    this.response = "Your message has been successfully sent and will reply your within 24hrs please check reply in your email Thankyou"
                     
                     this.fname ='';
                     this.lname ='';
@@ -204,13 +206,14 @@ export default {
                 if(this.view_replycontactlist = []){
                     deleteDoc(doc(db, 'Contact_Page_users_list', this.Contact_Page_users_list_ID));
                     this.$router.push('/Replycontactformpage');
-                    alert("messenger data deleted fromContact_Page_users_list with ID:",this.Contact_Page_users_list_ID);                    
+                    alert("messenger data deleted fromContact_Page_users_list with ID:",this.Contact_Page_users_list_ID);
+                    this.showLoading(false);                    
                 };
             })
         .catch((error)=>{
             this.showLoading(false);
-            setInterval(()=>{alert('error occurred please resend');
-            this.response = error.response +""+ error.message + "please resend"},3000)
+            alert('error occurred please resend');
+            this.response = error.response +""+ error.message + "please resend"
             return false;
         });
         //
@@ -237,6 +240,13 @@ export default {
     height:auto;
     margin-bottom: 100px;
 }
+/* .row_reply{
+    width:100px;
+}
+
+.col-25_reply{
+    width: 200px;
+} */
 
 .container{
 z-index: 7;
@@ -307,8 +317,8 @@ border-radius: 50%;
     position: relative;
     background-size: contain;
     border-radius: 100%;
-width: 90px;
-height: 90px;
+width: 150px;
+height: 150px;
 border: 3px solid black;
 
 }

@@ -76,8 +76,8 @@
                 </div>
 
                 <div class="row" v-if="send_code" >
-                    <div @click=sending_code()>Send code via sms</div> 
-                    <div @click=sending_verification_email()>Send verificaion email via email</div> 
+                    <div style="color: blueviolet; font-size:larger;" @click=sending_code()>Send code via sms</div> 
+                    <div style="color: blueviolet; font-size:larger;"  @click=sending_verification_email()>Send verificaion email via email</div> 
                 </div>
                 <!-- <div class="row" style="margin-top: 10px;" >
                     <input type="submit" value="Submit">
