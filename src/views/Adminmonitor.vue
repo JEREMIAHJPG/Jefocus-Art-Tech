@@ -297,7 +297,7 @@ padding:5px;
 // work on date and time structure, showloading, catch(err){} for all uploads to databases
 // try code for analytics in vue and in firebase
 // code for admin to edit their approved items-
-// check for contact us page function -- 
+// check for contact us page function - 
 // code for sending SMS and email to clients for forgot password, orders placed, adverts notifications etc -
 // add backend to artwork page use pagenation---
 // check how to launch website with GitHub(use brad traversy) ---     

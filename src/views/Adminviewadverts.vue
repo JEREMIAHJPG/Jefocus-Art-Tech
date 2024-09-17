@@ -10,10 +10,10 @@ position:relative;
 }
 
 .monitor_polaroid_view1{
-background-color: white;
-width:100%;
-display:float;
-height:auto;
+    background-color: rgb(177, 177, 177);
+justify-items: center;
+padding: 3%;
+position:relative;
 }
 
 .top_text_view1{
@@ -34,29 +34,26 @@ height:auto;
 }
 
 .polaroid_template_view1{
-    margin-bottom: 20px; 
-    border: 3px solid black;
     background-color: white;
-    padding: 5%;
-    min-height: 350px;
-    width: 200px;
-    max-width: 100%;
+    padding: 10px;
+    max-height: 500px;
+    width: auto;
+    max-width: 150px;
     position: relative;
-    display: float;    
-    border-radius: 33px;
+    margin-left:10px;  
+    float: left; 
 }
 
 .image_view_view1{
-    min-height: 100%;
-    padding-bottom: 10px;
-    background-color: rgb(255, 255, 255);
-    min-width: fit-content;
+    max-height:200px;
+    min-width:fit-content;
+    background-color: rgb(163, 163, 163);
 }
 
 .image_view_content_view1{
-    position: relative;
-    height: auto;
-    width: auto;
+    max-height: 200px;
+   height: 150px;
+    max-width:150px;
 }
 
 .first_image_view_content_view1{
@@ -140,8 +137,7 @@ width: auto;
 position:relative;
 float: left;
 margin-top:1px;
-
-height: 50px
+height: auto
 }
 
 
@@ -225,10 +221,9 @@ height:auto;
 }
 
 .image_view_withdrawn{
-    min-height: 150px;
-    padding-bottom: 10px;
+    max-height:200px;
+    min-width:fit-content;
     background-color: rgb(163, 163, 163);
-    min-width: fit-content;
 }
 
 .image_view_content_withdrawn{
@@ -600,7 +595,7 @@ background-color: #f2f2f2;
             <!-- <div class="image_view_view1"> -->
     <img v-if="show_advert_view_image" :src="first_image" title="image_view_content" class="first_image_view_content_view1" >
     <img  v-if="show_advert_view_image" :src="second_image" title="image_view_content" class="second_image_view_content_view1" >
-    <video  v-if="show_advert_video" width="320" height="240" controls>
+    <video  v-if="show_advert_video" width="320" height="240" class="second_image_view_content_view1" controls>
   <source :src="video_display" type="video/mp4">
   <source :src="video_display" type="video/ogg">
   Your browser does not support the video tag.
@@ -628,7 +623,7 @@ background-color: #f2f2f2;
         <div class="file_input_category_form_edit">
         <img v-if="img_show"  class="select-image_edit"  :src="url1">
         <img v-if="img_show" class="select-image_edit"   :src="url2">
-        <video v-if="video_show" width="250" height="150" controls>
+        <video v-if="video_show"  controls>
   <source :src=url_video type="video/mp4">
   <source :src="url_video" type="video/ogg">
   Your browser does not support the video tag.
@@ -681,13 +676,13 @@ background-color: #f2f2f2;
     <div class="monitor_background_view1" v-if="show_Adminviewadverts" >
        <center><h1 class="top_text_view1">View items and services Page</h1> </center>
     <div class="monitor_polaroid_view1">
+
         <center><h1 class="top_text_view1">Content Approved</h1> </center>
         <div class="polaroid_template_view1" v-for = "(view_approved_items, index) in view_approved_items_data" :key="index" >
             
     <div class="image_view_view1">
-
         <img v-if="show_advert_image" :src="view_approved_items.First_image_selected" title="image_view_content" class="image_view_content_view1" >
-        <video  v-if="show_video" width="320" height="240" controls>
+        <video  v-if="show_video" width="320" height="240" class="image_view_content_view1" controls>
   <source :src="view_approved_items.video_selected" type="video/mp4">
   <source :src="view_approved_items.video_selected" type="video/ogg">
   Your browser does not support the video tag.
@@ -719,8 +714,11 @@ background-color: #f2f2f2;
     </div>
 
 </div>
+</div>
+</div>
 
-<center><h1 class="top_text_withdrawn">Content Withdrawn</h1> </center>
+<div class="monitor_polaroid_view1">
+<center><h1 >Content Withdrawn</h1> </center>
 <div class="polaroid_template_withdrawn" v-for = "(view_withdrawn_items, index) in view_withdrawn_items_data" :key="index">
     <div class="image_view_withdrawn">
         <img v-if="show_advert_image" :src="view_withdrawn_items.First_image_selected" title="image_view_content" class="image_view_content_withdrawn" >
@@ -755,7 +753,6 @@ background-color: #f2f2f2;
         <!-- check for how to handle query in Firbase console -->
     </div>
 
-</div>
 </div>
 </div>
 </template>

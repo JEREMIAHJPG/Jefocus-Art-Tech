@@ -49,7 +49,7 @@ export default {
                 guest_email:                           doc.data().guest_email,
                 profession:                        doc.data().profession ,
                 subject:                        doc.data().subject,
-                time:                         doc.data().subject,
+                time:                         doc.data().time,
             }
 
             this.replycontactlist.push(replycontactlist_data);
@@ -93,7 +93,7 @@ position: relative;
 background-size: contain;
 display: block;
 margin: 0%;
-height: 500px;
+height: 200px;
 border: 3px solid rgb(167, 167, 167,0.5);
 border-radius: 10px;
 
