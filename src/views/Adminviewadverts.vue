@@ -573,15 +573,14 @@ background-color: #f2f2f2;
  margin-bottom: 100px;
   margin-left: 20%;}
 
-  .price_edit{
-    
+  .price_edit{   
     float:left;
     margin-top: 30px;
     margin-bottom: 30px;
     margin-left:10%;
     margin-right:10%;
     width:100%;
-    height:10px;
+    height:50px;
 
 }
 
@@ -618,7 +617,7 @@ background-color: #f2f2f2;
     <!-- --- -->
 
     <!-- edit advert -->
-    <div class="advert_view" v-if="show_advert">
+    <div class="advert_view" v-if="show_advert_edit">
         <div class="advert_background">
         </div>
         <center>
@@ -657,7 +656,7 @@ background-color: #f2f2f2;
     <input type = "text" :value= youtubelink disabled class="social_media_link_input_position_edit" required>
      </div>
     <div class="input_category_form_edit">
-    <input type="number"  name="price" v-model="price" @input="price_input" :placeholder="main_price" class="price_edit" required>
+    <input type="number"  name="price" v-model="price" @input="price_input" placeholder="New Price" class="price_edit" required>
     </div>
                     
     <div class = "policy_checkbox_input_category_form_edit" >
@@ -809,6 +808,8 @@ this.load_Adminviewadverts_page()
         //  get_images:[],
         checkingadverts:'',
         sellers_id:'',
+        show_advert:false,
+        show_advert_edit:'',
         image_view:'',
         show_advert_image:false,
         show_advert_view_image:false,
@@ -900,7 +901,7 @@ this.load_Adminviewadverts_page()
                     // deleteDoc(doc(db, 'admin_sellers_database', this.sellers_id))
                     };
                     console.log("Admin advert APPROVED with admin_monitor_new_id:",this.$route.params.Adminviewadverts);
-                    if(this.check_list=''){
+                    if(check_list=''){
                     //settimeout
                     this.show_advert_image=true,
                     this.show_advert_view_image=true,
@@ -909,7 +910,7 @@ this.load_Adminviewadverts_page()
                     this.show_video= false,
                     this.video_display= false
                     }else{
-                    
+                    // this.show_advert=true,
                     this.show_advert_image=false,
                     this.show_advert_view_image=false,
                     this.first_image=false,
@@ -952,6 +953,7 @@ this.load_Adminviewadverts_page()
             this.video_display = await view_approved_items.url_video;
 
             this.show_advert = true;
+            this.show_advert_edit = false;
             this.show_Adminviewadverts = false;
         },
 
@@ -981,6 +983,7 @@ this.load_Adminviewadverts_page()
         },
 
        async approved_advert_edit_button(view_approved_items){
+        this.show_advert_edit= true;
             this.category       =  view_approved_items.category;
             this.subcategory    =   view_approved_items.subcategory;
             this.youtubelink    =    view_approved_items.youtubelink;
