@@ -5,15 +5,19 @@ background-color: rgb(177, 177, 177);
 justify-items: center;
 padding: 3%;
 position:relative;
-
-
+height: auto;
+width: 100%;
+float:left;
+margin-top:100px;
+margin-bottom:100px;
 }
 
 .monitor_polaroid_view1{
-    background-color: rgb(177, 177, 177);
-justify-items: center;
-padding: 3%;
-position:relative;
+    background-color: white;
+    position: relative;
+width:100%;
+display:float;
+height:auto;
 }
 
 .top_text_view1{
@@ -183,17 +187,23 @@ margin: 5px;
 // where admins can view items posted or withdrawn
 <style scoped>
 .monitor_background_withdrawn{
-background-color: rgb(177, 177, 177);
+    background-color: rgb(177, 177, 177);
 justify-items: center;
 padding: 3%;
 position:relative;
+height: auto;
+width: 100%;
+float:left;
+margin-top:100px;
+margin-bottom:100px;
 
 
 }
 
 .monitor_polaroid_withdrawn{
-background-color: white;
-width:25%;
+    background-color: white;
+    position: relative;
+width:100%;
 display:float;
 height:auto;
 }
@@ -208,16 +218,14 @@ height:auto;
 }
 
 .polaroid_template_withdrawn{
-    margin-bottom: 20px; 
-    border: 3px solid black;
     background-color: white;
-    padding: 5%;
-    min-height: 350px;
-    width: 200px;
-    max-width: 100%;
+    padding: 10px;
+    max-height: 500px;
+    width: auto;
+    max-width: 150px;
     position: relative;
-    display: float;    
-    border-radius: 33px;
+    margin-left:10px;  
+    float: left; 
 }
 
 .image_view_withdrawn{
@@ -227,8 +235,9 @@ height:auto;
 }
 
 .image_view_content_withdrawn{
-    height: auto;
-    width: auto;
+    max-height: 200px;
+   height: 150px;
+    max-width:150px;
 }
 
 .price_monitor_withdrawn{
@@ -363,9 +372,10 @@ padding:5px;
 
 .advert_view{
     z-index: 3;
-    position:fixed;
+    position:relative;
     width:100%;
     height:100%;
+    float: left;
 }
 
 .advert_background{
@@ -717,12 +727,15 @@ background-color: #f2f2f2;
 </div>
 </div>
 
+
+<div class="monitor_background_view1" v-if="show_Adminviewadverts" >
+    <center><h1 class="top_text_view1">View items and services Page</h1> </center>
 <div class="monitor_polaroid_view1">
 <center><h1 >Content Withdrawn</h1> </center>
 <div class="polaroid_template_withdrawn" v-for = "(view_withdrawn_items, index) in view_withdrawn_items_data" :key="index">
     <div class="image_view_withdrawn">
         <img v-if="show_advert_image" :src="view_withdrawn_items.First_image_selected" title="image_view_content" class="image_view_content_withdrawn" >
-        <video  v-if="show_video" width="320" height="240" controls>
+        <video  v-if="show_video" width="320" height="240" class="image_view_content_withdrawn" controls>
   <source :src="view_withdrawn_items.video_selected" type="video/mp4">
   <source :src="view_withdrawn_items.video_selected" type="video/ogg">
   Your browser does not support the video tag.
@@ -755,6 +768,16 @@ background-color: #f2f2f2;
 
 </div>
 </div>
+</div>
+
+
+
+
+
+
+
+
+    
 </template>
 
 <script>
