@@ -843,7 +843,7 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
      //try{   
         var Admin_item_token = ((Math.random(777777777,999999999))*10000000000).toFixed(0);
         //storing of Admin_token
-        localStorage.setItem(`admin_token`, Admin_token);
+        localStorage.setItem(`admin_token`, Admin_item_token);
         //this.generate_first_file_name;
         //this.generate_second_file_name;
 
@@ -921,24 +921,27 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
             default: await addDoc(colRef, admin_upload_database ); 
 
             await getDocs(query(collection(db,'admin_current_database'),
-            where('Admin_token', '==', Admin_token))).then(adminspage_admin_id=>{ 
-            adminspage_admin_id.forEach ((doc)=>{ed
+            where('Admin_item_token', '==', Admin_item_token))).then(adminspage_admin_id=>{ 
+            adminspage_admin_id.forEach ((doc)=>{
                 this.adminspage_database_id = doc.id;
                 this.admin_current_database_adminnew_id = doc.data().adminnew_id +"/"+ "checkadvert" + "=" + doc.id ;
-
-                 console.log("Admin newID created with admin_current_database_adminnew_id:", this.admin_current_database_adminnew_id);
+                console.log("successfull upload");
                 })
-                });
+
                 
 
-               // set Doc newID
-                await setDoc(doc(db,'admin_current_database', this.adminspage_database_id), 
+                });
+                
+                 // set Doc newID
+                 setDoc(doc(db,'admin_current_database', this.adminspage_database_id), 
                 { admin_current_database_adminnew_id: this.admin_current_database_adminnew_id}, {merge:true});
                 console.log("first admin_current_database_adminnew_id field added ");
                  setDoc(doc(db,'admin_current_database', this.adminspage_database_id), 
                 {product_id: this.adminspage_database_id}, {merge:true})
                 localStorage.setItem(`admin_current_database_adminnew_id`, this.admin_current_database_adminnew_id)
                 console.log("second admin_current_database_adminnew_id field added ");
+                 console.log("Admin newID created with admin_current_database_adminnew_id:", this.admin_current_database_adminnew_id);
+              
                
             }
             //creating newID
@@ -957,7 +960,7 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
         document.getElementById("adminspage").reset();
         // this.$refs.First_fileinput.files[0] ='';
         // this.$refs.Second_fileinput.files[0] ='';
-        this.showLoading(false);
+        
         // this.$refs.First_fileinput.files[0]=''
         // this.$refs.Second_fileinput.files[0]=''
         // this.$refs.Video_fileinput.files[0]=''
@@ -972,7 +975,7 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
         this.Admin_description='',        
         this.visuals_subcategory_data='',
         this.graphics_subcategory_data='',       
-        this.Admin_token='',
+        this.Admin_item_token='',
         this.show_first_image=true,
         this.show_second_image=true,
         this.show_first_placeholder_image=false,
@@ -982,7 +985,7 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
         this.url_video='',     
         this.path1= '',
         this.path2= ''
-
+        this.showLoading(false);
     }
                        
  }      

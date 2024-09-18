@@ -9,13 +9,14 @@
         <center>
             <div class=container style="margin-top: 55px;">
       <h1 style="text-align: center; color:white;"> Contact Us </h1>
-      <form action="/action_page.php" @submit.prevent="reply_contact_form()">
+      <form ref = "form"
+       @submit.prevent="reply_contact_form()">
           <div class="row_reply">
               <div class="col-25_reply">
                   <label for="fname" style="color:white;">Full Name</label>
               </div>
               <div class="col-75">
-                  <input type="text" :value = reply_full_name disabled id="fname" name="firstname" placeholder="your name...">
+                  <input type="text" v-model = reply_full_name  id="name" name="name" >
               </div>
               <center>
                   <h1 style="color: green">{{ response }}</h1>
@@ -27,7 +28,7 @@
                   <label for="email" style="color:white;">Email</label>
               </div>
               <div class="col-75">
-                  <input type="text" :value = reply_guest_email disabled id="email" name="Email" placeholder="example@gmail.com..." required>
+                  <input type="email" v-model = reply_guest_email  id="email" name="email" required>
               </div>
           </div>
          
@@ -37,10 +38,14 @@
                       <label for="subject" style="color:white;">Subject</label>
               </div>
               <div class="col-75">
-                  <textarea id="subject" name="subject" :value= reply_subject disabled style="height:200px"></textarea>
+                  <input type="text" id="subject" name="subject" v-model= reply_subject  style="height:50px">
               </div>
+              <!-- <input type="hidden" name="_next" value="https://your-redirect-url.com"> -->
+              <!-- <input type="hidden" name="captcha" value=false> -->
+              <!-- <input type="hidden" name="_cc" value="emaila, emailb"> -->
+              <!-- <input type="hidden" name="template" value="default or table or box"> -->
               <div class="col-75">
-                  <textarea id="subject" name="subject" v-model = reply_my_email_response placeholder="Write Something.." style="height:200px"></textarea>
+                  <textarea id="message" name="message" v-model = reply_my_email_response placeholder="Write Something.." style="height:200px"></textarea>
               </div>
           </div>
           <br>
@@ -52,14 +57,13 @@
     </center>
     </div>
     
-    <!-- form display  -->
+    <!-- form display -->
 <div v-if="show_reply_form_list">
   <div class="admin_container_contact_message" v-for="(view_message, index) in view_replycontactlist " :key="index" >
    
    <!-- <router-link :to="{name:'Replycontactformpage', params:{Replycontactformpage: view_message.guest_emai}}"> -->
        <div class= "admin_profile_container_contact_message" @click="view_message_for_reply(view_message)">
-   <div class="admin_profile_contact_message">
-       
+   <div class="admin_profile_contact_message">      
        <div class="admin_details_contact_message">
            <div class= "name_admin_contact_message"><h>Name:</h><h class="name_contact_message">{{view_message.full_name}}</h></div>
            <div class= "profession_admin_contact_message"><h>Profession:</h> <h class="profession_contact_message">{{view_message.profession}}</h></div>
@@ -68,14 +72,14 @@
        </div> 
        <div class="post_time_contact_message"><span class="material-symbols-outlined">nest_clock_farsight_analog</span> <h>{{view_message.time}}</h></div>
        <div class="post"><center><button class="post_button" @click="view_message_for_reply(view_message)"> check message</button></center></div> 
-       <!-- <div class="post"><center><button class="post_button" @click="migrate_to_monitor_admin(view_message)"> Check posts</button></center></div> -->
-                   
+       <!-- <div class="post"><center><button class="post_button" @click="migrate_to_monitor_admin(view_message)"> Check posts</button></center></div> -->                 
    </div>
 </div>
    <!-- </router-link> -->
 </div>
 </div>
 </template>
+
 
 <script>
  import axios from 'axios';
@@ -164,6 +168,11 @@ export default {
             //submit reply to email
             async reply_contact_form(){
         this.showLoading(true);
+                const form = this.$refs.form;
+         
+        form.action="https://formsubmit.co/7983a1a8511dc65115466e786ea41202";
+        form.method="POST";
+        form.submit();
         let currentTime = new Date()
             var hoursT = currentTime.getHours();
             var minsT  = currentTime.getMinutes();

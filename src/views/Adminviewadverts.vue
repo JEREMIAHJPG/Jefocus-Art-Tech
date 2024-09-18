@@ -404,7 +404,7 @@ top:30px;
 margin-left: 0%;
 margin-right: 0%;
 width: 500px;
-height:700px;
+height:1000px;
 padding:5px;
 }
 
@@ -622,7 +622,8 @@ background-color: #f2f2f2;
         </div>
         <center>
             <div class="edit_advert_edit">
-                <form class="admin_container_edit" id="adminspage" @submit.prevent="onsubmit_edit()" action="/action_page.php" >
+
+    <form class="admin_container_edit" id="adminspage" @submit.prevent="onsubmit_edit()" action="/action_page.php" >
     <div class="btn_postad_top_edit">
         
          <div class="direct_left_edit"><h2 class= "postad_left_edit" style="margin-top:1px;">Edit Ad</h2></div>
@@ -630,11 +631,11 @@ background-color: #f2f2f2;
     </div>
     <div class="input_category_form_edit">
         <div class="file_input_category_form_edit">
-        <img v-if="img_show"  class="select-image_edit"  :src="url1">
-        <img v-if="img_show" class="select-image_edit"   :src="url2">
-        <video v-if="video_show"  controls>
-  <source :src=url_video type="video/mp4">
-  <source :src="url_video" type="video/ogg">
+        <img v-if="img_show"  class="select-image_edit"  :src="first_image">
+        <img v-if="img_show" class="select-image_edit"   :src="second_image">
+        <video v-if="video_show" class="image_view_content_view1" controls>
+  <source :src=video_display type="video/mp4">
+  <source :src=video_display type="video/ogg">
   Your browser does not support the video tag.
 </video>
         <!-- class="select-image_choose" -->
@@ -813,10 +814,13 @@ this.load_Adminviewadverts_page()
         image_view:'',
         show_advert_image:false,
         show_advert_view_image:false,
-        first_image:false,
-        second_image:false,
+        show_advert_video:false,
+        first_image:'',
+        second_image:'',
         show_video: false,
-        video_display: false,
+        video_show: false,
+        img_show:true,
+        video_display:'',
         //edit info
         select_category:'',
         subcategory:'',
@@ -905,18 +909,20 @@ this.load_Adminviewadverts_page()
                     //settimeout
                     this.show_advert_image=true,
                     this.show_advert_view_image=true,
-                    this.first_image=true,
-                    this.second_image=true,
-                    this.show_video= false,
-                    this.video_display= false
+                    this.show_advert_video=false,
+                    // this.first_image='',
+                    // this.second_image='',
+                    this.show_video= false
+                     this.video_show= false
                     }else{
                     // this.show_advert=true,
                     this.show_advert_image=false,
                     this.show_advert_view_image=false,
-                    this.first_image=false,
-                    this.second_image=false,
+                    this.show_advert_video=true,
+                    // this.first_image=false,
+                    // this.second_image=false,
                     this.show_video= true,
-                    this.video_display= true
+                    this.video_show= true
                     }
 
             })} )
@@ -950,8 +956,8 @@ this.load_Adminviewadverts_page()
         async approved_advert_view_button(view_approved_items){
             this.first_image = await view_approved_items.First_image_selected;
             this.second_image =  await view_approved_items.Second_image_selected;
-            this.video_display = await view_approved_items.url_video;
-
+            this.video_display = await view_approved_items.video_selected;
+            this.show_advert_video=true,
             this.show_advert = true;
             this.show_advert_edit = false;
             this.show_Adminviewadverts = false;
@@ -971,7 +977,8 @@ this.load_Adminviewadverts_page()
         async withdrawn_advert_view_button(view_withdrawn_items){
             this.first_image = await view_withdrawn_items.First_image_selected;
             this.second_image = await view_withdrawn_items.Second_image_selected;
-            this.video_display = await view_withdrawn_items.url_video;
+            this.video_display = await view_withdrawn_items.video_selected;
+            
             this.show_advert = true;
             this.show_Adminviewadverts = false;
         },
@@ -983,7 +990,42 @@ this.load_Adminviewadverts_page()
         },
 
        async approved_advert_edit_button(view_approved_items){
-        this.show_advert_edit= true;
+        // fetching parameters
+        //  await onSnapshot(query(collection(db,'admin_sellers_database'),
+        //     where('adminnew_id', '==' , this.$route.params.Adminmonitor_id))
+        //     ,(admin_monitor_admin_id)=>{ 
+        //     admin_monitor_admin_id.forEach ((doc)=>{
+        //         this.video_exist.push(doc.data().video_selected)
+        //         console.log(this.video_exist[0]);
+        //         // this.video_exist.push(doc.data());
+        //     // this.sellers_id.push(doc.data().adminnew_id);
+        //     console.log ("Admin sellers database post id obtained with value :", this.video_exist);
+        //     switch(this.video_exist[0]){ 
+        //          case "":  
+        //          this.monitor_show=true,
+        //          this.show_advert_view_image_monitor=true,
+        //          this.show_advert_video_monitor=false
+        //          break;
+        //          default:
+        //                   this.monitor_show=true,
+        //                   this.show_advert_view_image_monitor=true,
+        //                   this.show_advert_video_monitor=true
+        //             }
+        //         console.log('checked');
+
+        //         })});
+        // ---
+       this.img_show = true,
+        this.show_advert_edit = true ;
+        this.video_show = true ;
+        this.first_image = await view_approved_items.First_image_selected;
+        this.second_image =  await view_approved_items.Second_image_selected;
+        this.video_display = await view_approved_items.video_selected;
+
+            this.show_advert_video = true,
+            // this.show_advert = true;
+           
+            this.show_Adminviewadverts = false;
             this.category       =  view_approved_items.category;
             this.subcategory    =   view_approved_items.subcategory;
             this.youtubelink    =    view_approved_items.youtubelink;
@@ -1008,7 +1050,7 @@ this.load_Adminviewadverts_page()
             this.adminspage_database_id =  view_approved_items.adminspage_database_id;
             this.admin_current_database_adminnew_id =  view_approved_items.admin_current_database_adminnew_id;
             this.youtubelink=           view_approved_items.youtubelink;
-            this.Admin_item_token=     view_approved_items.Admin_item_token;
+           
             this.Admin_upload_date=    view_approved_items.Admin_upload_date;
             this.admin_time =            view_approved_items.admin_time;
             // Admin_description:'',
@@ -1037,7 +1079,7 @@ this.load_Adminviewadverts_page()
                 admin_email:        this.admin_email,
                 category:           this.category,
                 visuals_subcategory:  this.visuals_subcategory,
-                graphics_subcategory: this.graphics_subcategor,            
+                graphics_subcategory: this.graphics_subcategory,            
                 admin_image_url:     this.admin_image_url,
                 adminnew_id:         this.adminnew_id,
                 admin_name:          this.admin_name,
@@ -1049,7 +1091,6 @@ this.load_Adminviewadverts_page()
                 product_id:             this.product_id,
                 Admin_upload_date:      this.Admin_upload_date,
                 admin_time:             this.admin_time,
-                adminspage_database_id: this.adminspage_database_id,
                 admin_current_database_adminnew_id: this.admin_current_database_adminnew_id + this.new_actionid,
                 price:                  this.price,
                 Admin_description:      this.Admin_description,
@@ -1058,12 +1099,14 @@ this.load_Adminviewadverts_page()
 
               };
 
+              console.log(edited_advert_data);
+
               const col_ref_admin_sellers_database = collection(db, 'admin_sellers_database');
               const colRef = collection(db,'admin_current_database');
               try{
             switch(this.find_admin_seller_id){ 
             case '' : await addDoc(col_ref_admin_sellers_database, edited_advert_data ), 
-             await addDoc(collection(db,'admin_current_database'), edited_advert_data );
+             await addDoc(colRef, edited_advert_data );
              
             break;
             default: await addDoc(colRef, edited_advert_data ) 

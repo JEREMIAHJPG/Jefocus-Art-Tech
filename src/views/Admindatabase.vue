@@ -171,7 +171,7 @@ border: 3px solid black;
 <template>
     <div class="admindatabase">
         <center class="admin_top">Administrators</center>
-        <form @submit.prevent="add_admin()" >  
+        <form @submit.prevent="add_admin()" id="admindatabase" >  
            <center> <img class="admin_image" :src= admin_image_url></center>      
            <center class="image_input"> <input type="file" name="admin_profile_image" @change="admin_profile_image()" ref="admin_profile_image" > </center>
             <center><input class="username"  v-model = "username"  type="text" placeholder="Business name or Username"></center>
@@ -400,6 +400,7 @@ export default {
                 localStorage.removeItem(`random_admin_image`);
                 localStorage.removeItem(`admin_image_url`);
                 // this.$refs.admin_profile_image.files[0]='';
+                document.getElementById("admindatabase").reset();
             this.admin_image_url = '',
             this.display_select_category = true,
             this.Visuals_Art_Services_selected = false,

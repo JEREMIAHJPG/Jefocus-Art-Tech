@@ -351,29 +351,27 @@ this.load_page_video_check();
             where('adminnew_id', '==' , this.$route.params.Adminmonitor_id))
             ,(admin_monitor_admin_id)=>{ 
             admin_monitor_admin_id.forEach ((doc)=>{
-             var video_list = {
-                video : doc.data().video_selected
-             };
-             this.video_exist.push(video_list)
+                this.video_exist.push(doc.data().video_selected)
+                console.log(this.video_exist[0]);
                 // this.video_exist.push(doc.data());
             // this.sellers_id.push(doc.data().adminnew_id);
-            console.log ("Admin sellers database post id obtained with value :",  video_list);
-        
-
-                })});
-
-                 switch(this.video_exist){ 
-                 case {}:  
+            console.log ("Admin sellers database post id obtained with value :", this.video_exist);
+            switch(this.video_exist[0]){ 
+                 case "":  
                  this.monitor_show=true,
                  this.show_advert_view_image_monitor=true,
                  this.show_advert_video_monitor=false
                  break;
                  default:
                           this.monitor_show=true,
-                          this.show_advert_view_image_monitor=false,
+                          this.show_advert_view_image_monitor=true,
                           this.show_advert_video_monitor=true
                     }
                 console.log('checked');
+
+                })});
+
+                
 
                 //UPLOAD QUERYING
                 await onSnapshot(query(collection(db, 'admin_current_database'), where('adminnew_id', '==' , this.$route.params.Adminmonitor_id)),
@@ -430,8 +428,8 @@ this.load_page_video_check();
                 }, {merge:true})
                 localStorage.setItem(`APPROVED`, this.admin_monitor_new_id)
                 
-                await deleteDoc(doc(db, 'admin_current_database', monitor_data_value.admin_current_database_adminnew_id))
-                console.log("Admin advert APPROVED with admin_monitor_new_id:", this.admin_monitor_new_id);
+                await deleteDoc(doc(db, 'admin_current_database', this.post_id))
+                console.log("Admin advert APPROVED and deleted with admin_monitor_new_id and this.admin_monitor_id respectively:", this.post_id);
 
             // users collection  reference
            // const colRef = collection(db,'admin_upload_database');
