@@ -63,6 +63,7 @@ color: white;
   </template>
   
   <script>
+  import axios from 'axios';
   import { mapActions, mapMutations } from 'vuex';
     import {storage, db} from "@/firebase"
     import { ref,uploadBytes,uploadBytesResumable,getDownloadURL } from "firebase/storage"
@@ -72,6 +73,10 @@ color: white;
   export default {
     data() {
       return {
+       
+      phoneNumber: '',
+      verificationCode: null,
+    
         code: Array(6).fill(''), // Adjust the length based on your code length
         joining:[],
         joining_code:'',
@@ -159,8 +164,8 @@ color: white;
       },
      async resend_another_code(){
 
-         var resend_a_code = await Math.floor(10000 + Math.random() * 90000);
-         this.resend_a_code = resend_a_code;
+        //  var resend_a_code = await Math.floor(10000 + Math.random() * 90000);
+       
 
         //console.log(this.resend_a_code);
          //  var set_new_token_profile = {
@@ -192,7 +197,22 @@ color: white;
         //         console.log('user verification id gotten')
         //      }));
 
-              // await sendVerificationcodeSMS(this.fetched_phonenumber,this.verification_profile_code ).then(()=>{
+              
+                try {
+        const response = await axios.post('http://localhost:3000/send-verification-code', {
+          to:  this.confirm_phonenumber
+        });
+        this.verificationCode = response.data.code;
+      this.resend_a_code = resend_a_code;
+      alert('A verification Code has been sent via SMS to your Phonenumber');
+        // console.log('Verification code sent:', response.data);
+      } catch (error) {
+        console.error('Error sending verification code:', error);
+      }
+    
+              
+              
+        //       this.fetched_phonenumber,this.verification_profile_code ).then(()=>{
         //             alert('A verification Code has been sent via SMS to your Phonenumber');
         //             setInterval(()=>{ this.resend_code_statement = true;},3000)
         //     })
@@ -217,17 +237,22 @@ color: white;
           }else{
             clearInterval(this.timercount);
             this.code_expired = true
+            this.resend_a_code = null;
           }
           if(this.expiry_time <= 170){
           this.resend_code_statement = false;
           
         }
+        //   if(this.expiry_time = 0){
+            
+          
+        // }
          }, 1000);
 
         
         //notifying that a code has been sent
         // setTimeout(()=>{},10000) ;
-      }
+        }
     },
     beforeDestroy(){
             if (this.timercount){
