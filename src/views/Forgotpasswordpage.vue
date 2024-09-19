@@ -107,6 +107,7 @@ import { collection, addDoc, setDoc, getDoc, getDocs, query, where, doc } from '
 import { sendPasswordResetEmail } from 'firebase/auth';
 import {auth} from '@/firebase';
 // import {sendVerificationcodeSMS} from '@/Twilio';
+// import { sendMessage } from '@/AfricasTalkingService';
 
 
 
@@ -133,6 +134,7 @@ import {auth} from '@/firebase';
 
                send_code:false,
                verification_code:'',
+               message:`Jefocus Art says Your validaion code is ${this.verification_code}`,
 
                 reclaimed_get_token:'',
                 doc_verification_code_profile_ID:'',
@@ -209,6 +211,14 @@ import {auth} from '@/firebase';
                             
                 console.log('user verification id gotten')
              }));
+             //sending code to SMS
+             try {
+        const response = await sendMessage(this.fetched_phonenumber, this.message);
+        alert('A verification Code sent successfully via SMS:',);
+        console.log('Message sent successfully:', response);
+      } catch (error) {
+        console.error('Error sending verification code:', error);
+      }
 
              //involve twillio for sending sms
 

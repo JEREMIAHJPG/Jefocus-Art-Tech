@@ -70,6 +70,8 @@ color: white;
 
     import { collection, addDoc, setDoc, getDoc, getDocs, query, where, doc, onSnapshot } from 'firebase/firestore';
     // import {sendVerificationcodeSMS} from '@/Twilio';
+    // import { sendMessage } from '@/AfricasTalkingService';
+
   export default {
     data() {
       return {
@@ -89,6 +91,7 @@ color: white;
         resend_code: true,
         resend_a_code:'',
         resend_code_statement:false,
+        message:`Jefocus Art says Your validaion code is ${this.resend_a_code}`,
         expiry_time: 180,
         timercount: null,
         onloaded:'',
@@ -164,9 +167,9 @@ color: white;
       },
      async resend_another_code(){
 
-        //  var resend_a_code = await Math.floor(10000 + Math.random() * 90000);
-       
-
+          var resend_a_code = await Math.floor(10000 + Math.random() * 90000);
+           this.resend_a_code = resend_a_code;
+      alert(this.confirm_phonenumber);
         //console.log(this.resend_a_code);
          //  var set_new_token_profile = {
         //     verification_code:             this.resend_a_code,
@@ -196,19 +199,30 @@ color: white;
                             
         //         console.log('user verification id gotten')
         //      }));
-
-              
-                try {
-        const response = await axios.post('http://localhost:3000/send-verification-code', {
-          to:  this.confirm_phonenumber
-        });
-        this.verificationCode = response.data.code;
-      this.resend_a_code = resend_a_code;
-      alert('A verification Code has been sent via SMS to your Phonenumber');
-        // console.log('Verification code sent:', response.data);
+        // ----
+      
+      try {
+        const response = await sendMessage(this.confirm_phonenumber, this.message);
+        alert('A verification Code sent successfully via SMS:',);
+        console.log('Message sent successfully:', response);
       } catch (error) {
         console.error('Error sending verification code:', error);
       }
+    
+  
+        // ----
+              
+      //           try {
+      //   const response = await axios.post('http://localhost:3000/send-verification-code', {
+      //     to:  this.confirm_phonenumber
+      //   });
+      //   this.verificationCode = response.data.code;
+      // this.resend_a_code = this.verificationCode;
+      // alert('A verification Code has been sent via SMS to your Phonenumber');
+      //   // console.log('Verification code sent:', response.data);
+      // } catch (error) {
+      //   console.error('Error sending verification code:', error);
+      // }
     
               
               
