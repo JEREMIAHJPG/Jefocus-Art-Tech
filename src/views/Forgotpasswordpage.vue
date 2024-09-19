@@ -106,7 +106,7 @@ import { ref,uploadBytes,uploadBytesResumable,getDownloadURL } from "firebase/st
 import { collection, addDoc, setDoc, getDoc, getDocs, query, where, doc } from 'firebase/firestore';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import {auth} from '@/firebase';
-// import {sendVerificationcodeSMS} from '@/Twilio';
+
 // import { sendMessage } from '@/AfricasTalkingService';
 
 

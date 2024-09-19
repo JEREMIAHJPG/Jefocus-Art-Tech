@@ -69,7 +69,7 @@ color: white;
     import { ref,uploadBytes,uploadBytesResumable,getDownloadURL } from "firebase/storage"
 
     import { collection, addDoc, setDoc, getDoc, getDocs, query, where, doc, onSnapshot } from 'firebase/firestore';
-    // import {sendVerificationcodeSMS} from '@/Twilio';
+   
     // import { sendMessage } from '@/AfricasTalkingService';
 
   export default {
