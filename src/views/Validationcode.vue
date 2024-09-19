@@ -70,7 +70,7 @@ color: white;
 
     import { collection, addDoc, setDoc, getDoc, getDocs, query, where, doc, onSnapshot } from 'firebase/firestore';
    
-    // import { sendMessage } from '@/AfricasTalkingService';
+     import { sendMessage } from '@/AfricasTalkingService';
 
   export default {
     data() {
