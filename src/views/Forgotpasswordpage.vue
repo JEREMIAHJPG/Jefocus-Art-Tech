@@ -107,7 +107,7 @@ import { collection, addDoc, setDoc, getDoc, getDocs, query, where, doc } from '
 import { sendPasswordResetEmail } from 'firebase/auth';
 import {auth} from '@/firebase';
 
-// import { sendMessage } from '@/AfricasTalkingService';
+import { sendMessage } from '@/AfricasTalkingService';
 
 
 

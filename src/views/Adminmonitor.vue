@@ -300,7 +300,7 @@ padding:5px;
 // check for contact us page function  
 // code for sending SMS and email to clients for forgot password, orders placed, adverts notifications etc -
 // add backend to artwork page use pagenation---
-// check how to launch website with GitHub(use brad traversy) ---     
+// check how to launch website with GitHub(use brad traversy) --     
 // create view-order history, view artworks page ---
 // create a confirm recieve item button on the receipt page ---
 // add payment stack using flutterwave documentation ---
