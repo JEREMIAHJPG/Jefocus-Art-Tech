@@ -5,13 +5,13 @@ import store from './store/store';
 import './firebase.js';
 // import './Twilio.js'
 import posthogPlugin from "./plugins/posthog"; //import the plugin. 
-import sendSMS from "./sendSMS.js"
+//import sendSMS from "./sendSMS.js"
 
 const app = createApp(App);
 app.use(posthogPlugin); //install the plugin
 app.use(router);
 app.use(store);
-app.use(sendSMS);
+//app.use(sendSMS);
 app.mount('#app');
 
 router.afterEach((to, from, failure) => {

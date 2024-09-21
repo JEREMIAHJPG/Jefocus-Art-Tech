@@ -107,7 +107,9 @@ import { collection, addDoc, setDoc, getDoc, getDocs, query, where, doc } from '
 import { sendPasswordResetEmail } from 'firebase/auth';
 import {auth} from '@/firebase';
 
-import { sendMessage } from '@/AfricasTalkingService';
+
+
+// import { sendSMS } from '@/AfricasTalkingService';
 
 
 
@@ -134,7 +136,7 @@ import { sendMessage } from '@/AfricasTalkingService';
 
                send_code:false,
                verification_code:'',
-               message:`Jefocus Art says Your validaion code is ${this.verification_code}`,
+               message:'',
 
                 reclaimed_get_token:'',
                 doc_verification_code_profile_ID:'',
@@ -192,6 +194,8 @@ import { sendMessage } from '@/AfricasTalkingService';
        async sending_code(){
         var verification_code = await Math.floor(10000 + Math.random() * 90000);
         this.verification_code = verification_code;
+        
+        this.message= `Jefocus Art says Your validaion code is ${this.verification_code}`;
         //addDoc with the verification code, this.doc_reclaimed_email_ID and this.confirmed_reclaimed_email
          var verification_code_profile ={
             verification_code:             this.verification_code,
@@ -212,13 +216,28 @@ import { sendMessage } from '@/AfricasTalkingService';
                 console.log('user verification id gotten')
              }));
              //sending code to SMS
-             try {
-        const response = await sendMessage(this.fetched_phonenumber, this.message);
-        alert('A verification Code sent successfully via SMS:',);
-        console.log('Message sent successfully:', response);
-      } catch (error) {
-        console.error('Error sending verification code:', error);
-      }
+             console.log(this.message);
+             
+const targetUrl = 'http://localhost:3000/send-sms' ;
+const options = {
+    to: this.fetched_phonenumber,
+    message: this.message
+};
+
+fetch(targetUrl,{
+    method: 'POST',
+    headers: {
+        'Content-Type': "application/json",
+        'apiKey': 'atsk_fd221a40d30b04649873b9094a955a5ffaf688e6f56ec3eecd05dc520b220617e5d4fd8c',
+        
+    },
+    body: JSON.stringify(options)
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error(error));
+
+
 
              //involve twillio for sending sms
 

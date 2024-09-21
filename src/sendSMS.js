@@ -1,3 +1,4 @@
+
 const africastalking = {
     apiKey: 'atsk_9a561fc568e89ec22a9d8daf822c26f7a44cc14283b37d74e238ca22733ff1cae0641984', 
     username: 'sandbox'

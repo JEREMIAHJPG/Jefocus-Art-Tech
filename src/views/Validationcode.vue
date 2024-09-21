@@ -70,7 +70,7 @@ color: white;
 
     import { collection, addDoc, setDoc, getDoc, getDocs, query, where, doc, onSnapshot } from 'firebase/firestore';
    
-     import { sendMessage } from '@/AfricasTalkingService';
+    //  import { sendSMS } from '@/AfricasTalkingService';
 
   export default {
     data() {
@@ -200,15 +200,43 @@ color: white;
         //         console.log('user verification id gotten')
         //      }));
         // ----
+
+        const targetUrl = 'http://localhost:3000/send-sms' ;
+const options = {
+    to: this.confirm_phonenumber,
+    message: this.message
+};
+
+fetch(targetUrl,{
+    method: 'POST',
+    headers: {
+        'Content-Type': "application/json",
+        'apiKey': 'atsk_fd221a40d30b04649873b9094a955a5ffaf688e6f56ec3eecd05dc520b220617e5d4fd8c',
+        
+    },
+    body: JSON.stringify(options)
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error(error));
+
       
-      try {
-        const response = await sendMessage(this.confirm_phonenumber, this.message);
-        alert('A verification Code sent successfully via SMS:',);
-        console.log('Message sent successfully:', response);
-      } catch (error) {
-        console.error('Error sending verification code:', error);
-      }
+      // try {
+      //   const response = await sendSMS(this.confirm_phonenumber, this.message);
+      //   alert('A verification Code sent successfully via SMS:',);
+      //   console.log('Message sent successfully:', response);
+      // } catch (error) {
+      //   console.error('Error sending verification code:', error);
+      // }
     
+      // {
+      //       try {
+      //           const response = await sendSMS(this.phoneNumber, this.message);
+      //           console.log('SMS sent successfully:', response);
+      //       } catch (error) {
+      //           console.error('Failed to send SMS:', error);
+      //       }
+      //   }
   
         // ----
               
