@@ -71,10 +71,12 @@
 //         throw error;
 //     }
 // }
-import express from 'express';
-import axios from 'axios';
-import cors from 'cors';
+const express = require('express');
+const axios = require ('axios');
+const cors= require('cors');
+console.log('POST /send-sms not yet hit');
 const app = express();
+
 // import dotenv from "dontenv";
 
 // dotenv.config();
@@ -90,7 +92,7 @@ const app = express();
 
 //const sms = AT.SMS;
 //send SMS route
-// Enable CORS with specific settings
+//Enable CORS with specific settings
 app.use(cors({
   origin: 'http://localhost:8080',  // Allow only your Vue app's origin
   methods: 'GET,POST,OPTIONS',  // Allow these methods
@@ -120,11 +122,13 @@ app.use((req, res, next) => {
 
 app.post('/send-sms', async (req, res) => {
 //cons {to,message} = req.body || res.status
-
+console.log('POST /send-sms hit');
 try {
   const { to, message } = req.body;
+  console.log('Request body:', req.body);
   const response = await axios.post('https://api.sandbox.africastalking.com/version1/messaging', 
     new URLSearchParams({
+      username: 'sandbox',
       to,
       message
     })
@@ -136,11 +140,12 @@ try {
   });
   res.json(response.data);
 } catch (error) {
+  console.error('Error in /send-sms:', error.response ? error.response.data : error.message);  // Log the error
   res.status(500).json({ error: error.message });
 }
 })
 
-const PORT = process.env.PORT || 3000;
+const PORT = 3003||3000;
 
 app.listen(PORT, () => console.log(`running on localhost:${PORT}`));
 

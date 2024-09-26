@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dontenv";
-import smsRoute from "./AfricasTalkingService";
+import smsRoute from "../server";
 import bodyParser from "body-parser";
 
 

@@ -215,14 +215,21 @@ import {auth} from '@/firebase';
                             
                 console.log('user verification id gotten')
              }));
+             //
+        //      var verification_code_profile_input = await {
+        //     doc_verification_code_profile_ID: this.doc_verification_code_profile_ID,
+        //     verification_code:             this.verification_code,
+        //     doc_reclaim_email_ID:        this.doc_reclaimed_email_ID,
+        //     reclaimed_get_token:           this.reclaimed_get_token,
+        //     confirmed_reclaimed_email:     this.confirmed_reclaimed_email,
+        //     confirm_phonenumber:           this.fetched_phonenumber
+        //  }
+
+        //  await addDoc(collection(db, 'verification_code_profile_input' ), verification_code_profile_input)
              //sending code to SMS
              console.log(this.message);
              
-const targetUrl = 'http://localhost:3000/send-sms' ;
-const options = {
-    to: this.fetched_phonenumber,
-    message: this.message
-};
+const targetUrl = 'http://localhost:3003/send-sms' ;
 
 fetch(targetUrl,{
     method: 'POST',
@@ -231,7 +238,10 @@ fetch(targetUrl,{
         'apiKey': 'atsk_fd221a40d30b04649873b9094a955a5ffaf688e6f56ec3eecd05dc520b220617e5d4fd8c',
         
     },
-    body: JSON.stringify(options)
+    body: JSON.stringify({
+    to: this.fetched_phonenumber,
+    message: this.message
+})
 })
 .then(response => response.json())
 .then(data => console.log(data))

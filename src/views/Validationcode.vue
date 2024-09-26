@@ -54,7 +54,7 @@ color: white;
 
         <center v-if="error_statement"> <h1 style="color: red;">Invalid code please try again</h1></center>
         <center v-if="error_sending_verification"> <h1 style="color: red;">Network error please try again</h1></center>
-        <center v-if="resend_code_statement"> <h1 style="color: blue;">A code has been sent to your email again</h1></center>
+        <center v-if="resend_code_statement"> <h1 style="color: blue;">A code has been sent to your PhoneNumber</h1></center>
         <center v-if="onloaded"> The code will expire in <h1>{{ expiry_time }}</h1></center>
         <center v-if="code_expired"> Code expired please Resend Code and try again</center>
         <center><button v-if="resend_code" class="resend_code" @click="resend_another_code()">Resend Code</button></center>
@@ -68,7 +68,7 @@ color: white;
     import {storage, db} from "@/firebase"
     import { ref,uploadBytes,uploadBytesResumable,getDownloadURL } from "firebase/storage"
 
-    import { collection, addDoc, setDoc, getDoc, getDocs, query, where, doc, onSnapshot } from 'firebase/firestore';
+    import { collection, addDoc, setDoc, getDoc,deleteDoc, getDocs, query, where, doc, onSnapshot } from 'firebase/firestore';
    
     //  import { sendSMS } from '@/AfricasTalkingService';
 
@@ -87,11 +87,12 @@ color: white;
         doc_reclaim_email_ID:'',
         reclaimed_get_token:'',
         confirmed_reclaimed_email:'',
+        verification_code_profile:[],
         error_statement: false,
         resend_code: true,
         resend_a_code:'',
         resend_code_statement:false,
-        message:`Jefocus Art says Your validaion code is ${this.resend_a_code}`,
+        message:'',
         expiry_time: 180,
         timercount: null,
         onloaded:'',
@@ -102,21 +103,48 @@ color: white;
 
       };
     },
-    created(){
-      this.on_load();
+    mounted(){
+      this.load_fast();
+      this.timing_action();
     },
     methods: {
-     async on_load(){
-       await onSnapshot(query(collection(db, 'verification_profile'),
-        where('doc_verification_code_profile_ID', '==' , this.$route.params.Validationcode)),
-        (fetch_data) => {fetch_data.forEach((doc)=>{
-        this.verification_profile_code =  doc.data().verification_code;
-        this.confirm_phonenumber =        doc.data().confirm_phonenumber;
-        this.reclaimed_get_token =        doc.data().reclaimed_get_token;
-        this.doc_reclaim_email_ID =       doc.data().doc_reclaim_email_ID;
-        this.confirmed_reclaimed_email =  doc.data().confirmed_reclaimed_email;
-        this.doc_verification_code_profile_ID = doc.data().doc_verification_code_profile_ID;
-     })});
+     async load_fast(){
+    //    await onSnapshot(query(collection(db, 'verification_code_profile_input'),
+    //     where('doc_verification_code_profile_ID', '==' , this.$route.params.Validationcode)),
+    //     (obtain_data) => {
+    //       obtain_data.forEach((doc)=>{
+    //       var verification_code_profile_data ={
+        // verification_profile_code :  doc.data().verification_code,
+        // confirm_phonenumber :        doc.data().confirm_phonenumber,
+        // reclaimed_get_token  :       doc.data().reclaimed_get_token,
+        // doc_reclaim_email_ID :       doc.data().doc_reclaim_email_ID,
+        // confirmed_reclaimed_email :  doc.data().confirmed_reclaimed_email,
+        // doc_verification_code_profile_ID : doc.data().doc_verification_code_profile_ID
+    //   }
+    //     this.verification_code_profile.push(doc.data());
+    //     console.log(this.verification_code_profile);  
+    //  })})
+    
+    var input_code = await getDoc(doc(db, `verification_profile`,this.$route.params.Validationcode))
+    
+        this.verification_profile_code =  input_code.data().verification_code,
+        this.confirm_phonenumber =        input_code.data().confirm_phonenumber,
+        this.reclaimed_get_token  =       input_code.data().reclaimed_get_token,
+        this.doc_reclaim_email_ID =       input_code.data().doc_reclaim_email_ID,
+        this.confirmed_reclaimed_email =  input_code.data().confirmed_reclaimed_email,
+        this.doc_verification_code_profile_ID = input_code.data().doc_verification_code_profile_ID,
+        this.confirm_phonenumber =        input_code.data().confirm_phonenumber,
+        this.reclaimed_get_token  =       input_code.data().reclaimed_get_token,
+        this.doc_reclaim_email_ID =       input_code.data().doc_reclaim_email_ID,
+        this.confirmed_reclaimed_email =  input_code.data().confirmed_reclaimed_email,
+        this.doc_verification_code_profile_ID = input_code.data().doc_verification_code_profile_ID
+    
+            console.log(input_code.data());
+      localStorage.setItem(`phone_number`,this.confirm_phonenumber)
+  },
+
+     async timing_action(){
+     console.log(this.$route.params.Validationcode);
        
         if(this.doc_reclaim_email_ID){
           this.onloaded = true;
@@ -168,42 +196,12 @@ color: white;
      async resend_another_code(){
 
           var resend_a_code = await Math.floor(10000 + Math.random() * 90000);
-           this.resend_a_code = resend_a_code;
+          //  this.resend_a_code = JSON.stringify(resend_a_code);
       alert(this.confirm_phonenumber);
-        //console.log(this.resend_a_code);
-         //  var set_new_token_profile = {
-        //     verification_code:             this.resend_a_code,
-        //     doc_reclaim_email_ID:          this.doc_reclaim_email_ID,
-        //     reclaimed_get_token:           this.reclaimed_get_token,
-        //     confirmed_reclaimed_email:     this.confirmed_reclaimed_email,
-        //     confirm_phonenumber:           this.confirmed_phonenumber
-        //  }
-         //setting another code database
-        //  var verification_code_profile ={
-        //     verification_code:             this.verification_profile_code,
-        //     doc_reclaim_email_ID:          this.doc_reclaim_email_ID,
-        //     reclaimed_get_token:           this.reclaimed_get_token,
-        //     confirmed_reclaimed_email:     this.confirmed_reclaimed_email,
-        //     confirm_phonenumber:           this.confirmed_phonenumber
-        //  }
-
-         //await addDoc(collection(db, 'verification_profile' ), set_new_token_profile) 
-      //    await setDoc(doc(db,'verification_profile',  this.$route.params.Validationcode), 
-        
-      // );
-
-        // await getDocs(query(collection(db, 'verification_profile'), where(
-        //     'verification_code', '==' , this.verification_code))). 
-        //     then(verification_code_snap => verification_code_snap.forEach((doc)=>{
-        //         this.doc_verification_code_profile_ID = doc.id;
-                            
-        //         console.log('user verification id gotten')
-        //      }));
-        // ----
-
-        const targetUrl = 'http://localhost:3000/send-sms' ;
+      this.message =  `Jefocus Art says Your validaion code is ${resend_a_code}`
+        const targetUrl = 'http://localhost:3003/send-sms' ;
 const options = {
-    to: this.confirm_phonenumber,
+    to: localStorage.getItem(`phone_number`),
     message: this.message
 };
 
@@ -218,53 +216,10 @@ fetch(targetUrl,{
 })
 .then(response => response.json())
 .then(data => console.log(data))
-.catch(error => console.error(error));
+.catch(error => console.error(error) );
 
       
-      // try {
-      //   const response = await sendSMS(this.confirm_phonenumber, this.message);
-      //   alert('A verification Code sent successfully via SMS:',);
-      //   console.log('Message sent successfully:', response);
-      // } catch (error) {
-      //   console.error('Error sending verification code:', error);
-      // }
-    
-      // {
-      //       try {
-      //           const response = await sendSMS(this.phoneNumber, this.message);
-      //           console.log('SMS sent successfully:', response);
-      //       } catch (error) {
-      //           console.error('Failed to send SMS:', error);
-      //       }
-      //   }
-  
-        // ----
-              
-      //           try {
-      //   const response = await axios.post('http://localhost:3000/send-verification-code', {
-      //     to:  this.confirm_phonenumber
-      //   });
-      //   this.verificationCode = response.data.code;
-      // this.resend_a_code = this.verificationCode;
-      // alert('A verification Code has been sent via SMS to your Phonenumber');
-      //   // console.log('Verification code sent:', response.data);
-      // } catch (error) {
-      //   console.error('Error sending verification code:', error);
-      // }
-    
-              
-              
-        //       this.fetched_phonenumber,this.verification_profile_code ).then(()=>{
-        //             alert('A verification Code has been sent via SMS to your Phonenumber');
-        //             setInterval(()=>{ this.resend_code_statement = true;},3000)
-        //     })
-        // .catch((error)=>{
-        //     setInterval(()=>{ this.error_sending_verification = true;},3000)
-        //     alert(error.message);
-        // })
-       
-               
-        //send the code to email
+     
         
         //remove code_expired statement and //clear code to empty the boxes
         this.code =  Array(6).fill(''),

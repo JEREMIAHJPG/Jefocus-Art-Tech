@@ -302,7 +302,7 @@ export default {
       console.log('Buttons Selecting...');
 // localStorage.getItem(`user_id`)
       await getDocs(query(collection(db,'admin_database'),
-                where('user_ID', '==','p1WSuB6tvuCwh1TgUo3P'))).then(database_id=>{ 
+                where('user_ID', '==',localStorage.getItem(`user_id`)))).then(database_id=>{ 
                 database_id.forEach ((doc)=>{
                   var button_selection = {
                           check_user_ID : doc.data().user_ID,                     
