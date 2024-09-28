@@ -22,7 +22,7 @@
             <li v-if="isAuthenticated"><router-link to="/Artworkpage" @click="Artworkpage_loading" ><span class="material-symbols-outlined">shopping_cart</span>Buy and Explore Art</router-link></li>
             <!-- <li><a href=""><input type="checkbox">Jefocus Community</a></li> -->
             <li v-if="isAuthenticated"><router-link  to="/Favoritepage" @click="Favoritepage_loading"><span class="material-symbols-outlined">favorite</span>Favorite</router-link></li>
-            <li v-if="isAuthenticated" @click="view_cart()"><router-link  to="/Cartpage"><span class="material-symbols-outlined">shopping_cart_checkout</span>View Cart</router-link></li>
+            <!-- <li v-if="isAuthenticated" @click="view_cart()"><router-link  to="/Cartpage"><span class="material-symbols-outlined">shopping_cart_checkout</span>View Cart</router-link></li> -->
             <li ><button @click="dropdown_button()"><span class="material-symbols-outlined">menu_open</span>Menu</button></li>
             
             <!-- <li><a href=""><input type="checkbox">Orders History</a></li>
@@ -41,7 +41,7 @@
             <li v-if="isAuthenticated"><router-link to="/Artworkpage" ><span class="material-symbols-outlined">shopping_cart</span>Buy and Explore Art</router-link></li>
             <li v-if="!isAuthenticated"><router-link  to="/Tradepage" class="linktrade"><span class="material-symbols-outlined">diversity_1</span>Jefocus Art Community</router-link></li>
             <li v-if="isAuthenticated"><router-link  to="/Favoritepage"  ><span class="material-symbols-outlined">favorite</span>Favorite</router-link></li>
-            <li v-if="isAuthenticated" @click="view_cart()"><router-link  to="/Cartpage"><span class="material-symbols-outlined">shopping_cart_checkout</span>View Cart</router-link></li>
+            <!-- <li v-if="isAuthenticated" @click="view_cart()"><router-link  to="/Cartpage"><span class="material-symbols-outlined">shopping_cart_checkout</span>View Cart</router-link></li> -->
             <!-- <li><router-link><input type="checkbox">Orders History</router-link></li> -->  
             <li v-if="isAuthenticated"><router-link to="/HistoryofOrderplaced" @click="HistoryofOrderplaced_loading" v-if="HistoryofOrderplaced"><span class="material-symbols-outlined">history</span>History of Order placed</router-link></li>             
             <li v-if="isAuthenticated"><router-link to="/Adminspage"><span class="material-symbols-outlined">sell</span>Sell</router-link></li>
@@ -64,7 +64,7 @@
             <li v-if="isAuthenticated"><router-link to="/Artworkpage" ><span class="material-symbols-outlined">shopping_cart</span>Buy and Explore Art</router-link></li>
             <li v-if="!isAuthenticated"><router-link  to="/Tradepage" class="linktrade"><span class="material-symbols-outlined">diversity_1</span>Jefocus Art Community</router-link></li>
             <li v-if="isAuthenticated"><router-link  to="/Favoritepage"><span class="material-symbols-outlined">favorite</span>Favorite</router-link></li>
-            <li v-if="isAuthenticated" @click="view_cart()"><router-link  to="/Cartpage"><span class="material-symbols-outlined">shopping_cart_checkout</span>View Cart</router-link></li>
+            <!-- <li v-if="isAuthenticated" @click="view_cart()"><router-link  to="/Cartpage"><span class="material-symbols-outlined">shopping_cart_checkout</span>View Cart</router-link></li> -->
             <!-- <li><router-link><input type="checkbox">Orders History</router-link></li> -->  
             <li v-if="isAuthenticated"><router-link to="/HistoryofOrderplaced" @click="HistoryofOrderplaced_loading" v-if="HistoryofOrderplaced"><span class="material-symbols-outlined">history</span>History of Order placed</router-link></li>             
             <li v-if="isAuthenticated"><router-link to="/Adminspage"><span class="material-symbols-outlined">sell</span>Sell</router-link></li>
@@ -85,7 +85,7 @@
             <li v-if="isAuthenticated"><router-link to="/Artworkpage" @click="Artworkpage_loading" ><span class="material-symbols-outlined">shopping_cart</span>Buy and Explore Art</router-link></li>
             <li v-if="!isAuthenticated"><router-link  to="/Tradepage" @click="Tradepage_loading" class="linktrade" ><span class="material-symbols-outlined">diversity_1</span>Jefocus Community</router-link></li>
             <li v-if="isAuthenticated"><router-link  to="/Favoritepage" @click="Favoritepage_loading"><span class="material-symbols-outlined">favorite</span>Favorite</router-link></li>
-            <li v-if="isAuthenticated" @click="view_cart()"><router-link  to="/Cartpage" @click="Cartpage_loading"><span class="material-symbols-outlined">shopping_cart_checkout</span>View Cart</router-link></li>
+            <!-- <li v-if="isAuthenticated" @click="view_cart()"><router-link  to="/Cartpage" @click="Cartpage_loading"><span class="material-symbols-outlined">shopping_cart_checkout</span>View Cart</router-link></li> -->
             <li v-if="isAuthenticated"><router-link to="/HistoryofOrderplaced" @click="HistoryofOrderplaced_loading" v-if="HistoryofOrderplaced"><span class="material-symbols-outlined">history</span>History of Order placed</router-link></li> 
             <li v-if="isAuthenticated"><router-link to="/Adminspage" @click="Adminspage_loading"><span class="material-symbols-outlined">sell</span>Sell</router-link></li>
             <li v-if="isAuthenticated"><router-link to="/Adminserviceslist" @click="Adminserviceslist_loading" v-if="Check_Admins_Adverts"><span class="material-symbols-outlined">checklist_rtl</span>Check Admins Adverts</router-link></li>

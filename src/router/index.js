@@ -74,7 +74,7 @@ const routes = [
 
 
   {
-    path: '/Cartpage',
+    path: '/:Cartpage',
     name: 'Cartpage',
     component: Cartpage,
     meta:{auth:true}

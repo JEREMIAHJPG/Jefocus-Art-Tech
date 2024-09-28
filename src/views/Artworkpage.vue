@@ -1,3 +1,367 @@
+
+   <template>
+    <div style="border-radius:100%; position:sticky; top:70%; z-index:2; width:100px; height: 100px; background-color: black; "  >
+      <h1 style="color:white; font-size:xx-large; position: relative; z-index:8; left:40%; top:30%;">{{ number_of_orders }}</h1>
+    </div>
+    <div style="border-radius:100%; position:sticky; top:70%; z-index:2; width:100px; height: 100px; background-color: black; " @click="view_cart()" >
+      <h1 style="color:white; font-size:xx-large; position: relative; z-index:8; left:80%; top:30%;"><router-link  to="/Cartpage"><span class="material-symbols-outlined">shopping_cart_checkout</span>View Cart</router-link></h1>
+    </div>
+        <!-- <ul class="sidenav">
+            <li class="foot1" style="background-color:#555; color: white; width: 100%; text-align:center; font-size:x-large;">Buy Art </li>
+            <li><a class="active" href=""><input type="checkbox">Canvas Paintings</a> </li>
+            <li><a href=""><input type="checkbox">Sculpt and Artifacts</a></li>
+            <li><a href=""><input type="checkbox">Digital Art</a></li>
+            <li><a href=""><input type="checkbox">Drawing</a></li>
+            <li><a href=""><input type="checkbox">Prints</a></li>
+            <li><a href=""><input type="checkbox">Photography</a></li>
+        </ul> -->
+
+        <!-- <div class="content"> -->
+            
+            
+             <div class="bottom">
+                 <div class="row1" >
+                     <div class="base1" style="background-color:aquamarine;">
+                       <div class="headingpainting" style="background-color: aquamarine;">
+                       <h3 style="float: left;">Paintings</h3> <h1 style="font-size: small;padding-top: 3%;padding-left:5%; float: left;">Most Popular Categories of Artworks:<h2 style="font-size: small; padding-left: 2%; padding-top: 2.9%; float: left;">Abstract Paintings, Landscape Paintings, Oil Painting </h2></h1>
+                       </div>
+                     </div>
+                     <div class="base" style="background-color:#bbb">
+                      <div class="size">
+                        <h1>Landscape Paintings</h1>
+                        
+                        <div class="Slides">
+    <div  v-for="(items_to_display, index) in items_to_display_profile" :key="index" class="Slide"  :style="{height: innerHeight + 'px', top: '-' + slidesInnermarginTopL +'px'}" >
+        
+      
+        <div class=" itemstoorder "  >
+                          <!-- <div class="itemimage " > -->
+
+                          <!-- -- -->
+                           <center>
+                          <div class="image_view_view1_artwork">
+        <img :src="items_to_display.First_image_selected" title="image_view_content" class="image_view_content_view1_artwork" >
+       
+    </div>
+                           <center>
+    <div>
+    <div class="price_monitor_view1_artwork">
+        <!-- <img class="currency_image_view1_artwork" title="N"> -->
+        <div class="price_number_view1_artwork">
+            {{items_to_display.Title}}
+        </div>
+    </div>
+    <div class="price_monitor_view1_artwork">
+        <!-- <img class="currency_image_view1_artwork" title="N"> -->
+        <div class="price_number_view1_artwork">
+            {{items_to_display.Size}}
+        </div>
+    </div>
+
+    <div class="price_monitor_view1_artwork">
+        <img class="currency_image_view1_artwork" title="N"><div class="price_number_view1_artwork">
+            {{items_to_display.price}}
+        </div>
+      </div>
+    </div>
+  </center>
+    </center>
+    <!-- keep for view Item -->
+    <!-- <div class="monitor_description_view1">
+        <h class="monitor_description_content_view1">
+        {{ items_to_display.Admin_description }}
+        </h>
+    </div> -->
+    <!-- <div class="monitor_time_view1">
+        <img class="clock_icon_view1" title="C" src="">
+        <Time class="time_monitor_view1" >
+            {{ items_to_display.Admin_upload_date }}
+        </Time> -->
+        <!-- checking if phone has been accessed -->
+        <!-- *#*#4636#*#* -->
+    <!-- </div> -->
+    
+    <div class="monitor_buttons_view1_artwork">
+      
+        <button class="view_button_view1_artwork"  @click=  "view_button(items_to_display)">View</button>
+        <button class="buy_button_view1_artwork"   @click= "buy_button(items_to_display)">Buy</button>
+        <center>
+        <div >
+           
+        <button :id="'cart_'+items_to_display.reclaimed_get_token" @click="toggleaddtocart1(items_to_display), increament()" class="buy" v-if="!items_to_display.addtocart ">
+                               
+          <span class="material-symbols-outlined">add_shopping_cart</span>
+                              Add to Cart
+                              </button>
+                              <button @click="toggleaddtocart1(items_to_display), decreament()" class="buy" v-else>
+                                <span class="material-symbols-outlined">remove_shopping_cart</span>
+                              Remove from Cart
+                              </button>       
+                            </div >
+
+        <div>
+                                <button :id="'favorites_'+items_to_display.reclaimed_get_token" @click="togglefavorite1(items_to_display)" class="buy" v-if="!items_to_display.isfav ">
+                                  <span class="material-symbols-outlined">favorite</span>
+                                  <span>Add to Favorite</span>
+                              </button>
+                              <button @click="togglefavorite1(items_to_display)" class="buy" v-else>
+                                <span class="material-symbols-outlined">close</span>
+                                Remove from Favorite
+                              </button>  
+                            
+                              </div>
+                            </center>
+<!-- O'reilly Articulating design decisions by Tom Greever -->
+       
+        <!-- check for how to handle query in Firebase console -->
+    </div>
+                          <!-- -- -->
+                 
+                          <!-- </div> 09039796480 -->
+                        </div>
+                        <!-- -- -->
+  </div>
+     </div>
+     
+ 
+<div class="navigation">
+        <span v-on:click="goToPrevL"><span class="material-symbols-outlined">skip_previous</span>Prev</span>
+        <span class="nav-number" v-bind:class="[index === currentIndexL ? 'current':'']" v-on:click="gotoslideindexL(index)" v-for="(items_to_display, index) in items_to_display_profile" :key="index">{{index+1}}</span>
+        <span v-on:click="goToNextL">Next<span class="material-symbols-outlined">skip_next</span></span>
+     </div>
+                      </div>
+                    
+                    </div>
+                    </div>
+
+    
+   </div> 
+
+   
+
+   </template>
+   
+   
+
+<script>
+import axios from 'axios';
+import { mapActions } from 'vuex';
+import { POSTERS } from '@/store/storeconstants';
+import {storage, db} from "@/firebase"
+
+import { ref,uploadBytes,uploadBytesResumable,getDownloadURL } from "firebase/storage"
+
+import { collection, addDoc, setDoc, getDoc, getDocs, query, where, doc } from 'firebase/firestore';
+
+export default {
+    name: 'Artworkpage',
+data(){return{
+             
+    client_token_ID:'',
+    client_selected_approved_item_token:'',  
+    client_selected_approved_item_admin_monitor_new_id:'',
+    showprofile:true,
+    number_of_orders:0,     
+    items_to_display_profile:[],      
+              
+               
+    innerHeight:innerHeight,
+    singleHeight:innerHeight,
+    currentIndexL:0,
+    currentIndexA:0,
+    currentIndexR:0,
+    currentIndexP:0,
+    currentIndexC:0,
+    currentIndexAS:0,
+    currentIndexRS:0,
+     
+}
+    },
+    created(){
+      this.on_load_artworkpage();
+    },
+    mounted(){
+    axios.get('http://localhost:3000/cartpostprofile')
+    .then(response=> this.items_to_display_profile=response.data)
+     
+  },
+    
+     computed: {
+      
+      
+      slidesInnermarginTopL(){return this.currentIndexL * this.singleHeight},
+    
+    
+    // filtered display//
+    filtered_items_to_display(){return this.items_to_display_profile.filter((items_to_display)=>items_to_display.display)},
+    
+               
+              },
+                
+  
+    methods:{
+      
+      ...mapActions('auth', {
+        post: POSTERS,
+    }),
+    
+    on_load_artworkpage(){
+      // onSnapshot(query(collection(db, 'advert_on_artpage'), where('display_art', '==' , true)),
+      //       (checkadvert) =>{checkadvert.forEach((doc) => {this.monitor_data.push(doc.data())
+      //       })  }) ,
+
+      onSnapshot(query(collection(db, 'getting_token_user_id'), where('get_ID', '==' , localStorage.getItem(`user_id`))),
+            (client) =>{client.forEach((doc) => {
+              this.client_token_ID = doc.data().reclaimed_get_token
+            
+            })  });
+      onSnapshot(query(collection(db, 'approved_checked_adverts'), where('display_art', '==' , true)),
+            (advert) =>{advert.forEach((doc) => {this.items_to_display_profile.push(doc.data())
+            })  }) 
+    },
+    async view_button(items_to_display){
+      
+
+    }
+    ,
+    async buy_button(items_to_display){
+      // this.client_token_ID = 
+      this.client_email = await localStorage.getItem(`client_email`);
+      this.client_selected_approved_item_token = await items_to_display.Admin_item_token;
+      this.client_selected_approved_item_admin_monitor_new_id = await items_to_display.admin_monitor_new_id;
+   
+      items_to_display.addtocart = !items_to_display.addtocart;
+      
+      var numberoforders = JSON.stringify(this.number_of_orders+1);
+      localStorage.setItem(`numberofordersaddedtocart`,numberoforders );
+      // console.log(numberoforders);
+    ///outline the received data
+     var total_amount = items_to_display.qty * items_to_display.price;
+      var data = { id: this.client_selected_approved_item_token, 
+                   qty:items_to_display.qty, 
+                   First_image_selected:items_to_display.First_image_selected, 
+                   title: items_to_display.title,
+                   total_amount: total_amount,
+                   size: items_to_display.size,
+                  //  price: items_to_display.price, 
+                  client_email : localStorage.getItem(`client_email`),
+                  client_selected_approved_item_token : items_to_display.Admin_item_token,
+                  client_selected_approved_item_admin_monitor_new_id : items_to_display.admin_monitor_new_id,
+                  addtocart: items_to_display.addtocart, 
+                   
+                   };
+          // save the data to localStorage
+     if (items_to_display.addtocart)  {localStorage.setItem(`cart_${items_to_display.id}`, JSON.stringify(data))};
+     if (!items_to_display.addtocart)  {localStorage.removeItem(`cart_${items_to_display.id}` );}
+
+      this.$router.replace({name:'Cartpage', params:{Cartpage: this.client_token_ID}})
+    },
+    increament(){ return this.number_of_orders++ },
+
+      decreament(){ return this.number_of_orders-- },
+    
+      goToPrevL(){if(this.currentIndexL===0){return}
+        this.currentIndexL--
+    },
+    goToNextL(){if(this.currentIndexL===(this.items_to_display_profile.length)*0.5){return}
+        this.currentIndexL++
+    },
+    gotoslideindexL(index){this.currentIndexL=index}, 
+    toggleaddtocart1(items_to_display = ''){
+      
+      items_to_display.addtocart = !items_to_display.addtocart;
+      
+              var numberoforders = JSON.stringify(this.number_of_orders+1);
+              localStorage.setItem(`numberofordersaddedtocart`,numberoforders );
+              // console.log(numberoforders);
+            ///outline the received data
+            //  var total_amount = items_to_display.qty * items_to_display.price;
+              var data = { id: this.client_selected_approved_item_token, 
+                main_quantity:items_to_display.main_quantity, 
+                           First_image_selected:items_to_display.First_image_selected, 
+                           Second_image_selected:items_to_display.Second_image_selected, 
+                           title: items_to_display.title,
+                          //  total_amount: total_amount,
+                           size: items_to_display.size,
+                          //  price: items_to_display.price, 
+                          client_email : localStorage.getItem(`client_email`),
+                          client_selected_approved_item_token : items_to_display.Admin_item_token,
+                          client_selected_approved_item_admin_monitor_new_id : items_to_display.admin_monitor_new_id,
+                          addtocart: items_to_display.addtocart, 
+                           
+                           };
+                  // save the data to localStorage
+             if (items_to_display.addtocart)  {localStorage.setItem(`cart_${items_to_display.id}`, JSON.stringify(data))};
+             if (!items_to_display.addtocart)  {localStorage.removeItem(`cart_${items_to_display.id}` );
+
+             // 
+             }
+               
+ 
+      
+//       var data = JSON.stringify( items_to_display);
+//          localStorage.setItem(`cart`,data );
+
+//          /*****
+//  * get item
+//  */ 
+//          var get_data = localStorage ;
+//          localStorage.getItem(`postL1`,get_data);
+        
+        
+//          var postL=get_data;
+//          //  console.log(postL);
+        //this.post({postL:postL});
+     },
+     view_cart(){
+      this.$router.push({name:'Cartpage', params:{Cartpage: this.client_token_ID}})
+     },
+
+     //toogleremovecart1( product_id = ''){
+        //     localStorage.removeItem('cart_'+product_id );
+       //  },
+       
+       togglefavorite1(items_to_display){ 
+        items_to_display.isfav=!items_to_display.isfav;
+        var data = { id: this.client_selected_approved_item_token, 
+                main_quantity:items_to_display.main_quantity, 
+                           First_image_selected:items_to_display.First_image_selected, 
+                           Second_image_selected:items_to_display.Second_image_selected, 
+                           title: items_to_display.title,
+                          //  total_amount: total_amount,
+                           size: items_to_display.size,
+                          //  price: items_to_display.price, 
+                          client_email : localStorage.getItem(`client_email`),
+                          client_selected_approved_item_token : items_to_display.Admin_item_token,
+                          client_selected_approved_item_admin_monitor_new_id : items_to_display.admin_monitor_new_id,
+                          addtocart: items_to_display.addtocart, 
+                           
+                           };
+        if (items_to_display.isfav)  {localStorage.setItem(`favorites_${items_to_display.id}`, JSON.stringify(data_favorite))};
+        if (!items_to_display.isfav)  {localStorage.removeItem(`favorites_${items_to_display.id}` );}
+        
+      },
+    tooglelpdisplay(items_to_display){items_to_display.display=!items_to_display.display},
+  
+   
+
+         
+    props: {pages: {type:null,
+        default:2 }
+}, 
+
+ attached() {let singleHeight = this.$el.clientHeight/this.pages
+    this.$set("singleHeight", singleHeight)
+    this.$set("innerHeight", singleHeight*index)
+    
+    
+    
+},
+    }}
+
+
+</script>
+
 <style scoped >
             body{margin:0;}
 
@@ -15,6 +379,60 @@
             
             *{box-sizing: border-box;}
                 .bottom {font-family: Arial, Helvetica, sans-serif;}
+                .price_monitor_view1_artwork{
+                 width: 70%;
+                  border: 3px solid grey;
+                  height: 15px;
+                  margin-top: 10px;
+                    }
+                    .price_number_view1_artwork{
+color:black;
+float: left;
+padding-left: 5px;
+padding-right: 5px;
+padding-left: 2px;
+
+}
+                    .currency_image_view1_artwork{
+    position:relative;
+    float: left;
+
+                    }
+                    .image_view_content_view1_artwork{
+    max-height: 100px;
+   height: 150px;
+    max-width:100px;
+                    }
+                    .image_view_view1_artwork{
+    max-height:200px;
+    min-width:fit-content;
+    background-color: rgb(163, 163, 163);
+    border-radius:10px;
+                    }
+                    .monitor_buttons_view1_artwork{
+position:relative;
+float: left;
+margin-top:1px;
+height: auto;
+max-width:150px;
+}
+.view_button_view1_artwork{
+    background-color:rgb(249, 149, 67);
+color:black;
+width: 55px;
+height:30px;
+border-radius: 5px;
+margin: 5px;
+}
+.buy_button_view1_artwork{
+background-color: red;
+color:white;
+width:55px;
+height:30px;
+border-radius:5px;
+margin: 5px;
+}
+
                 .base {float:left; 
                     text-align: center;
                     width: 100%;
@@ -39,8 +457,10 @@
                       .itemstoorder{
                         float: left;
                         height: auto;
-                        width:300px;
+                        width:150px;
                         background-color: yellowgreen;
+                        border-radius: 10px;
+                        margin: 3px;
                       }
                       
                       @media screen and (min-width: 361px) and (max-width: 768px){}
@@ -114,12 +534,12 @@
 
                       .buy{
                         float: left;
-                        width: 100%;
+                        width: 90%;
                         background-color: transparent;
                         border: 3px black solid;
-                        height: 40px;
-                        padding: 10px;
-                        margin: 10px;
+                        height: 20px;
+                        padding: 3px;
+                        margin: 3px;
                         border-radius: 10px;
                       }
 
@@ -194,7 +614,7 @@
 
                 .Slides {
     display: inline-block;
-    height: 600px;
+    height: 300px;
     width: auto;
    position: relative;
     
@@ -219,7 +639,7 @@ height: 40%;}
     position: relative;
     display: inline-block;
   
-  height: auto;
+  height: 300px;
   overflow: visible !important;
 }
 .nav-number{border: 2px green solid;
@@ -254,1003 +674,3 @@ color:white;
   float: left; left: 40%; width:30%; justify-content: center;
 }
         </style>
-   <template>
-    <div style="border-radius:100%; position:sticky; top:70%; z-index:2; width:100px; height: 100px; background-color: black; "  >
-      <h1 style="color:white; font-size:xx-large; position: relative; z-index:8; left:40%; top:30%;">{{ number_of_orders }}</h1>
-    </div>
-        <!-- <ul class="sidenav">
-            <li class="foot1" style="background-color:#555; color: white; width: 100%; text-align:center; font-size:x-large;">Buy Art </li>
-            <li><a class="active" href=""><input type="checkbox">Canvas Paintings</a> </li>
-            <li><a href=""><input type="checkbox">Sculpt and Artifacts</a></li>
-            <li><a href=""><input type="checkbox">Digital Art</a></li>
-            <li><a href=""><input type="checkbox">Drawing</a></li>
-            <li><a href=""><input type="checkbox">Prints</a></li>
-            <li><a href=""><input type="checkbox">Photography</a></li>
-        </ul> -->
-
-        <div class="content">
-            
-            
-             <div class="bottom">
-                 <div class="row1" >
-                     <div class="base1" style="background-color:aquamarine;">
-                       <div class="headingpainting" style="background-color: aquamarine;">
-                       <h3 style="float: left;">Paintings</h3> <h1 style="font-size: small;padding-top: 3%;padding-left:5%; float: left;">Most Popular Categories of Artworks:<h2 style="font-size: small; padding-left: 2%; padding-top: 2.9%; float: left;">Abstract Paintings, Landscape Paintings, Oil Painting </h2></h1>
-                       </div>
-                     </div>
-                     <div class="base" style="background-color:#bbb">
-                      <div class="size">
-                        <h1>Landscape Paintings</h1>
-                        
-                        <div class="Slides">
-    <div  v-for="(landscapepainting, index) in landscapepaintingprofiles" :key="index" class="Slide"  :style="{height: innerHeight + 'px', top: '-' + slidesInnermarginTopL +'px'}" >
-        
-      
-        <div class=" itemstoorder "  >
-                          <div class="itemimage " >
-                            <img class="img_css" :src="landscapepainting.imgfirst" title="Painting">
-                          </div>
-                          <div>
-                            <div class="titleandfavorite">
-                              <div class="title"> {{ landscapepainting.Title}}</div>
-                              <img class="love" src="love" title="lo">
-                            </div>
-                            <div class="size">{{  landscapepainting.Size }}</div>
-                            <div class="price"><img src="" title="currency">{{  landscapepainting.Price }}</div>
-                            
-                            <div class="buyaddtocart" style=" margin-top: 0%;">
-                              <div>
-                                <button :id="'favorites_'+landscapepainting.id" @click="togglefavorite1(landscapepainting)" class="buy" v-if="!landscapepainting.isfav ">
-                                  <span class="material-symbols-outlined">favorite</span>
-                                  <span>Add to Favorite</span>
-                              </button>
-                              <button @click="togglefavorite1(landscapepainting)" class="buy" v-else>
-                                <span class="material-symbols-outlined">close</span>
-                                Remove from Favorite
-                              </button>  
-                            
-                              </div>
-                              <div >
-                              <button :id="'cart_'+landscapepainting.id" @click="toggleaddtocart1(landscapepainting), increament()" class="buy" v-if="!landscapepainting.addtocart ">
-                                <span class="material-symbols-outlined">add_shopping_cart</span>
-                              Add to Cart
-                              </button>
-                              <button @click="toggleaddtocart1(landscapepainting), decreament()" class="buy" v-else>
-                                <span class="material-symbols-outlined">remove_shopping_cart</span>
-                              Remove from Cart
-                              </button>  
-                              </div>
-                            <button class="addtocart" @click="buynow()"><span class="material-symbols-outlined">payments</span>Buy</button>
-                            <button class="addtocart" @click="tooglelpdisplay(landscapepainting)"><span class="material-symbols-outlined">fullscreen</span>View </button>
-                            
-                          </div>
-                          </div>
-                        </div>
-  </div>
-     </div>
-     
- 
-<div class="navigation">
-        <span v-on:click="goToPrevL"><span class="material-symbols-outlined">skip_previous</span>Prev</span>
-        <span class="nav-number" v-bind:class="[index === currentIndexL ? 'current':'']" v-on:click="gotoslideindexL(index)" v-for="(landscapepainting, index) in landscapepaintingprofiles" :key="index">{{index+1}}</span>
-        <span v-on:click="goToNextL">Next<span class="material-symbols-outlined">skip_next</span></span>
-     </div>
-                      </div>
-                    
-                    </div>
-                    </div>
-                     <div class="base" style="background-color:#cfc">
-                      <div class="size ">
-                        <h1>Abstract Paintings</h1>
-    
-                        <div class="Slides">
-    <div  v-for="(abstractpainting, index) in abstractpaintingprofiles" :key="index" class="Slide"  :style="{height: innerHeight + 'px', top: '-' + slidesInnermarginTopA +'px'}" >
-        
-      content
-        <div  class="itemstoorder " >
-                          <div class="itemimage " >
-                            <img class="img_css" :src="abstractpainting.img" title="Painting">
-                          </div>
-                          <div>
-                            <div class="titleandfavorite">
-                              <div class="title"> {{abstractpainting.Title}}</div>
-                              <img class="love" src="love" title="lo">
-                            </div>
-                            <div class="size">{{ abstractpainting.Size }}</div>
-                            <div class="price"><img src="" title="currency">{{ abstractpainting.Price }}</div>
-                            <div class="buyaddtocart">
-                              <div>
-                              <button @click="toggleaddtocart2( abstractpainting)" class="buy" v-if="!abstractpainting.addtocart">
-                              Add to Cart
-                              </button>
-                              <button @click="toggleaddtocart2( abstractpainting)" class="buy" v-else>
-                              Remove from Cart
-                              </button>  
-                              </div>
-                            <button class="addtocart" @click="buynow()">Buy</button>
-                            <button class="addtocart" @click="toogleapdisplay(abstractpainting)">View </button>
-                          </div>
-                          </div>
-                          </div>
-                        </div>
-  </div>
-     </div>
-     
-
-<div class="navigation">
-        <span v-on:click="goToPrevA">Prev</span>
-        <span class="nav-number" v-bind:class="[index === currentIndexA ? 'current':'']" v-on:click="gotoslideindexA(index)" v-for="(abstractpainting, index) in abstractpaintingprofiles" :key="index">{{index+1}}</span>
-        <span v-on:click="goToNextA">Next</span>
-     </div>
-                      </div>
-                    
-                    </div>
-  
- 
-
-
-
-                     <div class="base" style="background-color:rgb(204, 242, 255); height:auto">
-                      <div class="size">
-                      <h1>Relief Paintings</h1>
-                      <div class="Slides">
-    <div  v-for="( reliefpainting, index) in  reliefpaintingprofiles" :key="index" class = "Slide"  :style = "{height: innerHeight + 'px', top: '-' + slidesInnermarginTopR +'px'}" >
-        <br/>
-      
-        <div class="itemstoorder" >
-                          <div class="itemimage " >
-                            <img class="img_css" :src=" reliefpainting.img" title="Painting">
-                          </div>
-                          <div>
-                            <div class="titleandfavorite">
-                              <div class="title"> {{ reliefpainting.Title}}</div>
-                              <img class="love" src="love" title="lo">
-                            </div>
-                            <div class="size">{{  reliefpainting.Size }}</div>
-                            <div class="price"><img src="" title="currency">{{  reliefpainting.Price }}</div>
-                            <div class="buyaddtocart">
-                              <div >
-                              <button @click="toggleaddtocart3( reliefpainting)" class="buy" v-if="!reliefpainting.addtocart">
-                              Add to Cart
-                              </button>
-                              <button @click="toggleaddtocart3( reliefpainting)" class="buy" v-else>
-                              Remove from Cart
-                              </button>  
-                              </div>
-                              <button class="addtocart" @click="buynow()">Buy</button>
-                              <button class="addtocart" @click="tooglerpdisplay(reliefpainting)">View </button>
-                          </div>
-                          </div>
-                        </div>
-  </div>
-     </div>
-     
-
-<div class="navigation">
-        <span v-on:click="goToPrevR">Prev</span>
-        <span class="nav-number" v-bind:class="[index === currentIndexR ? 'current':'']" v-on:click="gotoslideindexR(index)" v-for="( reliefpainting, index) in  reliefpaintingprofiles" :key="index">{{index+1}}</span>
-        <span v-on:click="goToNextR">Next</span>
-     </div>
-                      </div>
-                    
-                    </div>
-                     <div class="base" style="background-color:rgb(204, 205, 255); height: auto !important;" >
-                      <div class="size" >
-                        <h1>Portrait Paintings and Drawings</h1>
-                        <div class="Slides">
-    <div  v-for="( portraitpainting, index) in  portraitpaintingprofiles" :key="index" class="Slide"  :style="{height: innerHeight + 'px', top: '-' + slidesInnermarginTopP +'px'}" >
-        
-      
-        <div class="itemstoorder  " >
-                          <div class="itemimage " >
-                            <img class="img_css" :src=" portraitpainting.img" title="Painting">
-                          </div>
-                          <div>
-                            <div class="titleandfavorite">
-                              <div class="title"> {{ portraitpainting.Title}}</div>
-                              <img class="love" src="love" title="lo">
-                            </div>
-                            <div class="size">{{  portraitpainting.Size }}</div>
-                            <div class="price"><img src="" title="currency">{{  portraitpainting.Price }}</div>
-                            <div class="buyaddtocart">
-                              <div>
-                              <button  @click="toggleaddtocart3(portraitpainting)" class="buy" v-if="!portraitpainting.addtocart">
-                              Add to Cart
-                              </button>
-                              <button  @click="toggleaddtocart(portraitpainting)" class="buy" v-else>
-                              Remove from Cart
-                              </button>  
-                              </div>
-                              <button class="addtocart" @click="buynow()">Buy</button>
-                              <button class="addtocart" @click="toogleppdisplay(portraitpainting)">View </button>
-                          </div>
-                          </div>
-                        </div>
-  </div>
-     </div>
-     
-
-<div class="navigation">
-        <span v-on:click="goToPrevP">Prev</span>
-        <span class="nav-number" v-bind:class="[index === currentIndexP ? 'current':'']" v-on:click="gotoslideindexP(index)" v-for="( portraitpainting, index) in  portraitpaintingprofiles" :key="index">{{index+1}}</span>
-        <span v-on:click="goToNextP">Next</span>
-     </div>
-
-     
-                      </div>
-                    
-                    </div>
-                      
-                      </div>
-                
-               
-              
-              
-                      <div class="content">
-            
-            
-            <div class="bottom">
-                <div class="row1" >
-                    <div class="base1" style="background-color:aquamarine;">
-                      <div class="headingpainting" style="background-color: aquamarine;">
-                      <h3 style="float: left;">Sculpture</h3> <h1 style="font-size: small;padding-top: 3%;padding-left:5%; float: left;">Most Popular Categories of Artworks:<h2 style="font-size: small; padding-left: 2%; padding-top: 2.9%; float: left;">Casting and Moulding, Absrtact Sculpture and Relief Sulpture</h2></h1>
-                      </div>
-                    </div>
-                    <div class="base" style="background-color:#bbb">
-                     <div class="size">
-                       <h1>Casting and Moulding</h1>
-                       
-                       <div class="Slides">
-   <div  v-for="(casting, index) in castingprofiles" :key="index" class="Slide"  :style="{height: innerHeight + 'px', top: '-' + slidesInnermarginTopC +'px'}" >
-       
-     
-       <div class="itemstoorder  " >
-                         <div class="itemimage " >
-                           <img class="img_css" :src=" casting.img" title="Painting">
-                         </div>
-                         <div>
-                           <div class="titleandfavorite">
-                             <div class="title"> {{ casting.Title}}</div>
-                             <img class="love" src="love" title="lo">
-                           </div>
-                           <div class="size">{{ casting.Size }}</div>
-                           <div class="price"><img src="" title="currency">{{  casting.Price }}</div>
-                           <div class="buyaddtocart">
-                             <div>
-                             <button @click="toggleaddtocart(casting)" class="buy" v-if="!casting.addtocart">
-                             Add to Cart
-                             </button>
-                             <button @click="toggleaddtocart(casting)" class="buy" v-else>
-                             Remove from Cart
-                             </button>  
-                             </div>
-                           <button class="addtocart" @click="buynow()">Buy</button>
-                           <button class="addtocart" @click="tooglecdisplay(casting)">View </button>
-                         </div>
-                         </div>
-                       </div>
- </div>
-    </div>
-    
-
-<div class="navigation">
-       <span v-on:click="goToPrevC">Prev</span>
-       <span class="nav-number" v-bind:class="[index === currentIndexC ? 'current':'']" v-on:click="gotoslideindexC(index)" v-for="(casting, index) in castingprofiles" :key="index">{{index+1}}</span>
-       <span v-on:click="goToNextC">Next</span>
-    </div>
-                     </div>
-                   
-                   </div>
-                   </div>
-                  
-                   
-                   </div>
- 
-
-
-
-
-                    <div class="base" style="background-color:rgb(204, 242, 255); height:auto">
-                     <div class="size">
-                     <h1>Abstract Sculpture</h1>
-                     <div class="Slides">
-   <div  v-for="(absculpt, index) in absculptprofiles" :key="index" class = "Slide"  :style = "{height: innerHeight + 'px', top: '-' + slidesInnermarginTopAS +'px'}" >
-       <br/>
-     
-       <div class="itemstoorder" >
-                         <div class="itemimage " >
-                           <img class="img_css" :src=" absculpt.img" title="Painting">
-                         </div>
-                         <div>
-                           <div class="titleandfavorite">
-                             <div class="title"> {{ absculpt.Title}}</div>
-                             <img class="love" src="love" title="lo">
-                           </div>
-                           <div class="size">{{ absculpt.Size }}</div>
-                           <div class="price"><img src="" title="currency">{{ absculpt.Price }}</div>
-                           <div class="buyaddtocart">
-                             <div >
-                             <button @click="toggleaddtocart( absculpt)" class="buy" v-if="!absculpt.addtocart">
-                             Add to Cart
-                             </button>
-                             <button @click="toggleaddtocart( absculpt)" class="buy" v-else>
-                             Remove from Cart
-                             </button>  
-                             </div>
-                             <button class="addtocart" @click="buynow()">Buy</button>
-                             <button class="addtocart" @click="toogleasdisplay(absculpt)">View </button>
-                         </div>
-                         </div>
-                       </div>
- </div>
-    </div>
-    
-
-<div class="navigation">
-       <span v-on:click="goToPrevRS">Prev</span>
-       <span class="nav-number" v-bind:class="[index === currentIndexRS ? 'current':'']" v-on:click="gotoslideindexRS(index)" v-for="(reliefsculpt, index) in  reliefsculptprofiles" :key="index">{{index+1}}</span>
-       <span v-on:click="goToNextRS">Next</span>
-    </div>
-                     </div>
-                   
-                   </div>
-                    <div class="base" style="background-color:rgb(204, 205, 255); height: auto !important;" >
-                     <div class="size" >
-                       <h1>Relief Sculpture</h1>
-                       <div class="Slides">
-   <div  v-for="( reliefsculpt, index) in reliefsculptprofiles" :key="index" class="Slide"  :style="{height: innerHeight + 'px', top: '-' + slidesInnermarginTopRS +'px'}" >
-       
-     
-       <div class="itemstoorder  " >
-                         <div class="itemimage " >
-                           <img class="img_css" :src=" reliefsculpt.img" title="Painting">
-                         </div>
-                         <div>
-                           <div class="titleandfavorite">
-                             <div class="title"> {{ reliefsculpt.Title}}</div>
-                             <img class="love" src="love" title="lo">
-                           </div>
-                           <div class="size">{{  reliefsculpt.Size }}</div>
-                           <div class="price"><img src="" title="currency">{{  reliefsculpt.Price }}</div>
-                           <div class="buyaddtocart">
-                             <div >
-                             <button @click="toggleaddtocart(reliefsculpt)" class="buy" v-if="!reliefsculpt.addtocart">
-                             Add to Cart
-                             </button>
-                             <button @click="toggleaddtocart(reliefsculpt)" class="buy" v-else>
-                             Remove from Cart
-                             </button>  
-                             </div>
-                             <button class="addtocart" @click="buynow()">Buy</button>
-                             <button class="addtocart" @click="tooglersdisplay(reliefsculpt)">View </button>
-                         </div>
-                         </div>
-                       </div>
- </div>
-    </div>
-    
-
-<div class="navigation">
-       <span v-on:click="goToPrevRS">Prev</span>
-       <span class="nav-number" v-bind:class="[index === currentIndexRS ? 'current':'']" v-on:click="gotoslideindexRS(index)" v-for="( reliefsculpt, index) in  reliefsculptprofiles" :key="index">{{index+1}}</span>
-       <span v-on:click="goToNextRS">Next</span>
-    </div>
-
-    
-                     </div>
-                   
-                   </div>
-                     
-                     </div>
-                     <div class="content">
-            
-            
-            <div class="bottom">
-                <div class="row1" >
-                    <div class="base1" style="background-color:aquamarine;">
-                      <div class="headingpainting" style="background-color: aquamarine;">
-                      <h3 style="float: left;">Sculpture</h3> <h1 style="font-size: small;padding-top: 3%;padding-left:5%; float: left;">Most Popular Categories of Artworks:<h2 style="font-size: small; padding-left: 2%; padding-top: 2.9%; float: left;">Casting and Moulding, Absrtact Sculpture and Relief Sulpture</h2></h1>
-                      </div>
-                    </div>
-                    <div class="base" style="background-color:#bbb">
-                     <div class="size">
-                       <h1>Casting and Moulding</h1>
-                       
-                       <div class="Slides">
-   <div  v-for="(casting, index) in castingprofiles" :key="index" class="Slide"  :style="{height: innerHeight + 'px', top: '-' + slidesInnermarginTopC +'px'}" >
-       
-     
-       <div class="itemstoorder  " >
-                         <div class="itemimage " >
-                           <img class="img_css" :src=" casting.img" title="Painting">
-                         </div>
-                         <div>
-                           <div class="titleandfavorite">
-                             <div class="title"> {{ casting.Title}}</div>
-                             <img class="love" src="love" title="lo">
-                           </div>
-                           <div class="size">{{ casting.Size }}</div>
-                           <div class="price"><img src="" title="currency">{{  casting.Price }}</div>
-                           <div class="buyaddtocart">
-                             <div >
-                             <button @click="toggleaddtocart(casting)" class="buy" v-if="!casting.addtocart">
-                             Add to Cart
-                             </button>
-                             <button @click="toggleaddtocart(casting)" class="buy" v-else>
-                             Remove from Cart
-                             </button>  
-                             </div>
-                           <button class="addtocart" @click="buynow()">Buy</button>
-                           <button class="addtocart" @click="tooglecdisplay(casting)">View </button>
-                         </div>
-                         </div>
-                       </div>
- </div>
-    </div>
-    
-
-<div class="navigation">
-       <span v-on:click="goToPrevC">Prev</span>
-       <span class="nav-number" v-bind:class="[index === currentIndexC ? 'current':'']" v-on:click="gotoslideindexC(index)" v-for="(casting, index) in castingprofiles" :key="index">{{index+1}}</span>
-       <span v-on:click="goToNextC">Next</span>
-    </div>
-                     </div>
-                   
-                   </div>
-                   </div>
-                  
-                   
-                   </div>
- 
-
-
-
-
-                    <div class="base" style="background-color:rgb(204, 242, 255); height:auto">
-                     <div class="size">
-                     <h1>Abstract Sculpture</h1>
-                     <div class="Slides">
-   <div  v-for="(absculpt, index) in absculptprofiles" :key="index" class = "Slide"  :style = "{height: innerHeight + 'px', top: '-' + slidesInnermarginTopAS +'px'}" >
-       <br/>
-     
-       <div class="itemstoorder" >
-                         <div class="itemimage " >
-                           <img class="img_css" :src=" absculpt.img" title="Painting">
-                         </div>
-                         <div>
-                           <div class="titleandfavorite">
-                             <div class="title"> {{ absculpt.Title}}</div>
-                             <img class="love" src="love" title="lo">
-                           </div>
-                           <div class="size">{{ absculpt.Size }}</div>
-                           <div class="price"><img src="" title="currency">{{ absculpt.Price }}</div>
-                           <div class="buyaddtocart">
-                             <div>
-                             <button @click="toggleaddtocart( absculpt)" class="buy" v-if="!absculpt.addtocart">
-                             Add to Cart
-                             </button>
-                             <button @click="toggleaddtocart( absculpt)" class="buy" v-else>
-                             Remove from Cart
-                             </button>  
-                             </div>
-                             <button class="addtocart" @click="buynow()">Buy</button>
-                             <button class="addtocart" @click="toogleasdisplay(absculpt)">View </button>
-                         </div>
-                         </div>
-                       </div>
- </div>
-    </div>
-    
-
-<div class="navigation">
-       <span v-on:click="goToPrevAS">Prev</span>
-       <span class="nav-number" v-bind:class="[index === currentIndexAS ? 'current':'']" v-on:click="gotoslideindexAS(index)" v-for="(absculpt, index) in  absculptprofiles" :key="index">{{index+1}}</span>
-       <span v-on:click="goToNextAS">Next</span>
-    </div>
-                     </div>
-                   
-                   </div>
-                    <div class="base" style="background-color:rgb(204, 205, 255); height: auto !important;" >
-                     <div class="size" >
-                       <h1>Relief Sculpture</h1>
-                       <div class="Slides">
-   <div  v-for="( reliefsculpt, index) in reliefsculptprofiles" :key="index" class="Slide"  :style="{height: innerHeight + 'px', top: '-' + slidesInnermarginTopRS +'px'}" >
-       
-     
-       <div class="itemstoorder  " >
-                         <div class="itemimage " >
-                           <img class="img_css" :src="reliefsculpt.img" title="Painting">
-                         </div>
-                         <div>
-                           <div class="titleandfavorite">
-                             <div class="title"> {{ reliefsculpt.Title}}</div>
-                             <img class="love" src="love" title="lo">
-                           </div>
-                           <div class="size">{{  reliefsculpt.Size }}</div>
-                           <div class="price"><img src="" title="currency">{{  reliefsculpt.Price }}</div>
-                           <div class="buyaddtocart">
-                             <div>
-                             <button  @click="toggleaddtocart(reliefsculpt)" class="buy" v-if="!reliefsculpt.addtocart">
-                             Add to Cart
-                             </button>
-                             <button  @click="toggleaddtocart(reliefsculpt)" class="buy" v-else>
-                             Remove from Cart
-                             </button>  
-                             </div>
-                             <button class="addtocart" @click="buynow()">Buy</button>
-                             <button class="addtocart" @click="tooglersdisplay(reliefsculpt)">View </button>
-                         </div>
-                         </div>
-                       </div>
- </div>
-    </div>
-    
-
-<div class="navigation">
-       <span v-on:click="goToPrevRS">Prev</span>
-       <span class="nav-number" v-bind:class="[index === currentIndexRS ? 'current':'']" v-on:click="gotoslideindexRS(index)" v-for="( reliefsculpt, index) in  reliefsculptprofiles" :key="index">{{index+1}}</span>
-       <div v-on:click="goToNextRS">Next</div>
-    </div>
-
-    
-                     </div>
-                   
-                   </div>
-                     
-                     </div>
-                
-      
-     <div  v-for="(landscapepainting, index) in filteredlanscapepainting" :key="index"  style="z-index:3;"  class="polaroid, view">
-   <div class="imgdescription" style="width:100%; height:fit-content !important; float:left;">
-    <img :src="landscapepainting.img" class="viewpage">
-  </div>
-     <div  class="imgdescription"  style="width:100%; height:50%; float:left;">
-      <div class="imgdescriptionmain"> <h2 >Description: {{ landscapepainting.description }}</h2></div>
-     <div class="imgdescriptionmain"> <h2 >Size: {{ landscapepainting.Size }}</h2></div>
-     <div class="imgdescriptionbutton"><button class="addtocart" @click="tooglelpdisplay(landscapepainting)" > Go Back</button></div>
-</div>
-</div> 
-
-
-<div  v-for="(abstractpainting, index) in filteredabstractpainting" :key="index"  style="z-index:3;"   class="polaroid, view">
-   <div class="imgdescription" style="width:100%;height:fit-content !important; float:left;" >
-    <img :src="abstractpainting.img" class="viewpage">
-  </div>
-     <div  class="imgdescription"  style="width:100%; height:50%; float:left;">
-      <div class="imgdescriptionmain"> <h2 >Description: {{ abstractpainting.description }}</h2></div>
-     <div class="imgdescriptionmain"> <h2 >Size: {{ abstractpainting.Size }}</h2></div>
-     <div class="imgdescriptionbutton"><button class="addtocart" @click="toogleapdisplay(abstractpainting)" > Go Back</button></div>
-</div>
-
-
-    
-   </div> 
-   <div  v-for="(reliefpainting, index) in filteredreliefpainting" :key="index"  style="z-index:3;"   class="polaroid, view">
-   <div class="imgdescription" style="width:100%; height:fit-content !important; float:left;" >
-    <img :src="reliefpainting.img" class="viewpage">
-  </div>
-     <div  class="imgdescription"  style="width:100%; height:50%; float:left;">
-      <div class="imgdescriptionmain"> <h2 >Description: {{ reliefpainting.description }}</h2></div>
-     <div class="imgdescriptionmain"> <h2 >Size: {{ reliefpainting.Size }}</h2></div>
-     <div class="imgdescriptionbutton"><button class="addtocart" @click="tooglerpdisplay(reliefpainting)" > Go Back</button></div>
-</div>
-
-
-    
-   </div> <div  v-for="( portraitpainting, index) in filteredportraitpainting" :key="index"   style="z-index:3;"  class="polaroid, view">
-   <div class="imgdescription"  style="width:100%;height:fit-content !important; float:left;" >
-    <img :src=" portraitpainting.img" class="viewpage">
-  </div>
-     <div  class="imgdescription"  style="width:100%; height:50%; float:left;">
-      <div class="imgdescriptionmain"> <h2 >Description: {{  portraitpainting.description }}</h2></div>
-     <div class="imgdescriptionmain"> <h2 >Size: {{  portraitpainting.Size }}</h2></div>
-     <div class="imgdescriptionbutton"><button class="addtocart" @click="toogleppdisplay( portraitpainting)" > Go Back</button></div>
-</div>
-
-
-    
-   </div> 
-   <div  v-for="( casting, index) in filteredcasting" :key="index"  style="z-index:3;"  class="polaroid, view">
-   <div class="imgdescription"  style="width:100%; height:fit-content !important; float:left;" >
-    <img :src=" casting.img" class="viewpage">
-  </div>
-     <div  class="imgdescription"  style="width:100%; height:50%; float:left;">
-      <div class="imgdescriptionmain"> <h2 >Description: {{  casting.description }}</h2></div>
-     <div class="imgdescriptionmain"> <h2 >Size: {{  casting.Size }}</h2></div>
-     <div class="imgdescriptionbutton"><button class="addtocart" @click="tooglecdisplay( casting)" > Go Back</button></div>
-</div>
-
-
-    
-   </div> 
- <div  v-for="(absculpt, index) in filteredabsculpt" :key="index" style="z-index:3;"   class="polaroid, view">
-   <div class="imgdescription"  style="width:100%; height:fit-content !important; float:left;">
-    <img :src="absculpt.img" class="viewpage">
-  </div>
-     <div  class="imgdescription" style="width:100%; height:50%; float:left;">
-      <div class="imgdescriptionmain"> <h2 >Description: {{absculpt.description }}</h2></div>
-     <div class="imgdescriptionmain"> <h2 >Size: {{ absculpt.Size }}</h2></div>
-     <div class="imgdescriptionbutton"><button class="addtocart" @click="toogleasdisplay(absculpt)" > Go Back</button></div>
-</div>
-
-
-    
-   </div> 
- <div  v-for="(reliefsculpt, index) in filteredreliefsculpt" :key="index"  style="z-index:3;"   class="polaroid, view">
-   <div class="imgdescription"  style="width:100%; height:fit-content !important; float:left;">
-    <img :src="reliefsculpt.img" class="viewpage">
-  </div>
-     <div  class="imgdescription" style="width:100%; height:50%; float:left;">
-      <div class="imgdescriptionmain"> <h2 >Description: {{ reliefsculpt.description }}</h2></div>
-     <div class="imgdescriptionmain"> <h2 >Size: {{ reliefsculpt.Size }}</h2></div>
-     <div class="imgdescriptionbutton"><button class="addtocart" @click="tooglersdisplay(reliefsculpt)" > Go Back</button></div>
-</div>
-
-
-    
-   </div> 
-
-   
-
-   </template>
-   
-   
-
-<script>
-import axios from 'axios';
-import { mapActions } from 'vuex';
-import { POSTERS } from '@/store/storeconstants';
-import {storage, db} from "@/firebase"
-
-import { ref,uploadBytes,uploadBytesResumable,getDownloadURL } from "firebase/storage"
-
-import { collection, addDoc, setDoc, getDoc, getDocs, query, where, doc } from 'firebase/firestore';
-
-export default {
-    name: 'Artworkpage',
-data(){return{
-             
-             
-            
-           showprofile:true,
-           number_of_orders:0,
-           
-           landscapepaintingprofiles:[],
-               abstractpaintingprofiles:[
-              {Title:  'The Lord is with you', Size: '2 by 3 ft ', Price:200000, img: '/assets/galaxy_image.jpg', isfav:false, buy:false, addtocart:false},
-              {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/frame_3.jpg', isfav:false, buy:false, addtocart:false},
-              {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Health1.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness_image_for_Logo3.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness6.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness3.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/health.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Fitness5.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/frame_2.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/frame_1.webp', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness4.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness_image_for_Logo4.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/free-healthy-green-apple-image.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Apartment.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with us', Size: '3 by 4ft', Price: 500000, img: '/assets/Boss_UMC_picture.jpg', isfav:false, buy:false, addtocart:false},
-               
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Laptop_Image1.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/lion.jpeg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Tayo_Unilag_Interior_Decorator2.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Yoga1.jpg', isfav:false, buy:false, addtocart:false},
-              
-               ],
-               reliefpaintingprofiles:[
-               {Title:  'The Lord is with you', Size: '2 by 3 ft ', Price:200000, img: '/assets/galaxy_image.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with us', Size: '3 by 4ft', Price: 500000, img: '/assets/Boss_UMC_picture.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness_image_for_Logo3.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness_image_for_Logo4.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness3.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness4.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Fitness5.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness6.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/frame_1.webp', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/frame_2.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/frame_3.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/free-healthy-green-apple-image.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Apartment.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/health.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Health1.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Laptop_Image1.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/lion.jpeg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Tayo_Unilag_Interior_Decorator2.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Yoga1.jpg', isfav:false, buy:false, addtocart:false},
-              
-               ],
-
-              portraitpaintingprofiles:[
-               {Title:  'The Lord is with you', Size: '2 by 3 ft', Price:200000, img: '/assets/galaxy_image.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with us', Size: '3 by 4ft', Price: 500000, img: '/assets/Boss_UMC_picture.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness_image_for_Logo3.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness_image_for_Logo4.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness3.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness4.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Fitness5.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness6.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/frame_1.webp', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/frame_2.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/frame_3.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/free-healthy-green-apple-image.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Apartment.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/health.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Health1.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Laptop_Image1.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/lion.jpeg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Tayo_Unilag_Interior_Decorator2.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Yoga1.jpg', isfav:false, buy:false, addtocart:false},
-              
-               ],
-               castingprofiles:[
-               {Title:  'The Lord is with you', Size: '2 by 3 ft ', Price:200000, img: '/assets/galaxy_image.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with us', Size: '3 by 4ft', Price: 500000, img: '/assets/Boss_UMC_picture.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness_image_for_Logo3.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness_image_for_Logo4.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness3.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness4.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Fitness5.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness6.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/frame_1.webp', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/frame_2.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/frame_3.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/free-healthy-green-apple-image.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Apartment.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/health.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Health1.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Laptop_Image1.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/lion.jpeg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Tayo_Unilag_Interior_Decorator2.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Yoga1.jpg', isfav:false, buy:false, addtocart:false},
-              
-               ],
-               absculptprofiles:[
-               {Title:  'The Lord is with you', Size: '2 by 3 ft ', Price:200000, img: '/assets/galaxy_image.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with us', Size: '3 by 4ft', Price: 500000, img: '/assets/Boss_UMC_picture.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness_image_for_Logo3.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness_image_for_Logo4.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness3.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness4.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Fitness5.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness6.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/frame_1.webp', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/frame_2.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/frame_3.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/free-healthy-green-apple-image.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Apartment.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/health.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Health1.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Laptop_Image1.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/lion.jpeg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Tayo_Unilag_Interior_Decorator2.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Yoga1.jpg', isfav:false, buy:false, addtocart:false},
-              
-               ],
-                reliefsculptprofiles:[
-               {Title:  'The Lord is with you', Size: '2 by 3 ft ', Price:200000, img: '/assets/galaxy_image.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with us', Size: '3 by 4ft', Price: 500000, img: '/assets/Boss_UMC_picture.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness_image_for_Logo3.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness_image_for_Logo4.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness3.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness4.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Fitness5.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/fitness6.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/frame_1.webp', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/frame_2.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/frame_3.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/free-healthy-green-apple-image.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Apartment.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/health.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Health1.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Laptop_Image1.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/lion.jpeg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Tayo_Unilag_Interior_Decorator2.jpg', isfav:false, buy:false, addtocart:false},
-               {Title:  'The Lord is with Everyone', Size: '1 by 2 ft', Price: 100000, img: '/assets/Yoga1.jpg', isfav:false, buy:false, addtocart:false},
-              
-               ],
-              
-               
-    innerHeight:innerHeight,
-    singleHeight:innerHeight,
-    currentIndexL:0,
-    currentIndexA:0,
-    currentIndexR:0,
-    currentIndexP:0,
-    currentIndexC:0,
-    currentIndexAS:0,
-    currentIndexRS:0,
-     
-}
-    },
-    mounted(){
-    axios.get('http://localhost:3000/cartpostprofile')
-    .then(response=> this.landscapepaintingprofiles=response.data)
-     
-  },
-    
-     computed: {
-      
-      
-      slidesInnermarginTopL(){return this.currentIndexL * this.singleHeight },
-     slidesInnermarginTopA(){return this.currentIndexA * this.singleHeight }, 
-    slidesInnermarginTopR(){return this.currentIndexR * this.singleHeight },
-    slidesInnermarginTopP(){return this.currentIndexP * this.singleHeight },
-    slidesInnermarginTopC(){return this.currentIndexC * this.singleHeight},
-    slidesInnermarginTopAS(){return this.currentIndexAS * this.singleHeight},
-    slidesInnermarginTopRS(){return this.currentIndexRS * this.singleHeight},
-    
-    // filtered display//
-    filteredlanscapepainting(){return this.landscapepaintingprofiles.filter((landscapepainting)=>landscapepainting.display)},
-      filteredabstractpainting(){return this.abstractpaintingprofiles.filter((abstractpainting)=>abstractpainting.display)},
-        filteredreliefpainting(){return this.reliefpaintingprofiles.filter((reliefpainting)=>reliefpainting.display)},
-          filteredportraitpainting(){return this. portraitpaintingprofiles.filter(( portraitpainting)=> portraitpainting.display)},
-            filteredcasting(){return this.castingprofiles.filter((casting)=>casting.display)},
-              filteredabsculpt(){return this.absculptprofiles.filter((absculpt)=>absculpt.display)},
-                filteredreliefsculpt(){return this.reliefsculptprofiles.filter((reliefsculpt)=>reliefsculpt.display)},
-                
-
-                //filtered addtocart//
-                filteredlandscapepaintingaddtocart(){return this.landscapepaintingprofiles.filter((landscapepainting)=>landscapepainting.addtocart)},
-              filteredabstractpaintingaddtocart(){return this.abstractpaintingprofiles.filter((abstractpainting)=>abstractpainting.addtocart)},
-               
-              },
-               
-              
-                  
-
-
-    
-  
-    methods:{
-      
-      ...mapActions('auth', {
-        post: POSTERS,
-    }),
-    
-    
-    increament(){ return this.number_of_orders++ },
-
-      decreament(){ return this.number_of_orders-- },
-    
-      goToPrevL(){if(this.currentIndexL===0){return}
-        this.currentIndexL--
-    },
-    goToNextL(){if(this.currentIndexL===(this.landscapepaintingprofiles.length)*0.5){return}
-        this.currentIndexL++
-    },
-    gotoslideindexL(index){this.currentIndexL=index}, 
-    toggleaddtocart1(landscapepainting = ''){
-      
-      landscapepainting.addtocart = !landscapepainting.addtocart;
-      
-              var numberoforders = JSON.stringify(this.number_of_orders+1);
-              localStorage.setItem(`numberofordersaddedtocart`,numberoforders );
-              // console.log(numberoforders);
-            ///outline the received data
-             var total_amount = landscapepainting.qty * landscapepainting.price;
-              var data = { id: landscapepainting.id, 
-                           qty:landscapepainting.qty, 
-                           imgfirst:landscapepainting.imgfirst, 
-                           title: landscapepainting.title,
-                           total_amount: total_amount,
-                           size: landscapepainting.size,
-                           price: landscapepainting.price, 
-                           qty: landscapepainting.qty,
-                           addtocart: landscapepainting.addtocart, 
-                           
-                           };
-                  // save the data to localStorage
-             if (landscapepainting.addtocart)  {localStorage.setItem(`cart_${landscapepainting.id}`, JSON.stringify(data))};
-             if (!landscapepainting.addtocart)  {localStorage.removeItem(`cart_${landscapepainting.id}` );}
-               
- 
-      
-//       var data = JSON.stringify( landscapepainting);
-//          localStorage.setItem(`cart`,data );
-
-//          /*****
-//  * get item
-//  */ 
-//          var get_data = localStorage ;
-//          localStorage.getItem(`postL1`,get_data);
-        
-        
-//          var postL=get_data;
-//          //  console.log(postL);
-        //this.post({postL:postL});
-     },
-
-     //toogleremovecart1( product_id = ''){
-        //     localStorage.removeItem('cart_'+product_id );
-       //  },
-       
-       togglefavorite1(landscapepainting){ 
-        landscapepainting.isfav=!landscapepainting.isfav;
-        var data_favorite = { id: landscapepainting.id, 
-                           qty:landscapepainting.qty, 
-                           imgfirst:landscapepainting.imgfirst, 
-                           title: landscapepainting.title,
-                           isfav:landscapepainting.isfav,
-                           size: landscapepainting.size,
-                           price: landscapepainting.price, 
-                           qty: landscapepainting.qty,
-                           addtocart: landscapepainting.addtocart, };
-        if (landscapepainting.isfav)  {localStorage.setItem(`favorites_${landscapepainting.id}`, JSON.stringify(data_favorite))};
-        if (!landscapepainting.isfav)  {localStorage.removeItem(`favorites_${landscapepainting.id}` );}
-        
-      },
-    tooglelpdisplay(landscapepainting){landscapepainting.display=!landscapepainting.display},
-  
-    goToPrevA(){if(this.currentIndexA===0){return}
-        this.currentIndexA--
-    },goToNextA(){if(this.currentIndexA===(this.abstractpaintingprofiles.length)*0.5){return}
-        this.currentIndexA++
-    },gotoslideindexA(index){this.currentIndexA=index}, 
-    toggleaddtocart2(abstractpainting=''){abstractpainting.addtocart=!abstractpainting.addtocart;
-      var data = JSON.stringify( abstractpainting); 
-         localStorage.setItem(`cart`,data );
-         
-         
-    
-    },
-    toogleapdisplay(abstractpainting){abstractpainting.display=!abstractpainting.display},
-    
-
-  goToPrevR(){if(this.currentIndexR===0){return}
-      this.currentIndexR--
-  },goToNextR(){if(this.currentIndexR===(this.reliefpaintingprofiles.length)*0.5){return}
-      this.currentIndexR++
-  },gotoslideindexR(index){this.currentIndexR=index}, 
-  toggleaddtocart(reliefpainting){reliefpainting.addtocart=!reliefpainting.addtocart},
-  tooglerpdisplay(reliefpainting){reliefpainting.display=!reliefpainting.display},
-  
-  goToPrevP(){if(this.currentIndexP===0){return}
-      this.currentIndexP--
-  },goToNextP(){if(this.currentIndexP===(this.portraitpaintingprofiles.length)*0.5){return}
-      this.currentIndexP++
-  },gotoslideindexP(index){this.currentIndexP=index}, 
-  toggleaddtocart(portraitpainting){portraitpainting.addtocart=!portraitpainting.addtocart},
-  toogleppdisplay(portraitpainting){portraitpainting.display=!portraitpainting.display},
-
-  goToPrevC(){if(this.currentIndexC===0){return}
-      this.currentIndexC--
-  },goToNextC(){if(this.currentIndexC===(this.castingprofiles.length)*0.5){return}
-      this.currentIndexC++
-  },gotoslideindexC(index){this.currentIndexC=index}, 
-  toggleaddtocart(casting){casting.addtocart=!casting.addtocart},
-  tooglecdisplay(casting){casting.display=!casting.display},
-
-  goToPrevAS(){if(this.currentIndexAS===0){return}
-        this.currentIndexAS--
-    },goToNextAS(){if(this.currentIndexAS===(this.absculptprofiles.length)*0.5){return}
-        this.currentIndexAS++
-    },gotoslideindexAS(index){this.currentIndexAS=index}, 
-    toggleaddtocart(){absculpt.addtocart=!absculpt.addtocart},
-    toogleasdisplay(absculpt){absculpt.display=!absculpt.display},
-
-     goToPrevRS(){if(this.currentIndexRS===0){return}
-        this.currentIndexRS--
-    },goToNextRS(){if(this.currentIndexRS===(this.reliefsculptprofiles.length)*0.5){return}
-        this.currentIndexRS++
-    },gotoslideindexRS(index){this.currentIndexRS=index}, 
-    toggleaddtocart(reliefsculpt){reliefsculpt.addtocart=!reliefsculpt.addtocart},
-    tooglersdisplay(reliefsculpt){reliefsculpt.display=!reliefsculpt.display},
-
-         
-    props: {pages: {type:null,
-        default:2 }
-}, 
-
- attached() {let singleHeight = this.$el.clientHeight/this.pages
-    this.$set("singleHeight", singleHeight)
-    this.$set("innerHeight", singleHeight*index)
-    
-    
-    
-},
-    }}
-
-
-</script>

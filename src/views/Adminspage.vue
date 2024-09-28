@@ -100,8 +100,7 @@ border-radius:5px;
     height:50px;
 }
 
-.price{
-    
+.price{  
     float:left;
     margin-top: 30px;
     margin-bottom: 30px;
@@ -120,6 +119,17 @@ position: relative;
 margin-left:20%;
 margin-right:20%;
 }
+
+.input_quantity {
+float:left;
+width:70%;
+left:-10%;
+position: relative;
+margin-left:20%;
+margin-right:20%;
+}
+
+
 .policy_checkbox_input_category_form{
 float:left;
 width:70%;
@@ -286,6 +296,18 @@ padding-right:20%;
     height:100%;
     }
 
+    .admin_title{
+        position:relative;
+    margin-top: 10px;
+    top:5px;
+    float:left;
+    justify-content: center;
+    margin-left:17%;
+    margin-right:15%;
+    width:70%;
+    height:100%;
+    }
+
     .input_div_social_media_link {
         position:relative;
     margin-top: 10px;
@@ -347,6 +369,7 @@ padding-right:20%;
                             <option value=""></option>
                            <option value="Portrait painting"> Potrait Paintings</option>
                            <option value="Canvas Painting">Canvas Paintings</option>
+                           <option value="Picture prints">Framed/ Canvas Picture prints</option>
                             <option value="Interior Decoration">Interior Decoration</option>
                             <option value="Sculpts and Artifacts"> Sculpts and Artifacts</option>
                                 <option value="LED Light and Art Signage"> LED Light and Art Signage</option>
@@ -383,8 +406,8 @@ padding-right:20%;
         <img v-if="img_show"  class="select-image"  :src="url1"  >
         <img v-if="img_show" class="select-image"   :src="url2"  >
         <video v-if="video_show" width="250" height="150" controls>
-  <source :src=url_video type="video/mp4">
-  <source :src="url_video" type="video/ogg">
+  <source :src = url_video type="video/mp4">
+  <source :src = "url_video" type="video/ogg">
   Your browser does not support the video tag.
 </video>
         <!-- class="select-image_choose" -->
@@ -418,13 +441,27 @@ padding-right:20%;
     <div class="admin_description">
                   <textarea maxlength = "777" id="Admin_description" name="Admin_description" v-model="Admin_description" placeholder="Describe the Item uploaded with maximum of 777 words" style="min-width: 100%; height: 100px;" required></textarea>
               </div>
+    <div class="admin_title">
+                  <textarea maxlength = "777" id="Title" name="Title" v-model="Admin_title" placeholder="Title" style="min-width: 100%; height: 100px;" required></textarea>
+              </div>
    
     <div class="input_div_social_media_link">
                     <input type = "text" v-model="youtubelink" class="social_media_link_input_position"  placeholder="YouTube or Any Social Media Link" required>
                 </div>
-    <div class="input_category_form">
-    <input type="number"  name="price" v-model="main_price" @input="price_input" placeholder="Price" class="price" required>
+            
+                <div class="input_quantity" v-if = quantity_show >
+    <input type="number"  name="quantity" v-model="width" @input="price_input" placeholder="Price per Item" class="price" required>
+    <input type="number"  name="quantity" v-model="height" @input="price_input" placeholder="Price per Item" class="price" required>
     </div>
+    <div class="input_quantity" v-if = quantity_show >
+    <input type="number"  name="quantity" v-model="main_quantity" @input="price_input" placeholder="Price per Item" class="price" required>
+    </div>    
+
+    <div class="input_category_form">
+    <input type="number"  name="price" v-model="main_price" @input="price_input" placeholder="Price per Item" class="price" required>
+    </div>
+ 
+   
                     
                     <div class = "policy_checkbox_input_category_form" >
                         <input class = "policy_checkbox" style="margin-top: 2%; margin-left: 2%;" type="checkbox" id="checkbox" required>
@@ -461,8 +498,13 @@ export default {
         display_select_category:true,
         select_category_now:'',
         main_price:'',
+        main_quantity:'',
+        width:'',
+        height:'',
+        Size:'',
         youtubelink:'',
         Admin_description:'',
+        Admin_title:'',
         First_selectedFile: null,
         Second_selectedFile: null,
         visuals_subcategory_data:'',
@@ -479,6 +521,7 @@ export default {
         video_show:false,
         img_input_show:false,
         video_input_show:false,
+        quantity_show:'',
         upload_image_button:false,
         upload_video_button:false,
         find_admin_seller:'',
@@ -738,14 +781,25 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
         this.upload_video_button = true
             break;
             
-            
+            case 'Picture prints':
+                this.quantity_show = true,
+                this.Size = true
+                break;
+            case 'Award and Plaques':
+                this.quantity_show = true
+                break;
+            case 'Sculpts and Artifacts':
+                this.quantity_show = true
+                break;
             default:
         this.img_show=true,
         this.video_show = false,
         this.img_input_show = true,
         this.video_input_show = false,
         this.upload_image_button= true,
-        this.upload_video_button = false
+        this.upload_video_button = false,
+        this.quantity_show = false,
+        this.Size = false
                     break;
             }
     },
@@ -799,9 +853,10 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
           //var get_select_category = document.querySelector(`#select_category_here`).innerHTML;
           
 
+         
           if (this.select_category_now){ this.display_select_category = false;
             
-          } else {return true;}
+        } else {return true;}
           
           switch(this.select_category_now){ 
             case 'Visual Art Service' : this.Visuals_Art_Services_selected = true , this.Graphics_Art_and_Technology = false;
@@ -839,7 +894,9 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
     
     async onsubmit_category(){
         this.showLoading(true);
-
+        if ((this.visuals_subcategory_data= 'Picture prints')|| (this.visuals_subcategory='Award and Plaques_data') ||(this.visuals_subcategory_data='Canvas Painting') ){
+            this.display_art =true;  
+            } else {this.display_art =false } ;
      //try{   
         var Admin_item_token = ((Math.random(777777777,999999999))*10000000000).toFixed(0);
         //storing of Admin_token
@@ -878,8 +935,12 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
                 admin_email:            localStorage.getItem(`client_email`),
                 category:               this.select_category_now,
                 visuals_subcategory:    this.visuals_subcategory_data,
+                display_art:            this.display_art,                       
                 graphics_subcategory:   this.graphics_subcategory_data,
                 Admin_description:      this.Admin_description,
+                Title:                  this.Title,
+                Size:                   `${this.width}Ft by ${this.height} Ft`,
+                addtocart:              false,
                 admin_image_url:        this.admin_image_url,
                 adminnew_id:            this.adminnew_id,
                 admin_name:             this.admin_name,
@@ -889,6 +950,7 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
                 Second_image_selected:  this.url2,
                 video_selected:         this.url_video,
                 price:                  this.main_price,
+                main_quantity:          this.main_quantity,
                 youtubelink:            this.youtubelink,
                 Admin_item_token:       Admin_item_token,
                 Admin_upload_date:      new Date(),
@@ -964,27 +1026,30 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
         // this.$refs.First_fileinput.files[0]=''
         // this.$refs.Second_fileinput.files[0]=''
         // this.$refs.Video_fileinput.files[0]=''
-        this.Visuals_Art_Services_selected=false,
-        this.Graphics_Art_and_Technology=false,
-        this.display_Select_Graphics_Sub_category=true,
-        this.display_Select_Visuals_Sub_category=true,
-        this.display_select_category=true,
-        this.select_category_now='',
-        this.main_price='',
-        this.youtubelink='',
-        this.Admin_description='',        
-        this.visuals_subcategory_data='',
-        this.graphics_subcategory_data='',       
-        this.Admin_item_token='',
-        this.show_first_image=true,
-        this.show_second_image=true,
-        this.show_first_placeholder_image=false,
-        this.show_second_placeholder_image=false,
-        this.url1='', 
-        this.url2='',
-        this.url_video='',     
-        this.path1= '',
-        this.path2= ''
+        // this.Visuals_Art_Services_selected=false,
+        // this.Graphics_Art_and_Technology=false,
+        // this.display_Select_Graphics_Sub_category=true,
+        // this.display_Select_Visuals_Sub_category=true,
+        // this.display_select_category=true,
+        // this.select_category_now='',
+        // this.main_price='',
+        // this.main_quantity='',
+        // this.youtubelink='',
+        // this.Admin_description='',
+        // this.Size='',
+        // this.Title='',       
+        // this.visuals_subcategory_data='',
+        // this.graphics_subcategory_data='',       
+        // this.Admin_item_token='',
+        // this.show_first_image=true,
+        // this.show_second_image=true,
+        // this.show_first_placeholder_image=false,
+        // this.show_second_placeholder_image=false,
+        // this.url1='', 
+        // this.url2='',
+        // this.url_video='',     
+        // this.path1= '',
+        // this.path2= '',
         this.showLoading(false);
     }
                        
