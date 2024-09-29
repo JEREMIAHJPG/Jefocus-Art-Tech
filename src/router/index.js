@@ -125,7 +125,7 @@ const routes = [
   },
 
   {
-    path: '/Favoritepage',
+    path: '/:Favoritepage',
     name: '/Favoritepage',
     component: Favoritepage,
     meta:{auth:false} 

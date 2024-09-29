@@ -941,6 +941,7 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
                 Title:                  this.Title,
                 Size:                   `${this.width}Ft by ${this.height} Ft`,
                 addtocart:              false,
+                isFav:                  false,
                 admin_image_url:        this.admin_image_url,
                 adminnew_id:            this.adminnew_id,
                 admin_name:             this.admin_name,

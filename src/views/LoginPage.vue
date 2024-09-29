@@ -180,10 +180,11 @@ import router from '@/router';
 //creating another document profile
 
                     var tokenprofile = {
-                        get_ID :            this.get_ID ,
-                        reclaimed_email:    this.reclaimed_email,
-                        reclaimed_name:     this.reclaimed_name,
-                        reclaimed_password:  this.reclaimed_password,
+                        user_ID:              this.recieved_user_id_id,
+                        get_ID :              this.get_ID ,
+                        reclaimed_email:      this.reclaimed_email,
+                        reclaimed_name:       this.reclaimed_name,
+                        reclaimed_password:   this.reclaimed_password,
                         phonenumber:          this.phonenumber,
                         reclaimed_profession: this.reclaimed_profession,
                         reclaimed_get_token: this.IDToken

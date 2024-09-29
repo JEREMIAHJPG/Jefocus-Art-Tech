@@ -151,7 +151,7 @@ import {storage, db} from "@/firebase"
 
 import { ref,uploadBytes,uploadBytesResumable,getDownloadURL } from "firebase/storage"
 
-import { collection, addDoc, setDoc, getDoc, getDocs, query, where, doc } from 'firebase/firestore';
+import { collection, addDoc,where,setDoc, onSnapshot, deleteDoc, doc, getDocs, query, getDoc } from 'firebase/firestore';
 
 export default {
     name: 'Artworkpage',
@@ -163,7 +163,7 @@ data(){return{
     showprofile:true,
     number_of_orders:0,     
     items_to_display_profile:[],      
-              
+    client_favorites_id:'',
                
     innerHeight:innerHeight,
     singleHeight:innerHeight,
@@ -226,7 +226,7 @@ data(){return{
     ,
     async buy_button(items_to_display){
       // this.client_token_ID = 
-      this.client_email = await localStorage.getItem(`client_email`);
+      // this.client_email = await localStorage.getItem(`client_email`);
       this.client_selected_approved_item_token = await items_to_display.Admin_item_token;
       this.client_selected_approved_item_admin_monitor_new_id = await items_to_display.admin_monitor_new_id;
    
@@ -239,11 +239,13 @@ data(){return{
      var total_amount = items_to_display.qty * items_to_display.price;
       var data = { id: this.client_selected_approved_item_token, 
                    qty:items_to_display.qty, 
-                   First_image_selected:items_to_display.First_image_selected, 
-                   title: items_to_display.title,
+                   First_image_selected:items_to_display.First_image_selected,
+                   Second_image_selected:items_to_display.Second_image_selected, 
+                   title: items_to_display.Title,
                    total_amount: total_amount,
-                   size: items_to_display.size,
+                   size: items_to_display.Size,
                   //  price: items_to_display.price, 
+                  client_token_ID:  this.client_token_ID,
                   client_email : localStorage.getItem(`client_email`),
                   client_selected_approved_item_token : items_to_display.Admin_item_token,
                   client_selected_approved_item_admin_monitor_new_id : items_to_display.admin_monitor_new_id,
@@ -280,10 +282,11 @@ data(){return{
                 main_quantity:items_to_display.main_quantity, 
                            First_image_selected:items_to_display.First_image_selected, 
                            Second_image_selected:items_to_display.Second_image_selected, 
-                           title: items_to_display.title,
+                           title: items_to_display.Title,
                           //  total_amount: total_amount,
-                           size: items_to_display.size,
+                           size: items_to_display.Size,
                           //  price: items_to_display.price, 
+                          client_token_ID:  this.client_token_ID,
                           client_email : localStorage.getItem(`client_email`),
                           client_selected_approved_item_token : items_to_display.Admin_item_token,
                           client_selected_approved_item_admin_monitor_new_id : items_to_display.admin_monitor_new_id,
@@ -321,24 +324,34 @@ data(){return{
         //     localStorage.removeItem('cart_'+product_id );
        //  },
        
-       togglefavorite1(items_to_display){ 
+      async togglefavorite1(items_to_display){ 
         items_to_display.isfav=!items_to_display.isfav;
-        var data = { id: this.client_selected_approved_item_token, 
-                main_quantity:items_to_display.main_quantity, 
-                           First_image_selected:items_to_display.First_image_selected, 
-                           Second_image_selected:items_to_display.Second_image_selected, 
+        var data_favorite = { id: this.client_selected_approved_item_token, 
+                           main_quantity:items_to_display.main_quantity, 
+                          //  First_image_selected:items_to_display.First_image_selected, 
+                          //  Second_image_selected:items_to_display.Second_image_selected, 
                            title: items_to_display.title,
                           //  total_amount: total_amount,
-                           size: items_to_display.size,
-                          //  price: items_to_display.price, 
+                          size: items_to_display.Size,
+                          //  price: items_to_display.price,
+                          client_token_ID:  this.client_token_ID, 
                           client_email : localStorage.getItem(`client_email`),
                           client_selected_approved_item_token : items_to_display.Admin_item_token,
                           client_selected_approved_item_admin_monitor_new_id : items_to_display.admin_monitor_new_id,
-                          addtocart: items_to_display.addtocart, 
+                          addtocart: items_to_display.addtocart,
                            
                            };
-        if (items_to_display.isfav)  {localStorage.setItem(`favorites_${items_to_display.id}`, JSON.stringify(data_favorite))};
-        if (!items_to_display.isfav)  {localStorage.removeItem(`favorites_${items_to_display.id}` );}
+        if (items_to_display.isfav)  {await addDoc(collection(db,'client_favorites'), data_favorite );};
+
+                          //  get favorites ID
+                          onSnapshot(query(collection(db,'client_favorites'), where('client_selected_approved_item_token', '==' , items_to_display.Admin_item_token)),
+            (favorite_contents) =>{favorite_contents.forEach((doc) => {client_favorites_id = doc.id
+            })  }) 
+
+        if (!items_to_display.isfav)  { await deleteDoc(doc(db, 'client_favorites', this.client_favorites_id))
+        console.log("This Favorite is deleted from the client_favorites collection with id :", this.client_favorites_id);}
+        // if (items_to_display.isfav)  {localStorage.setItem(`favorites_${items_to_display.id}`, JSON.stringify(data_favorite))};
+        // if (!items_to_display.isfav)  {localStorage.removeItem(`favorites_${items_to_display.id}` );}
         
       },
     tooglelpdisplay(items_to_display){items_to_display.display=!items_to_display.display},
