@@ -290,7 +290,7 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
          convert_all_cart_to_database(){
           var cart_contents_list = [];
           this.get_all_items_in_cart().forEach((localstorage_cart)=>{
-            onSnapshot(query(collection(db, 'approved_checked_adverts'), where('Admin_item_token', '==' , localstorage_cart.data().client_selected_approved_item_token)),
+            onSnapshot(query(collection(db, 'approved_checked_adverts'), where('Admin_item_token', '==' , localstorage_cart.client_selected_approved_item_token)),
             (cart_contents) =>{cart_contents.forEach((doc) => {cart_contents_list.push(doc.data())
             })  }) 
           })

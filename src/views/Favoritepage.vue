@@ -1,7 +1,64 @@
 
 <template >
+
+  <!-- --- -->
+  <div class="reply_form_view_background_view_favorite" v-if="show_artwork_view_form_favorite" >
+         
+         <center>
+             <div class=container_view_favorite style="margin-top: 55px;">
+                             
+       <div class="image_view_view1_artwork_view_favorite">
+         <img  title="image_view_content" class="image_view_content_view1_artwork_view_favorite" >
+         <img  title="image_view_content" class="image_view_content_view1_artwork_view_favorite" >
+        
+     </div>
+      
+      </div> 
+            </center> 
+               <center>
+                   <!-- <h1 style="color: green">GOD</h1> -->
+               <div>
+                 
+         <!-- <img class="currency_image_view1_artwork" title="N"> -->
+         <div class="view1_artwork_favorite">
+           <h style=" color:white; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 300; font-size: large">Title :</h>
+             
+             <h style="color: white">Title</h>
+         </div>
+    
+    
+         <!-- <img class="currency_image_view1_artwork" title="N"> -->
+         <div class="view1_artwork_favorite">
+           <h style=" color:white; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 300; font-size: large">Size :</h>
+             
+             <h style="color: white">Size</h>
+         </div>
+         <div class="view1_artwork_favorite">
+           <h style=" color:white; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 300; font-size: large">Description :</h>
+           <h style="color: white">Description</h> 
+            
+           
+         </div>
+        
+        
+         <div class="view1_artwork_favorite">
+           <h style=" color:white; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 300; font-size: large">Price :</h>
+           <img  title="N">
+           <h style="color: white">Price</h>
+         </div>
+               </div>
+ 
+           <br>
+           <div class="view1_artwork_favorite">
+               <button @click="back_view_button_favorite()" style="color: black; border-radius: 10px; width:50px; height:50px; font-weight: 700"> Back </button>
+           </div>
+      </center>
+      
+     
+     </div>
+  <!-- --- -->
   
-  <div style="border-radius:100%; position:sticky; top:70%; z-index:2; width:100px; height: 100px; background-color: black; "  >
+  <div v-if="view_artwork_page_favorite" style="border-radius:100%; position:sticky; top:70%; z-index:2; width:100px; height: 100px; background-color: black; "  >
       <h1 id="numberoforders" style="color:white; font-size:xx-large;  position: relative; z-index:8; left:40%; top:30%;">{{ numberoforders }}</h1>
     </div>
   <div v-for="(favorite ,index) in convert_all_favorites_to_database()" :key="index" class="Slides_favorite" style="height: 751px; top: 0px;">
@@ -55,8 +112,8 @@
     
     <div class="monitor_buttons_view1_artwork_favorite">
       
-        <button class="view_button_view1_artwork_favorite"  @click=  "view_button(favorite)">View</button>
-        <button class="buy_button_view1_artwork_favorite"   @click= "buy_button(favorite)">Buy</button>
+        <button class="view_button_view1_artwork_favorite"  @click=  " view_artwort_button(favorite)">View</button>
+        <button class="buy_button_view1_artwork_favorite"   @click= "buy_button_favorite(favorite)">Buy</button>
         <center>
         <div >
            
@@ -145,6 +202,8 @@ name:'Favoritepage',
 
 data(){
     return{ 
+      show_artwork_view_form_favorite : false,
+      view_artwork_page_favorite:true,
       client_token_ID: this.$route.params.Favoritepage,
       client_selected_approved_item_token:'',  
       client_selected_approved_item_admin_monitor_new_id:'',     
@@ -192,7 +251,7 @@ return favorites;
 convert_all_favorites_to_database(){
           var favorite_contents_list = [];
           this.get_favoriteitems().forEach((storage_favorite)=>{
-            onSnapshot(query(collection(db, 'approved_checked_adverts'), where('id', '==' , storage_favorite.data().client_selected_approved_item_token)),
+            onSnapshot(query(collection(db, 'approved_checked_adverts'), where('id', '==' , storage_favorite.client_selected_approved_item_token)),
             (favorite_contents) =>{favorite_contents.forEach((doc) => {favorite_contents_list.push(doc.data())
             })  }) 
           })
@@ -213,7 +272,22 @@ increament(){ return this.numberoforders++ },
 
 decreament(){ return this.numberoforders-- },
 
-async buy_button(favorite){
+async view_artwort_button_favorite(favorite){
+      this.show_artwork_view_form_favorite = true;
+      this.view_artwork_page_favorite=false;
+      this.Price=favorite.price,
+      this.Description=favorite.Admin_description,
+      this.Title=favorite.Title,
+      this.view_first_image=favorite.First_image_selected,
+      this.view_second_image=favorite.Second_image_selected,
+      this.Size=favorite.Size
+    },
+    back_view_button_favorite(){
+      this.show_artwork_view_form_favorite = false;
+      this.view_artwork_page_favorite = true;
+    },
+
+async buy_button_favorite(favorite){
   this.client_selected_approved_item_token = await favorite.Admin_item_token;
       this.client_selected_approved_item_admin_monitor_new_id = await favorite.admin_monitor_new_id;
    
@@ -300,6 +374,56 @@ async remove_favorite(favorite){
 </script>
 
 <style scoped>
+
+.container_view_favorite{
+                      position:relative;
+z-index: 7;
+width: 300;
+float: left;
+/* margin-left: 3%; */
+}
+
+.view1_artwork_favorite{
+float: left;
+width: 100%;
+}
+
+                    .reply_form_view_background_view_favorite{
+    z-index: 10;
+    background-color: rgb(0,0,0, 0.8);
+    width:100%;
+    position:relative;
+    height:1000px;
+    margin-bottom: 100px;
+}
+                    .price_number_view1_artwork_favorite{
+color:black;
+float: left;
+padding-left: 5px;
+padding-right: 5px;
+padding-left: 2px;
+
+}
+                    .currency_image_view1_artwork_favorite{
+    position:relative;
+    float: left;
+
+                    }
+                    .image_view_content_view1_artwork_favorite{
+    max-height: 100px;
+   height: 150px;
+    max-width:100px;
+    
+                    }
+                    .image_view_content_view1_artwork_view_favorite{
+                      position: relative;
+                      float: left;
+    max-height: 500px;
+   height: 250px;
+   width: 250px;
+    max-width:500px;
+    padding: 10px;
+                    }
                       .price_monitor_view1_artwork_favorite{
                        width: 70%;
                         border: 3px solid grey;

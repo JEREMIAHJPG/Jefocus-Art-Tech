@@ -1,5 +1,60 @@
 
    <template>
+     <div class="reply_form_view_background_view" v-if="show_artwork_view_form" >
+         
+        <center>
+            <div class=container_view style="margin-top: 55px;">
+                            
+      <div class="image_view_view1_artwork_view">
+        <img  title="image_view_content" class="image_view_content_view1_artwork_view" >
+        <img  title="image_view_content" class="image_view_content_view1_artwork_view" >
+       
+    </div>
+     
+     </div> 
+           </center> 
+              <center>
+                  <!-- <h1 style="color: green">GOD</h1> -->
+              <div>
+                
+        <!-- <img class="currency_image_view1_artwork" title="N"> -->
+        <div class="view1_artwork">
+          <h style=" color:white; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 300; font-size: large">Title :</h>
+            
+            <h style="color: white">Title</h>
+        </div>
+   
+   
+        <!-- <img class="currency_image_view1_artwork" title="N"> -->
+        <div class="view1_artwork">
+          <h style=" color:white; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 300; font-size: large">Size :</h>
+            
+            <h style="color: white">Size</h>
+        </div>
+        <div class="view1_artwork">
+          <h style=" color:white; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 300; font-size: large">Description :</h>
+          <h style="color: white">Description</h> 
+           
+          
+        </div>
+       
+       
+        <div class="view1_artwork">
+          <h style=" color:white; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 300; font-size: large">Price :</h>
+          <img  title="N">
+          <h style="color: white">Price</h>
+        </div>
+              </div>
+
+          <br>
+          <div class="view1_artwork">
+              <button @click="back_view_button()" style="color: black; border-radius: 10px; width:50px; height:50px; font-weight: 700"> Back </button>
+          </div>
+     </center>
+     
+    
+    </div>
+<div v-if="view_artwork_page">
     <div style="border-radius:100%; position:sticky; top:70%; z-index:2; width:100px; height: 100px; background-color: black; "  >
       <h1 style="color:white; font-size:xx-large; position: relative; z-index:8; left:40%; top:30%;">{{ number_of_orders }}</h1>
     </div>
@@ -26,12 +81,15 @@
                        <h3 style="float: left;">Paintings</h3> <h1 style="font-size: small;padding-top: 3%;padding-left:5%; float: left;">Most Popular Categories of Artworks:<h2 style="font-size: small; padding-left: 2%; padding-top: 2.9%; float: left;">Abstract Paintings, Landscape Paintings, Oil Painting </h2></h1>
                        </div>
                      </div>
-                     <div class="base" style="background-color:#bbb">
+                     <div class="base" style=" margin-bottom:100px; background-color:#bbb">
                       <div class="size">
                         <h1>Landscape Paintings</h1>
                         
                         <div class="Slides">
-    <div  v-for="(items_to_display, index) in items_to_display_profile" :key="index" class="Slide"  :style="{height: innerHeight + 'px', top: '-' + slidesInnermarginTopL +'px'}" >
+    <div  v-for="(items_to_display, index) in items_to_display_profile" :key="index" class="Slide"
+    
+   
+     >
         
       
         <div class=" itemstoorder "  >
@@ -83,8 +141,8 @@
     
     <div class="monitor_buttons_view1_artwork">
       
-        <button class="view_button_view1_artwork"  @click=  "view_button(items_to_display)">View</button>
-        <button class="buy_button_view1_artwork"   @click= "buy_button(items_to_display)">Buy</button>
+        <button class="view_button_view1_artwork"  @click=  "view_artwort_button(items_to_display)">View</button>
+        <button class="buy_button_view1_artwork"   @click= "buy_artwork_button(items_to_display)">Buy</button>
         <center>
         <div >
            
@@ -137,7 +195,7 @@
     
    </div> 
 
-   
+   </div>
 
    </template>
    
@@ -156,7 +214,15 @@ import { collection, addDoc,where,setDoc, onSnapshot, deleteDoc, doc, getDocs, q
 export default {
     name: 'Artworkpage',
 data(){return{
-             
+    
+  
+  show_artwork_view_form:false,
+  Price:'',
+  Description:'',
+  Title:'',
+  view_image:'',
+  Size:'',
+  view_artwork_page:true,
     client_token_ID:'',
     client_selected_approved_item_token:'',  
     client_selected_approved_item_admin_monitor_new_id:'',
@@ -181,8 +247,8 @@ data(){return{
       this.on_load_artworkpage();
     },
     mounted(){
-    axios.get('http://localhost:3000/cartpostprofile')
-    .then(response=> this.items_to_display_profile=response.data)
+    // axios.get('http://localhost:3000/cartpostprofile')
+    // .then(response=> this.items_to_display_profile=response.data)
      
   },
     
@@ -219,12 +285,23 @@ data(){return{
             (advert) =>{advert.forEach((doc) => {this.items_to_display_profile.push(doc.data())
             })  }) 
     },
-    async view_button(items_to_display){
-      
+    async view_artwort_button(items_to_display){
+      this.show_artwork_view_form = true;
+      this.view_artwork_page=false;
+      this.Price=items_to_display.price,
+      this.Description=items_to_display.Admin_description,
+      this.Title=items_to_display.Title,
+      this.view_first_image=items_to_display.First_image_selected,
+      this.view_second_image=items_to_display.Second_image_selected,
+      this.Size=items_to_display.Size
+    },
 
-    }
-    ,
-    async buy_button(items_to_display){
+    async back_view_button(){
+      this.show_artwork_view_form = false;
+      this.view_artwork_page=true;
+    },
+    
+    async buy_artwork_button(items_to_display){
       // this.client_token_ID = 
       // this.client_email = await localStorage.getItem(`client_email`);
       this.client_selected_approved_item_token = await items_to_display.Admin_item_token;
@@ -398,6 +475,28 @@ data(){return{
                   height: 15px;
                   margin-top: 10px;
                     }
+
+                    .container_view{
+                      position:relative;
+z-index: 7;
+width: 300;
+float: left;
+/* margin-left: 3%; */
+}
+
+.view1_artwork{
+float: left;
+width: 100%;
+}
+
+                    .reply_form_view_background_view{
+    z-index: 10;
+    background-color: rgb(0,0,0, 0.8);
+    width:100%;
+    position:relative;
+    height:1000px;
+    margin-bottom: 100px;
+}
                     .price_number_view1_artwork{
 color:black;
 float: left;
@@ -415,12 +514,30 @@ padding-left: 2px;
     max-height: 100px;
    height: 150px;
     max-width:100px;
+    
+                    }
+                    .image_view_content_view1_artwork_view{
+                      position: relative;
+                      float: left;
+    max-height: 500px;
+   height: 250px;
+   width: 250px;
+    max-width:500px;
+    padding: 10px;
                     }
                     .image_view_view1_artwork{
     max-height:200px;
     min-width:fit-content;
     background-color: rgb(163, 163, 163);
     border-radius:10px;
+                    }
+                    .image_view_view1_artwork_view{
+    position: relative;
+    max-height:500px;
+    min-width:fit-content;
+    background-color: rgb(163, 163, 163);
+    border-radius:10px;
+    float: left;
                     }
                     .monitor_buttons_view1_artwork{
 position:relative;
@@ -627,7 +744,7 @@ margin: 5px;
 
                 .Slides {
     display: inline-block;
-    height: 300px;
+    height: auto;
     width: auto;
    position: relative;
     
@@ -652,7 +769,7 @@ height: 40%;}
     position: relative;
     display: inline-block;
   
-  height: 300px;
+  height: auto;
   overflow: visible !important;
 }
 .nav-number{border: 2px green solid;
@@ -687,3 +804,4 @@ color:white;
   float: left; left: 40%; width:30%; justify-content: center;
 }
         </style>
+         <!-- :style="{height: innerHeight + 'px', top: '-' + slidesInnermarginTopL +'px'}" -->

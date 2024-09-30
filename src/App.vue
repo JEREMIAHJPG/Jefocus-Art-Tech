@@ -1,5 +1,8 @@
 <template>
+
+  
     <div >
+      
     <!-- <div  style=" height:50px; background-color: rgb(200,200,200);  top:0%; z-index: 3; width: 100%; margin-top: 2px;" >
 
     <div style=" height:50px;">
@@ -21,7 +24,7 @@
             <li v-if="!isAuthenticated"><router-link  to="/Tradepage" class="linktrade"><span class="material-symbols-outlined">diversity_1</span>Jefocus Art Community</router-link></li>
             <li v-if="isAuthenticated"><router-link to="/Artworkpage" @click="Artworkpage_loading" ><span class="material-symbols-outlined">shopping_cart</span>Buy and Explore Art</router-link></li>
             <!-- <li><a href=""><input type="checkbox">Jefocus Community</a></li> -->
-            <li v-if="isAuthenticated"><router-link  :to="{name:'Favoritepage', params:{Favoritepage: this.adminnew_id}}" @click="Favoritepage_loading"><span class="material-symbols-outlined">favorite</span>Favorite</router-link></li>
+            <li v-if="isAuthenticated"><div @click="favorite_click()"><span class="material-symbols-outlined">favorite</span>Favorite</div></li>
             <!-- <li v-if="isAuthenticated" @click="view_cart()"><router-link  to="/Cartpage"><span class="material-symbols-outlined">shopping_cart_checkout</span>View Cart</router-link></li> -->
             <li ><button @click="dropdown_button()"><span class="material-symbols-outlined">menu_open</span>Menu</button></li>
             
@@ -40,13 +43,13 @@
             <li v-if="!isAuthenticated"><router-link  to="/Signupformpage"><span class="material-symbols-outlined">app_registration</span>Sign Up</router-link></li>
             <li v-if="isAuthenticated"><router-link to="/Artworkpage" ><span class="material-symbols-outlined">shopping_cart</span>Buy and Explore Art</router-link></li>
             <li v-if="!isAuthenticated"><router-link  to="/Tradepage" class="linktrade"><span class="material-symbols-outlined">diversity_1</span>Jefocus Art Community</router-link></li>
-            <li v-if="isAuthenticated"><router-link  :to="{name:'Favoritepage', params:{Favoritepage: this.adminnew_id}}"  ><span class="material-symbols-outlined">favorite</span>Favorite</router-link></li>
+            <li v-if="isAuthenticated"><div @click="favorite_click()"><span class="material-symbols-outlined">favorite</span>Favorite</div></li>
             <!-- <li v-if="isAuthenticated" @click="view_cart()"><router-link  to="/Cartpage"><span class="material-symbols-outlined">shopping_cart_checkout</span>View Cart</router-link></li> -->
             <!-- <li><router-link><input type="checkbox">Orders History</router-link></li> -->  
             <li v-if="isAuthenticated"><router-link to="/HistoryofOrderplaced" @click="HistoryofOrderplaced_loading" v-if="HistoryofOrderplaced"><span class="material-symbols-outlined">history</span>History of Order placed</router-link></li>             
             <li v-if="isAuthenticated"><router-link to="/Adminspage"><span class="material-symbols-outlined">sell</span>Sell</router-link></li>
             <li v-if="isAuthenticated"><router-link to="/Adminserviceslist" v-if="Check_Admins_Adverts"><span class="material-symbols-outlined">checklist_rtl</span>Check Admins Adverts</router-link></li>
-            <li v-if="isAuthenticated"><router-link :to="{name:'Adminviewadverts', params:{Adminviewadverts: this.client_tokenID}}"  v-if="View_your_Adverts"><span class="material-symbols-outlined">view_list</span>View your Adverts</router-link></li>
+            <li v-if="isAuthenticated"><router-link :to="{name:'Adminviewadverts', params:{Adminviewadverts: this.adminnew_id}}"  v-if="View_your_Adverts"><span class="material-symbols-outlined">view_list</span>View your Adverts</router-link></li>
             <li v-if="isAuthenticated"><router-link to="/Admindatabase" v-if="Admin_Creation"><span class="material-symbols-outlined">admin_panel_settings</span>Admin Creation</router-link></li>
             <li v-if="isAuthenticated"><router-link to="/Replycontactformpage" v-if="Admin_Creation"><span class="material-symbols-outlined">admin_panel_settings</span>Reply Guest Message</router-link></li>
             <li v-if="isAuthenticated"><a href="#" @click.prevent="onLogout()" ><span class="material-symbols-outlined">logout</span>Log out</a></li>
@@ -63,7 +66,7 @@
             <li v-if="!isAuthenticated"><router-link  to="/Signupformpage"><span class="material-symbols-outlined">app_registration</span>Sign Up</router-link></li>
             <li v-if="isAuthenticated"><router-link to="/Artworkpage" ><span class="material-symbols-outlined">shopping_cart</span>Buy and Explore Art</router-link></li>
             <li v-if="!isAuthenticated"><router-link  to="/Tradepage" class="linktrade"><span class="material-symbols-outlined">diversity_1</span>Jefocus Art Community</router-link></li>
-            <li v-if="isAuthenticated"><router-link  :to="{name:'Favoritepage', params:{Favoritepage: this.adminnew_id}}"><span class="material-symbols-outlined">favorite</span>Favorite</router-link></li>
+            <li v-if="isAuthenticated"><div @click="favorite_click()"><span class="material-symbols-outlined">favorite</span>Favorite</div></li>
             <!-- <li v-if="isAuthenticated" @click="view_cart()"><router-link  to="/Cartpage"><span class="material-symbols-outlined">shopping_cart_checkout</span>View Cart</router-link></li> -->
             <!-- <li><router-link><input type="checkbox">Orders History</router-link></li> -->  
             <li v-if="isAuthenticated"><router-link to="/HistoryofOrderplaced" @click="HistoryofOrderplaced_loading" v-if="HistoryofOrderplaced"><span class="material-symbols-outlined">history</span>History of Order placed</router-link></li>             
@@ -84,7 +87,7 @@
             <li v-if="!isAuthenticated"><router-link  to="/Signupformpage" ><span class="material-symbols-outlined">app_registration</span>Sign Up</router-link></li>
             <li v-if="isAuthenticated"><router-link to="/Artworkpage" @click="Artworkpage_loading" ><span class="material-symbols-outlined">shopping_cart</span>Buy and Explore Art</router-link></li>
             <li v-if="!isAuthenticated"><router-link  to="/Tradepage" @click="Tradepage_loading" class="linktrade" ><span class="material-symbols-outlined">diversity_1</span>Jefocus Community</router-link></li>
-            <li v-if="isAuthenticated"><router-link  :to="{name:'Favoritepage', params:{Favoritepage: this.adminnew_id}}" @click="Favoritepage_loading"><span class="material-symbols-outlined">favorite</span>Favorite</router-link></li>
+            <li v-if="isAuthenticated"><div @click="favorite_click()"><span class="material-symbols-outlined">favorite</span>Favorite</div></li>
             <!-- <li v-if="isAuthenticated" @click="view_cart()"><router-link  to="/Cartpage" @click="Cartpage_loading"><span class="material-symbols-outlined">shopping_cart_checkout</span>View Cart</router-link></li> -->
             <li v-if="isAuthenticated"><router-link to="/HistoryofOrderplaced" @click="HistoryofOrderplaced_loading" v-if="HistoryofOrderplaced"><span class="material-symbols-outlined">history</span>History of Order placed</router-link></li> 
             <li v-if="isAuthenticated"><router-link to="/Adminspage" @click="Adminspage_loading"><span class="material-symbols-outlined">sell</span>Sell</router-link></li>
@@ -253,7 +256,7 @@ export default {
        
   //   },
     created(){
-      this.get_client_tokenID;
+      this.get_client_tokenID();
      this.$store.dispatch(`auth/${AUTO_LOGIN_ACTION}`);
      
       console.log(this.isAuthenticated)
@@ -302,6 +305,9 @@ export default {
             (client_token) =>{client_token.forEach((doc) => {this.client_tokenID = doc.data().reclaimed_get_token
       })  })
     },
+    favorite_click(){
+      this.$router.push({name:'Favoritepage', params:{Favoritepage: this.client_tokenID}})
+    },
     // Adminviewadverts_loading(){
     //       this.showLoading(true)
     // },
@@ -344,10 +350,7 @@ export default {
                 
 
     },
-    get_client_tokenID(){
-
-    }
-    ,
+  
     dropdown_button(){
       this.dropdown_menu = !this.dropdown_menu
       localStorage.setItem(`dropdown_menu`, this.dropdown_menu) 
@@ -724,7 +727,7 @@ nav {
             height: 400px;}
             
             
-            .footer1 {background-color: #f1f1f1; padding: 10px; text-align: center;}
+            .footer1 {background-color: #f1f1f1; margin-top:100px; padding: 10px; text-align: center;}
             
             [class=foot1]{
                 text-align: center;
