@@ -86,10 +86,7 @@
                         <h1>Landscape Paintings</h1>
                         
                         <div class="Slides">
-    <div  v-for="(items_to_display, index) in items_to_display_profile" :key="index" class="Slide"
-    
-   
-     >
+    <div  v-for="(items_to_display, index) in items_to_display_profile" :key="index" class="Slide">
         
       
         <div class=" itemstoorder "  >
@@ -141,7 +138,7 @@
     
     <div class="monitor_buttons_view1_artwork">
       
-        <button class="view_button_view1_artwork"  @click=  "view_artwort_button(items_to_display)">View</button>
+        <button class="view_button_view1_artwork"  @click=  "view_artwork_button(items_to_display)">View</button>
         <button class="buy_button_view1_artwork"   @click= "buy_artwork_button(items_to_display)">Buy</button>
         <center>
         <div >
@@ -285,7 +282,7 @@ data(){return{
             (advert) =>{advert.forEach((doc) => {this.items_to_display_profile.push(doc.data())
             })  }) 
     },
-    async view_artwort_button(items_to_display){
+    async view_artwork_button(items_to_display){
       this.show_artwork_view_form = true;
       this.view_artwork_page=false;
       this.Price=items_to_display.price,
@@ -302,12 +299,15 @@ data(){return{
     },
     
     async buy_artwork_button(items_to_display){
+      
       // this.client_token_ID = 
       // this.client_email = await localStorage.getItem(`client_email`);
-      this.client_selected_approved_item_token = await items_to_display.Admin_item_token;
-      this.client_selected_approved_item_admin_monitor_new_id = await items_to_display.admin_monitor_new_id;
+      this.client_selected_approved_item_token = items_to_display.Admin_item_token;
+      this.client_selected_approved_item_admin_monitor_new_id = items_to_display.admin_monitor_new_id;
    
       items_to_display.addtocart = !items_to_display.addtocart;
+      
+      console.log(this.client_selected_approved_item_token)
       
       var numberoforders = JSON.stringify(this.number_of_orders+1);
       localStorage.setItem(`numberofordersaddedtocart`,numberoforders );
@@ -360,6 +360,7 @@ data(){return{
                            First_image_selected:items_to_display.First_image_selected, 
                            Second_image_selected:items_to_display.Second_image_selected, 
                            title: items_to_display.Title,
+                           
                           //  total_amount: total_amount,
                            size: items_to_display.Size,
                           //  price: items_to_display.price, 

@@ -20,7 +20,7 @@
           <th><div class="pricepi" style="background-color: #ccc;">Price per item</div></th>
           <th><div class="price" style="background-color: #ccc; ">Total Price</div></th>
 
-            <tr v-show="showcart" v-for="(items_to_display, index) in convert_all_cart_to_database()" :key="index" >
+            <tr v-show="showcart" v-for="(items_to_display, index) in convert_all_cart_to_database" :key="index" >
             <td width="20%"><img class="items" :src = "items_to_display.First_image_selected" style="background-color: #aaa;"></td>
             <td width="20%"> <div class="name" style="background-color: #bbb;">{{items_to_display.Title}}</div></td>
             <td width="20%"><div class="size" style="background-color: #ccc;">{{items_to_display.size}}</div></td>
@@ -176,7 +176,11 @@ import axios from 'axios';
 import {mapActions, mapMutations} from 'vuex';
 import { NUMBEROFITEMS, TOTALPRICE } from '@/store/storeconstants';
 import {Cartsignupvalidation} from '/services/Cartsignupvalidation';
+import {storage, db} from "@/firebase"
 
+import { ref,uploadBytes,uploadBytesResumable,getDownloadURL } from "firebase/storage"
+
+import {  onSnapshot,collection, addDoc, setDoc, getDoc, getDocs, query, where, doc } from 'firebase/firestore';
 
 export default {
   name: 'Cartpage',
@@ -209,6 +213,8 @@ export default {
     this.total_cart_summation();
     this.check_cart_email_validation();
     // this.display_cart_items();
+    this.get_all_items_in_cart();
+    this.convert_all_cart_to_database();
   },
 
   computed:{
@@ -294,6 +300,7 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
             (cart_contents) =>{cart_contents.forEach((doc) => {cart_contents_list.push(doc.data())
             })  }) 
           })
+          console.log(cart_contents_list);
           return cart_contents_list;
          },
 

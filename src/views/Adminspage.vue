@@ -119,6 +119,14 @@ position: relative;
 margin-left:20%;
 margin-right:20%;
 }
+.input_category_form_size_quantity {
+float:left;
+width:10%;
+left:30%;
+position: relative;
+margin-left:3%;
+margin-right:3%;
+}
 
 .input_quantity {
 float:left;
@@ -296,7 +304,7 @@ padding-right:20%;
     height:100%;
     }
 
-    .admin_title{
+    .A{
         position:relative;
     margin-top: 10px;
     top:5px;
@@ -356,8 +364,8 @@ padding-right:20%;
             <h v-else></h>
             <select type="text" v-model="select_category_now" @click="select_category()" id="select_category_here" name="select_category" placeholder="Select Category" class="category_input_position1" required>
                             <option value=""> </option> 
-                            <option value="Visual Art Service">Visual Art Services</option>
-                            <option value="Graphics Art and Technology">Graphics Art and Technology</option>
+                            <option value="Visual_Art_Service">Visual Art Service</option>
+                            <option value="Graphics_Art_and_Technology">Graphics Art and Technology</option>
                             
             </select>
                     </div>
@@ -365,34 +373,44 @@ padding-right:20%;
                     <div class = "input_div2" v-if="Visuals_Art_Services_selected">
                         <sup v-if="display_Select_Visuals_Sub_category" id= "Visual_Art_Service" class="category_style_Visual_Art_Service" value="Visual Art Service">Select Visuals Sub-category</sup>
                         <h v-else></h>
-                         <select  @click="visuals_subcategory()" type="text" name="visuals_subcateory" v-model="visuals_subcategory_data" placeholder=" Select Visuals Sub-category" class="category_input_position2" required>
-                            <option value=""></option>
-                           <option value="Portrait painting"> Potrait Paintings</option>
-                           <option value="Canvas Painting">Canvas Paintings</option>
-                           <option value="Picture prints">Framed/ Canvas Picture prints</option>
-                            <option value="Interior Decoration">Interior Decoration</option>
-                            <option value="Sculpts and Artifacts"> Sculpts and Artifacts</option>
-                                <option value="LED Light and Art Signage"> LED Light and Art Signage</option>
-                                    <option value="Mural Painting">Mural Painting</option>
-                                        <option value="Award and Plaques">Award and Plaques</option>
-                                            <option value="Road Marking">Road Marking</option>
-                                            <option value="Others">Others</option>
+                         <select @click="visuals_subcategory(Visual_Art_Service_category)" type="text" name="visuals_subcateory" v-model="visuals_subcategory_data" placeholder=" Select Visuals Sub-category" class="category_input_position2" required>
+                            <option v-for="(Visual_Art_Service_category, index) in Visual_Art_Service_category_list " :key="index" :value = Visual_Art_Service_category.service>
+                                {{Visual_Art_Service_category.service}}
+                            </option>
+                          
+                            <!-- <option value=""></option>
+                           <option value="Portrait_painting"> Potrait Paintings</option>
+                           <option value="Canvas_Painting">Canvas Paintings</option>
+                           <option value="Picture_prints">Framed/ Canvas Picture prints</option>
+                            <option value="Interior_Decoration">Interior Decoration</option>
+                            <option value="Sculpts_and_Artifacts"> Sculpts and Artifacts</option>
+                                <option value="LED_Light_and_Art_Signage"> LED Light and Art Signage</option>
+                                    <option value="Mural_Painting">Mural Painting</option>
+                                        <option value="Award_and_Plaques">Award and Plaques</option>
+                                            <option value="Road_Marking">Road Marking</option>
+                                            <option value="Others">Others</option> -->
                         </select>
                     </div>
                     <div class="input_div3" v-if="Graphics_Art_and_Technology">
-                        <sup v-if="display_Select_Graphics_Sub_category" class="category_style_Graphics_Art_and_Technology">Select Graphics Sub-category</sup>
+                        <sup v-if="display_Select_Graphics_Sub_category" id= "Graphics_Art_and_Technology" class="category_style_Graphics_Art_and_Technology">Select Graphics Sub-category</sup>
                         <h v-else></h>
-                        <select @click="graphics_subcategory()" type="text" name="graphics_subcategory" v-model="graphics_subcategory_data" placeholder=" Select Graphics Sub-category" class="category_input_position3" required>
-                            <option value=""></option>      
-                            <option value="Website Development">Website Development</option>
-                            <option value="Graphic Design/Branding">Graphic Design/Branding</option>
-                                <option value="Architectural Design">Architectural Design</option>
-                                    <option value="Invitation Cards">Invitation Cards</option>
-                                        <option value="Art/Digital Illustrations">Art/Digital Illustrations</option>
+                        <select @click="graphics_subcategory(Graphics_Art_and_Technology_category)" type="text" name="graphics_subcategory" v-model="graphics_subcategory_data" placeholder=" Select Graphics Sub-category"  class="category_input_position3" required>
+                             
+                            <option v-for="(Graphics_Art_and_Technology_category, index) in Graphics_Art_and_Technology_category_list" :key="index" :value = Graphics_Art_and_Technology_category.service>
+                                {{Graphics_Art_and_Technology_category.service}}
+
+                            </option> 
+                            
+                            <!-- <option value=""></option>      
+                            <option value="Website_Development">Website Development</option>
+                            <option value="Graphic_Design/Branding">Graphic Design/Branding</option>
+                                <option value="Architectural_Design">Architectural Design</option>
+                                    <option value="Invitation_Cards">Invitation Cards</option>
+                                        <option value="Art/Digital_Illustrations">Art/Digital Illustrations</option>
                                             <option value="Animation">Animation</option>
-                                                <option value="Cloth Prints">Cloth Prints</option>
-                                                    <option value="Pillow and Mug Prints">Pillow and Mug Prints</option>
-                                                    <option value="Others">Others</option>
+                                                <option value="Cloth_Prints">Cloth Prints</option>
+                                                    <option value="Pillow_and_Mug Prints">Pillow and Mug Prints</option>
+                                                    <option value="Others">Others</option> -->
                         </select>
                     </div>
                     <div v-else></div>
@@ -441,25 +459,31 @@ padding-right:20%;
     <div class="admin_description">
                   <textarea maxlength = "777" id="Admin_description" name="Admin_description" v-model="Admin_description" placeholder="Describe the Item uploaded with maximum of 777 words" style="min-width: 100%; height: 100px;" required></textarea>
               </div>
-    <div class="admin_title">
-                  <textarea maxlength = "777" id="Title" name="Title" v-model="Admin_title" placeholder="Title" style="min-width: 100%; height: 100px;" required></textarea>
+    <div class="A">
+                  <textarea maxlength = "777" id="Title" name="Title" v-model="A" placeholder="Title" style="min-width: 100%; height: 100px;" required></textarea>
               </div>
+              <!-- size -->
+    <div class="input_category_form_size_quantity">
+    <input type="number"  name="width(Ft)" v-model="width" placeholder="width" class="price" required>
+    </div>
+
+    <div class="input_category_form_size_quantity">
+    <input type="number"  name="height(Ft)" v-model="height" placeholder="height" class="price" required>
+    </div>
+    <!-- size -->
+
+    <div class="input_quantity" v-if = quantity_show >
+    <input type="number"  name="quantity" v-model="main_quantity" @input="price_input" placeholder="main_quantity" class="price" required>
+    </div> 
    
     <div class="input_div_social_media_link">
                     <input type = "text" v-model="youtubelink" class="social_media_link_input_position"  placeholder="YouTube or Any Social Media Link" required>
                 </div>
-            
-                <div class="input_quantity" v-if = quantity_show >
-    <input type="number"  name="quantity" v-model="width" @input="price_input" placeholder="Price per Item" class="price" required>
-    <input type="number"  name="quantity" v-model="height" @input="price_input" placeholder="Price per Item" class="price" required>
-    </div>
-    <div class="input_quantity" v-if = quantity_show >
-    <input type="number"  name="quantity" v-model="main_quantity" @input="price_input" placeholder="Price per Item" class="price" required>
-    </div>    
-
+     
     <div class="input_category_form">
     <input type="number"  name="price" v-model="main_price" @input="price_input" placeholder="Price per Item" class="price" required>
     </div>
+    
  
    
                     
@@ -482,7 +506,7 @@ import {storage, db} from "@/firebase"
 
 import { ref,uploadBytes,uploadBytesResumable,getDownloadURL } from "firebase/storage"
 
-import { collection, addDoc, setDoc, getDoc, getDocs, query, where, doc } from 'firebase/firestore';
+import {  onSnapshot,collection, addDoc, setDoc, getDoc, getDocs, query, where, doc } from 'firebase/firestore';
 
 
 
@@ -490,6 +514,10 @@ export default {
   name: 'Adminspage',
   data() {
       return{
+
+        
+        Visual_Art_Service_category_list:[],
+        Graphics_Art_and_Technology_category_list:[],
         uploadProgress:0,
         Visuals_Art_Services_selected:false,
         Graphics_Art_and_Technology:false,
@@ -504,7 +532,7 @@ export default {
         Size:'',
         youtubelink:'',
         Admin_description:'',
-        Admin_title:'',
+        A:'',
         First_selectedFile: null,
         Second_selectedFile: null,
         visuals_subcategory_data:'',
@@ -539,9 +567,12 @@ export default {
       
       },
           
-      
+      created(){
+        this.on_load_categories();
+      },
   
   mounted(){
+   
 // this.create_path();
 // for(var path in pathimage){getDownloadURL(ref(storage, path)).then(
 //     (download_url)=>(this.url = download_url ),
@@ -571,7 +602,6 @@ export default {
 
   computed:{
 
-
   },
 
  methods:{
@@ -581,9 +611,25 @@ export default {
     //         pathimage.push(index)
     //     }
     // },
+
     ...mapMutations({
         showLoading: LOADING_SPINNER_SHOW_MUTATION,
     }),
+
+    on_load_categories(){
+        onSnapshot(query(collection(db, 'Category_data'), where('category', '==' ,"Visual Art Service")),
+            (services) =>{services.forEach((doc) => {
+              this.Visual_Art_Service_category_list.push(doc.data())
+            
+            })  });
+        onSnapshot(query(collection(db, 'Category_data'), where('category', '==' ,"Graphics Art and Technology")),
+            (services) =>{services.forEach((doc) => {
+              this.Graphics_Art_and_Technology_category_list.push(doc.data())
+            
+            })  });
+            console.log(this.Graphics_Art_and_Technology_category_list)
+
+    },
     
     async generate_first_file_name(){
        
@@ -668,9 +714,6 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
 
 },
 
-
-        
-
 uploadFile(event) {
       
 
@@ -753,19 +796,17 @@ localStorage.setItem(`url1`, this.url1)
      console.log(this.url_video),
 localStorage.setItem(`url3`, JSON.stringify(this.url_video))
 )
-
-
-       
-       
+      
     //  if (uploadTasknetwork.status===404){
     //      this.upload_errormessage=true;
     // }
 
 },
 //+2348125476065
-    visuals_subcategory(){
+   async visuals_subcategory(Visual_Art_Service_category){
+    // this.visuals_subcategory_data = Visual_Art_Service_category.service;
     //    this.display_Select_Visuals_Sub_category = !this.display_Select_Visuals_Sub_category
-       if (this.visuals_subcategory_data){this.display_Select_Visuals_Sub_category = false;
+       if (this.visuals_subcategory_data){ this.display_Select_Visuals_Sub_category = false;
             
         } else {return true;}
 
@@ -851,17 +892,15 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
     select_category(){
             
           //var get_select_category = document.querySelector(`#select_category_here`).innerHTML;
-          
-
-         
+             
           if (this.select_category_now){ this.display_select_category = false;
             
         } else {return true;}
           
           switch(this.select_category_now){ 
-            case 'Visual Art Service' : this.Visuals_Art_Services_selected = true , this.Graphics_Art_and_Technology = false;
+            case 'Visual_Art_Service' : this.Visuals_Art_Services_selected = true , this.Graphics_Art_and_Technology = false;
             break;
-            case 'Graphics Art and Technology' : this.Graphics_Art_and_Technology = true, this.Visuals_Art_Services_selected = false ;
+            case 'Graphics_Art_and_Technology' : this.Graphics_Art_and_Technology = true, this.Visuals_Art_Services_selected = false ;
             break;
             default: this.Visuals_Art_Services_selected = false;
 
@@ -894,7 +933,7 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
     
     async onsubmit_category(){
         this.showLoading(true);
-        if ((this.visuals_subcategory_data= 'Picture prints')|| (this.visuals_subcategory='Award and Plaques_data') ||(this.visuals_subcategory_data='Canvas Painting') ){
+        if ((this.visuals_subcategory_data= 'Picture_prints')|| (this.visuals_subcategory='Award_and_Plaques_data') ||(this.visuals_subcategory_data='Canvas Painting') ){
             this.display_art =true;  
             } else {this.display_art =false } ;
      //try{   
@@ -938,8 +977,11 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
                 display_art:            this.display_art,                       
                 graphics_subcategory:   this.graphics_subcategory_data,
                 Admin_description:      this.Admin_description,
-                Title:                  this.Title,
+                Title:                  this.Admin_title,
                 Size:                   `${this.width}Ft by ${this.height} Ft`,
+                main_quantity:          this.main_quantity,
+                width:                  this.width,
+                height:                 this.height,
                 addtocart:              false,
                 isFav:                  false,
                 admin_image_url:        this.admin_image_url,

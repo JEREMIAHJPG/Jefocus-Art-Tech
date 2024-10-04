@@ -165,15 +165,18 @@ margin: 5px;
 }
 
 .advert_view_monitor{
+    float:left;
     z-index: 3;
-    position:fixed;
+    position:relative;
     width:100%;
     height:100%;
+    margin-bottom: 150px;
 }
 
 .advert_background_monitor{
+    float: left;
     background-color: rgb(0,0,0, 0.8);
-    position:fixed;
+    position:relative;
     width:100%;
     height:100%;
 }
@@ -217,7 +220,7 @@ padding:5px;
 </style>
 <template>
     <!-- view monitor adverts -->
-    <div class="advert_view_monitor" v-if="show_advert_monitor">
+    <div class="advert_view_monitor"  v-if="show_advert_monitor">
         <div class="advert_background_monitor">
         </div>
         <center>
@@ -301,7 +304,7 @@ padding:5px;
 // code for sending SMS and email to clients for forgot password, orders placed, adverts notifications etc -
 // add backend to artwork page use pagenation---
 // check how to launch website with GitHub(use brad traversy) --     
-// create view-order history, view artworks page --
+// create view-order history, view artworks page -
 // create a confirm recieve item button on the receipt page ---
 // add payment stack using flutterwave documentation ---
 // Responsiveness, Material-Icons and SVGs -   
@@ -329,9 +332,12 @@ this.load_page_video_check();
         // show_video_polaroid: false,
          // show_image_polaroid_monitor:'',
         // show_video_polaroid_monitor:'',
+
         monitor_show:true,
         show_advert_view_image_monitor:true,
-        show_advert_video_monitor:false,      
+        show_advert_video_monitor:false, 
+        first_image:'',
+        second_image:'',     
         video_display_monitor:'',
         monitor_data:[],
         //  get_images:[],
@@ -458,6 +464,8 @@ this.load_page_video_check();
             this.show_advert_monitor = true;
             this.monitor_show = false;
             this.video_display_monitor = monitor_data_value.video_selected;
+            this.first_image = monitor_data_value.First_image_selected;
+            this.second_image = monitor_data_value.Second_image_selected;
         },
         
         async back_button_monitor(monitor_data_value){

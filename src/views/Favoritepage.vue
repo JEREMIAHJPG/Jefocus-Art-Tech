@@ -8,8 +8,8 @@
              <div class=container_view_favorite style="margin-top: 55px;">
                              
        <div class="image_view_view1_artwork_view_favorite">
-         <img  title="image_view_content" class="image_view_content_view1_artwork_view_favorite" >
-         <img  title="image_view_content" class="image_view_content_view1_artwork_view_favorite" >
+         <img :src="view_first_image" title="image_view_content" class="image_view_content_view1_artwork_view_favorite" >
+         <img :src="view_second_image" title="image_view_content" class="image_view_content_view1_artwork_view_favorite" >
         
      </div>
       
@@ -23,7 +23,7 @@
          <div class="view1_artwork_favorite">
            <h style=" color:white; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 300; font-size: large">Title :</h>
              
-             <h style="color: white">Title</h>
+             <h style="color: white">{{Title}}</h>
          </div>
     
     
@@ -31,11 +31,11 @@
          <div class="view1_artwork_favorite">
            <h style=" color:white; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 300; font-size: large">Size :</h>
              
-             <h style="color: white">Size</h>
+             <h style="color: white">{{Size}}</h>
          </div>
          <div class="view1_artwork_favorite">
            <h style=" color:white; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 300; font-size: large">Description :</h>
-           <h style="color: white">Description</h> 
+           <h style="color: white">{{Description}}</h> 
             
            
          </div>
@@ -44,7 +44,7 @@
          <div class="view1_artwork_favorite">
            <h style=" color:white; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 300; font-size: large">Price :</h>
            <img  title="N">
-           <h style="color: white">Price</h>
+           <h style="color: white">{{Price}}</h>
          </div>
                </div>
  
@@ -196,12 +196,20 @@
 
 <script>
 import { computed } from 'vue'
+import { collection, addDoc,where,setDoc, onSnapshot, deleteDoc, doc, getDocs, query, getDoc } from 'firebase/firestore';
 export default {
 
 name:'Favoritepage',
 
 data(){
     return{ 
+
+      Price:'',
+      Description:'',
+      Title:'',
+      view_first_image:'',
+      view_second_image:'',
+      Size:'',
       show_artwork_view_form_favorite : false,
       view_artwork_page_favorite:true,
       client_token_ID: this.$route.params.Favoritepage,

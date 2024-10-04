@@ -166,7 +166,7 @@
         <div class="base1" style="background-color:grey;">
             <h3 style="color: white;">Customer Care </h3>
             <ul class="foot1">
-            <router-link   to="/Contactformpage"><li class="foot12" style="width: 100%;">Contact Us</li></router-link>
+            <router-link to="/Contactformpage"><li class="foot12" style="width: 100%;">Contact Us</li></router-link>
             <li class="foot12" style="width: 100%;">Shipping</li>
             <li class="foot12" style="width: 100%;">Return policy</li>
             <li class="foot12" style="width: 100%;">Location</li>
@@ -175,28 +175,32 @@
     </div>
         <div class="base1" style="background-color:grey;">
             <h3 style="color: white;"> Visual Art Services </h3>
-            <ul class="foot1">
-            <li class="foot12">Potrait Paintings</li>
+            <ul class="foot1" v-for="(Visual_Art_Service_category, index) in Visual_Art_Service_category_list " :key="index" >
+            <li class="foot12" @click= service_Visual_view(Visual_Art_Service_category)>  {{Visual_Art_Service_category.service}}</li>
+              <!-- <li class="foot12">Potrait Paintings</li>
             <li class="foot12">Canvas Paintings</li>
             <li class="foot12">Interior Decoration</li>
             <li class="foot12">Sculpts and Artifacts</li>
             <li class="foot12">LED Light and Art Signage</li>
             <li class="foot12">Mural Painting</li>
             <li class="foot12">Award and Plaques</li>
-            <li class="foot12">Road Marking</li>
+            <li class="foot12">Road Marking</li> -->
             </ul>
         </div>
         <div class="base1" style="background-color:grey;">
-            <ul class="foot1">
-                <h3 style="color: white;">Graphics Art and Technology</h3>
-                <li class="foot12">Website Development</li>
+           <h3 style="color: white;">Graphics Art and Technology</h3>
+
+           <ul class="foot1" v-for="(Graphics_Art_and_Technology_category, index) in Graphics_Art_and_Technology_category_list " :key="index">
+                
+                <li class="foot12" @click="service_Graphics_view(Graphics_Art_and_Technology_category)">{{Graphics_Art_and_Technology_category.service}}</li>
+                <!-- <li class="foot12">Website Development</li>
                 <li class="foot12">Graphic Design/Branding</li>
                 <li class="foot12">Architectural Design</li>
                 <li class="foot12">Invitation Cards</li>
                 <li class="foot12">Art/Digital Illustrations</li>
                 <li class="foot12">Animation</li>
                 <li class="foot12">Cloth Prints</li>
-                <li class="foot12">Pilow and Mug Prints</li>
+                <li class="foot12">Pilow and Mug Prints</li> -->
                 </ul>
         </div>
         <div class="base1" style="background-color:grey;">
@@ -248,6 +252,8 @@ export default {
     View_your_Adverts:'',
     Admin_Creation:'',
     HistoryofOrderplaced:'',
+    Visual_Art_Service_category_list:[],
+    Graphics_Art_and_Technology_category_list:[],
     app_button_selection:[],
     adminnew_id:''
   }},
@@ -257,6 +263,7 @@ export default {
   //   },
     created(){
       this.get_client_tokenID();
+      this.on_load_categories();
      this.$store.dispatch(`auth/${AUTO_LOGIN_ACTION}`);
      
       console.log(this.isAuthenticated)
@@ -299,6 +306,20 @@ export default {
       this.$router.replace('/LoginPage');
 
     },
+    on_load_categories(){
+        onSnapshot(query(collection(db, 'Category_data'), where('category', '==' ,'Visual Art Service')),
+            (services_visual) =>{services_visual.forEach((doc) => {
+              this.Visual_Art_Service_category_list.push(doc.data())
+            console.log(this.Visual_Art_Service_category_list);
+            })  });
+        onSnapshot(query(collection(db, 'Category_data'), where('category', '==' ,'Graphics Art and Technology')),
+            (services_graphics) =>{services_graphics.forEach((doc) => {
+              this.Graphics_Art_and_Technology_category_list.push(doc.data())
+              console.log(this.Graphics_Art_and_Technology_category_list)
+            })  });
+
+    }
+    ,
 
     get_client_tokenID(){
       onSnapshot(query(collection(db, 'getting_token_user_id'), where('user_ID','==',localStorage.getItem(`user_id`))),
@@ -332,7 +353,7 @@ export default {
                             this.HistoryofOrderplaced= true
                 break;
 
-                case 'p1WSuB6tvuCwh1TgUo3P' :  this.Check_Admins_Adverts= true,
+                case 'i0ljcRkT1wZPoxp3lQKW' :  this.Check_Admins_Adverts= true,
                                                         this.View_your_Adverts= true,
                                                         this.Admin_Creation= true,
                                                         this.HistoryofOrderplaced= true
@@ -347,9 +368,7 @@ export default {
 
                 });
                 console.log('Buttons Selected');
-                
-
-    },
+                   },
   
     dropdown_button(){
       this.dropdown_menu = !this.dropdown_menu
@@ -364,7 +383,17 @@ export default {
  
 });
 console.log('Logged event: notification_received');
-    }
+    },
+
+//products and services view
+service_Visual_view(Visual_Art_Service_category){
+  this.$router.push({name:'Jefocus_Art_product_and_services', params:{Jefocus_Art_product_and_services: Visual_Art_Service_category.service}})
+},
+
+service_Graphics_view(Graphics_Art_and_Technology_category){
+this.$router.push({name:'Jefocus_Art_product_and_services', params:{Jefocus_Art_product_and_services:Graphics_Art_and_Technology_category.service}})
+}
+
 }
 
 
@@ -560,6 +589,7 @@ nav {
         } */
 
         .row12 {
+          background-color:grey;
           position:relative;
           float:left;
 
@@ -724,10 +754,17 @@ nav {
             justify-content: center;
             color: black;
             padding: 10px;
-            height: 400px;}
+            height: auto;}
             
             
-            .footer1 {background-color: #f1f1f1; margin-top:100px; padding: 10px; text-align: center;}
+            .footer1 {
+              float:left;
+                background-color: #f1f1f1;
+                width:100%;
+                 margin-top:0px; 
+                 padding: 10px; 
+                 text-align: center;
+            }
             
             [class=foot1]{
                 text-align: center;

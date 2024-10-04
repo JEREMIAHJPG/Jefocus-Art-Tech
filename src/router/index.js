@@ -25,6 +25,7 @@ import Validationcode from '../views/Validationcode.vue';
 import Changepassword from '@/views/Changepassword.vue';
 import Replycontactformpage from '@/views/Replycontactformpage.vue';
 import Replycontactformpagenext from '@/views/Replycontactformpagenext.vue';
+import Jefocus_Art_product_and_services from '@/views/Jefocus_Art_product_and_services.vue';
 //  Vue.use(router);
 const routes = [
  {
@@ -38,11 +39,16 @@ const routes = [
   name: 'About',
   component: About
 },
-
  {
-  path: '/:Validationcode',
-  name: 'Validationcode',
-  component: Validationcode
+  path: '/About',
+  name: 'About',
+  component: About
+},
+
+{
+  path: '/:Jefocus_Art_product_and_services',
+  name: 'Jefocus_Art_product_and_services',
+  component: Jefocus_Art_product_and_services
 },
 
 {
