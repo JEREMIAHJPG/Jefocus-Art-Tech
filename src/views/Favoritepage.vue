@@ -117,7 +117,7 @@
         <center>
         <div >
            
-        <button :id="'cart_'+favorite.reclaimed_get_token" @click="toggleaddtocart1(favorite), increament()" class="buy_favorite" v-if="!favorite.addtocart ">
+        <button :id="'cart_'+favorite.Admin_item_token" @click="toggleaddtocart1(favorite), increament()" class="buy_favorite" v-if="!favorite.addtocart ">
                                
           <span class="material-symbols-outlined">add_shopping_cart</span>
                               Add to Cart
@@ -129,7 +129,7 @@
                             </div >
 
         <div>
-                                <button :id="'favorites_'+favorite.reclaimed_get_token" @click="remove_favorite(favorite)" class="buy_favorite" v-if="!favorite.isfav ">
+                                <button :id="'favorites_'+favorite.Admin_item_token" @click="remove_favorite(favorite)" class="buy_favorite" v-if="!favorite.isfav ">
                                   <span class="material-symbols-outlined">favorite</span>
                                   <span>Add to Favorite</span>
                               </button>
@@ -175,11 +175,11 @@
         </div>
     <div class="buyaddtocart" style= "width: 70%">
         <div >
-         <button :class="[favorite.addtocart ?'buy':'buynot']" :id="'cart_'+favorite.id" @click="toggleaddtocart_from_favorite(favorite), increament()"> Add to Cart</button>
-        <button :class="[!favorite.addtocart ?'buy':'buynot']" :id="'cart_'+favorite.id" @click="toggleaddtocart_from_favorite(favorite), decreament()" > Remove from Cart </button>
+         <button :class="[favorite.addtocart ?'buy':'buynot']" :id="'cart_'+favorite.Admin_item_token" @click="toggleaddtocart_from_favorite(favorite), increament()"> Add to Cart</button>
+        <button :class="[!favorite.addtocart ?'buy':'buynot']" :id="'cart_'+favorite.Admin_item_token" @click="toggleaddtocart_from_favorite(favorite), decreament()" > Remove from Cart </button>
                                           -->
-        <!-- <button class="buy_favorite" v-if="!favoritenow" :id="'cart_'+favorite.id" @click="toggleaddtocart_from_favorite(favorite), increament()"><span class="material-symbols-outlined">add_shopping_cart</span> Add to Cart</button>
-        <button class="buy_favorite" :id="'cart_'+favorite.id" @click="toggleaddtocart_from_favorite(favorite), decreament()" v-else><span class="material-symbols-outlined">remove_shopping_cart</span> Remove from Cart </button>
+        <!-- <button class="buy_favorite" v-if="!favoritenow" :id="'cart_'+favorite.Admin_item_token" @click="toggleaddtocart_from_favorite(favorite), increament()"><span class="material-symbols-outlined">add_shopping_cart</span> Add to Cart</button>
+        <button class="buy_favorite" :id="'cart_'+favorite.Admin_item_token" @click="toggleaddtocart_from_favorite(favorite), decreament()" v-else><span class="material-symbols-outlined">remove_shopping_cart</span> Remove from Cart </button>
          
         </div>
         
@@ -304,26 +304,28 @@ async buy_button_favorite(favorite){
       var numberoforders = JSON.stringify(this.number_of_orders+1);
       localStorage.setItem(`numberofordersaddedtocart`,numberoforders );
       // console.log(numberoforders);
-    ///outline the received data
-     var total_amount = favorite.qty * favorite.price;
-      var data = { id: this.client_selected_approved_item_token, 
-                   qty:favorite.qty, 
-                   First_image_selected:favorite.First_image_selected,
-                   Second_image_selected:favorite.Second_image_selected, 
-                   title: favorite.Title,
-                   total_amount: total_amount,
-                   size: favorite.Size,
-                  //  price: favorite.price, 
-                  client_token_ID:  this.client_token_ID,
-                  client_email : localStorage.getItem(`client_email`),
-                  client_selected_approved_item_token : favorite.Admin_item_token,
-                  client_selected_approved_item_admin_monitor_new_id : favorite.admin_monitor_new_id,
-                  addtocart: favorite.addtocart, 
+    //outline the received data
+     //var total_amount = favorite.qty * favorite.price;
+      var data = {        seller_ID: favorite.user_ID,
+                           id: this.client_selected_approved_item_token, 
+                          main_quantity:favorite.main_quantity, 
+                           First_image_selected:favorite.First_image_selected, 
+                           Second_image_selected:favorite.Second_image_selected, 
+                           title: favorite.Title,
+                           qty:  favorite.qty_per_mainprice,
+                           total_amount: '',
+                           size: favorite.Size,
+                            price: favorite.price, 
+                          client_token_ID:  this.client_token_ID,
+                          client_email : localStorage.getItem(`client_email`),
+                          client_selected_approved_item_token : favorite.Admin_item_token,
+                          client_selected_approved_item_admin_monitor_new_id : favorite.admin_monitor_new_id,
+                          addtocart: favorite.addtocart, 
                    
                    };
           // save the data to localStorage
-     if (favorite.addtocart)  {localStorage.setItem(`cart_${favorite.id}`, JSON.stringify(data))};
-     if (!favorite.addtocart)  {localStorage.removeItem(`cart_${favorite.id}` );}
+     if (favorite.addtocart)  {localStorage.setItem(`cart_${favorite.Admin_item_token}`, JSON.stringify(data))};
+     if (!favorite.addtocart)  {localStorage.removeItem(`cart_${favorite.Admin_item_token}` );}
 
       this.$router.replace({name:'Cartpage', params:{Cartpage: this.client_token_ID}})
 },
@@ -354,8 +356,8 @@ async toggleaddtocart_from_favorite(favorite=''){
                    };
 
                    // save the data to localStorage
-             if (favorite.addtocart)  {localStorage.setItem(`cart_${favorite.id}`, JSON.stringify(data))};
-             if (!favorite.addtocart)  {localStorage.removeItem(`cart_${favorite.id}`);} 
+             if (favorite.addtocart)  {localStorage.setItem(`cart_${favorite.Admin_item_token}`, JSON.stringify(data))};
+             if (!favorite.addtocart)  {localStorage.removeItem(`cart_${favorite.Admin_item_token}`);} 
  
   // document.getElementByClassName('.buy').addeventlistener('onclick',toggleaddtocart_from_favorite )
   // document.querySelector('.buy').display = none;
@@ -363,7 +365,7 @@ async toggleaddtocart_from_favorite(favorite=''){
     
    this.favoritenow = !this.favoritenow; 
 var cart_items_from_favorite= JSON.stringify(favorite);
- localStorage.setItem('cart_'+favorite.id, cart_items_from_favorite);
+ localStorage.setItem('cart_'+favorite.Admin_item_token, cart_items_from_favorite);
   console.log(favorite.addtocart);
   return favorite
   

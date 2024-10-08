@@ -201,7 +201,7 @@ color: white;
       this.message =  `Jefocus Art says Your validaion code is ${resend_a_code}`
         const targetUrl = 'http://localhost:3003/send-sms' ;
 const options = {
-    to: localStorage.getItem(`phone_number`),
+    to: this.confirm_phonenumber,
     message: this.message
 };
 

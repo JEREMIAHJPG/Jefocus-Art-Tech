@@ -43,7 +43,6 @@
              </div>
         </center>
         
-       
        </div>
     <!-- --- -->
      <div v-if="view_artwork_page_guest_view_contents">

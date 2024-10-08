@@ -166,7 +166,7 @@
         <div class="base1" style="background-color:grey;">
             <h3 style="color: white;">Customer Care </h3>
             <ul class="foot1">
-            <router-link to="/Contactformpage"><li class="foot12" style="width: 100%;">Contact Us</li></router-link>
+            <li class="foot12" style="width: 100%;"><router-link to="/Contactformpage"></router-link>Contact Us</li>
             <li class="foot12" style="width: 100%;">Shipping</li>
             <li class="foot12" style="width: 100%;">Return policy</li>
             <li class="foot12" style="width: 100%;">Location</li>

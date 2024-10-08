@@ -59,7 +59,7 @@
       <h1 style="color:white; font-size:xx-large; position: relative; z-index:8; left:40%; top:30%;">{{ number_of_orders }}</h1>
     </div>
     <div style="border-radius:100%; position:sticky; top:70%; z-index:2; width:100px; height: 100px; background-color: black; " @click="view_cart()" >
-      <h1 style="color:white; font-size:xx-large; position: relative; z-index:8; left:80%; top:30%;"><router-link  to="/Cartpage"><span class="material-symbols-outlined">shopping_cart_checkout</span>View Cart</router-link></h1>
+      <h1 style="color:white; font-size:xx-large; position: relative; z-index:8; left:80%; top:30%;"><router-link :to="{name:'Cartpage', params:{Cartpage: this.client_token_ID}}"><span class="material-symbols-outlined">shopping_cart_checkout</span><span class="cart_font_style">View Cart</span></router-link></h1>
     </div>
         <!-- <ul class="sidenav">
             <li class="foot1" style="background-color:#555; color: white; width: 100%; text-align:center; font-size:x-large;">Buy Art </li>
@@ -143,25 +143,26 @@
         <center>
         <div >
            
-        <button :id="'cart_'+items_to_display.reclaimed_get_token" @click="toggleaddtocart1(items_to_display), increament()" class="buy" v-if="!items_to_display.addtocart ">
+        <button :id="'cart_'+items_to_display.Admin_item_token" @click="toggleaddtocart1(items_to_display), increament()" class="buy" v-if="!items_to_display.addtocart ">
                                
           <span class="material-symbols-outlined">add_shopping_cart</span>
-                              Add to Cart
+          <span class="cart_font_style">Add to Cart</span>
+
                               </button>
                               <button @click="toggleaddtocart1(items_to_display), decreament()" class="buy" v-else>
                                 <span class="material-symbols-outlined">remove_shopping_cart</span>
-                              Remove from Cart
+                             <span class="cart_font_style">Remove from Cart</span>
                               </button>       
                             </div >
 
         <div>
-                                <button :id="'favorites_'+items_to_display.reclaimed_get_token" @click="togglefavorite1(items_to_display)" class="buy" v-if="!items_to_display.isfav ">
+                                <button :id="'favorites_'+items_to_display.Admin_item_token" @click="togglefavorite1(items_to_display)" class="buy" v-if="!items_to_display.isfav ">
                                   <span class="material-symbols-outlined">favorite</span>
-                                  <span>Add to Favorite</span>
+                                  <span class="cart_font_style">Add to Favorite</span>
                               </button>
                               <button @click="togglefavorite1(items_to_display)" class="buy" v-else>
                                 <span class="material-symbols-outlined">close</span>
-                                Remove from Favorite
+                                <span class="cart_font_style"> Remove from Favorite </span>
                               </button>  
                             
                               </div>
@@ -275,7 +276,7 @@ data(){return{
 
       onSnapshot(query(collection(db, 'getting_token_user_id'), where('get_ID', '==' , localStorage.getItem(`user_id`))),
             (client) =>{client.forEach((doc) => {
-              this.client_token_ID = doc.data().reclaimed_get_token
+              this.client_token_ID = doc.data().Admin_item_token
             
             })  });
       onSnapshot(query(collection(db, 'approved_checked_adverts'), where('display_art', '==' , true)),
@@ -308,30 +309,32 @@ data(){return{
       items_to_display.addtocart = !items_to_display.addtocart;
       
       console.log(this.client_selected_approved_item_token)
-      
+
       var numberoforders = JSON.stringify(this.number_of_orders+1);
       localStorage.setItem(`numberofordersaddedtocart`,numberoforders );
       // console.log(numberoforders);
     ///outline the received data
-     var total_amount = items_to_display.qty * items_to_display.price;
-      var data = { id: this.client_selected_approved_item_token, 
-                   qty:items_to_display.qty, 
-                   First_image_selected:items_to_display.First_image_selected,
-                   Second_image_selected:items_to_display.Second_image_selected, 
-                   title: items_to_display.Title,
-                   total_amount: total_amount,
-                   size: items_to_display.Size,
-                  //  price: items_to_display.price, 
-                  client_token_ID:  this.client_token_ID,
-                  client_email : localStorage.getItem(`client_email`),
-                  client_selected_approved_item_token : items_to_display.Admin_item_token,
-                  client_selected_approved_item_admin_monitor_new_id : items_to_display.admin_monitor_new_id,
-                  addtocart: items_to_display.addtocart, 
+    // var total_amount = items_to_display.qty * items_to_display.price;
+      var data = {          seller_ID: items_to_display.user_ID,
+                           id: this.client_selected_approved_item_token, 
+                           main_quantity:items_to_display.main_quantity, 
+                           First_image_selected:items_to_display.First_image_selected, 
+                           Second_image_selected:items_to_display.Second_image_selected, 
+                           title: items_to_display.Title,
+                           qty:  items_to_display.qty_per_mainprice,
+                           total_amount: '',
+                           size: items_to_display.Size,
+                          price: items_to_display.price, 
+                          client_token_ID:  this.client_token_ID,
+                          client_email : localStorage.getItem(`client_email`),
+                          client_selected_approved_item_token : items_to_display.Admin_item_token,
+                          client_selected_approved_item_admin_monitor_new_id : items_to_display.admin_monitor_new_id,
+                          addtocart: items_to_display.addtocart, 
                    
                    };
           // save the data to localStorage
-     if (items_to_display.addtocart)  {localStorage.setItem(`cart_${items_to_display.id}`, JSON.stringify(data))};
-     if (!items_to_display.addtocart)  {localStorage.removeItem(`cart_${items_to_display.id}` );}
+     if (items_to_display.addtocart)  {localStorage.setItem(`cart_${items_to_display.Admin_item_token}`, JSON.stringify(data))};
+     if (!items_to_display.addtocart)  {localStorage.removeItem(`cart_${items_to_display.Admin_item_token}` );}
 
       this.$router.replace({name:'Cartpage', params:{Cartpage: this.client_token_ID}})
     },
@@ -355,15 +358,16 @@ data(){return{
               // console.log(numberoforders);
             ///outline the received data
             //  var total_amount = items_to_display.qty * items_to_display.price;
-              var data = { id: this.client_selected_approved_item_token, 
-                main_quantity:items_to_display.main_quantity, 
+              var data = { seller_ID: items_to_display.user_ID,
+                           id: this.client_selected_approved_item_token, 
+                           main_quantity:items_to_display.main_quantity, 
                            First_image_selected:items_to_display.First_image_selected, 
                            Second_image_selected:items_to_display.Second_image_selected, 
                            title: items_to_display.Title,
-                           
-                          //  total_amount: total_amount,
+                           qty:  items_to_display.qty_per_mainprice,
+                           total_amount: '',
                            size: items_to_display.Size,
-                          //  price: items_to_display.price, 
+                          price: items_to_display.price, 
                           client_token_ID:  this.client_token_ID,
                           client_email : localStorage.getItem(`client_email`),
                           client_selected_approved_item_token : items_to_display.Admin_item_token,
@@ -372,8 +376,8 @@ data(){return{
                            
                            };
                   // save the data to localStorage
-             if (items_to_display.addtocart)  {localStorage.setItem(`cart_${items_to_display.id}`, JSON.stringify(data))};
-             if (!items_to_display.addtocart)  {localStorage.removeItem(`cart_${items_to_display.id}` );
+             if (items_to_display.addtocart)  {localStorage.setItem(`cart_${items_to_display.Admin_item_token}`, JSON.stringify(data))};
+             if (!items_to_display.addtocart)  {localStorage.removeItem(`cart_${items_to_display.Admin_item_token}` );
 
              // 
              }
@@ -428,8 +432,8 @@ data(){return{
 
         if (!items_to_display.isfav)  { await deleteDoc(doc(db, 'client_favorites', this.client_favorites_id))
         console.log("This Favorite is deleted from the client_favorites collection with id :", this.client_favorites_id);}
-        // if (items_to_display.isfav)  {localStorage.setItem(`favorites_${items_to_display.id}`, JSON.stringify(data_favorite))};
-        // if (!items_to_display.isfav)  {localStorage.removeItem(`favorites_${items_to_display.id}` );}
+        // if (items_to_display.isfav)  {localStorage.setItem(`favorites_${items_to_display.Admin_item_token}`, JSON.stringify(data_favorite))};
+        // if (!items_to_display.isfav)  {localStorage.removeItem(`favorites_${items_to_display.Admin_item_token}` );}
         
       },
     tooglelpdisplay(items_to_display){items_to_display.display=!items_to_display.display},
@@ -490,6 +494,9 @@ float: left;
 width: 100%;
 }
 
+      .cart_font_style{
+        font-size:small;
+      }
                     .reply_form_view_background_view{
     z-index: 10;
     background-color: rgb(0,0,0, 0.8);

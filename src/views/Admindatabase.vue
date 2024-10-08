@@ -81,6 +81,7 @@ export default {
             account_number:'',
             bank_name:'',
             residential_address:'',
+            admin_phonenumber:'',
             adminnew_id:'',
             admin_database_id:'',
             admin_image_url:'',
@@ -92,7 +93,6 @@ export default {
             select_category_now:'',
             visuals_subcategory_data:'',
             graphics_subcategory_data:'',
-            account_number:'',
             username:'',
             admin_email:'' ,
             admin_image:'',
@@ -194,26 +194,54 @@ export default {
         this.admin_database_token = await ((Math.random(10000000000))*10000000000).toFixed(0);
         //store token generated via adding admin 
         localStorage.setItem(`admin_database_token`, this.admin_database_token);
+        
+        //getting phonenumber
+        await onSnapshot(query(collection(db, 'getting_user_id'), where('email', '==', this.admin_email )),
+            (checkadvert) =>{checkadvert.forEach((doc) => {this.admin_phonenumber = this.phonenumber
+
+                  
+                // if(!doc.data().exists()){
+                //     //to redirect me to Adminserviceslist page
+                //     this.$router.push('/Adminserviceslist'),
+                //     //to remove admin from admin_sellers_database if he has not posted anything new yet
+                //     deleteDoc(doc(db, 'admin_sellers_database', this.sellers_id))
+                //     }
+                    // console.log("items uploaded");
+            })  }) 
         //creating admin 
         await getDocs(query(collection(db,'current_user_profile'),
         where('email', '==', this.admin_email))).then(admin_database_admin=>{ 
-               admin_database_admin.forEach ((doc)=>{
+                
+                admin_database_admin.forEach ((doc)=>{
                 this.user_ID    =  doc.data().user_ID;
                 this.admin_email = doc.data().email;
                 this.admin_name =   doc.data().name;
                 this.admin_profession = doc.data().profession;
                 
+                
+                var account_details = {
+                account_name:           this.account_name,
+                account_number:         this.account_number,
+                bank_name:              this.bank_name,
+                residential_address:    this.residential_address,
+                }
+
+                //fetching phonenumber
+                
+
                 var admin_database_collection = {
                 user_ID:                this.user_ID,
                 username:               this.username,
-                admin_email:            this.admin_email ,
+                admin_email:            this.admin_email,
+                admin_phonenumber:      this.admin_phonenumber,
                 admin_image:            this.admin_image,
                 admin_image_url:        this.admin_image_url,
                 admin_name:             this.admin_name,
                 admin_profession:       this.admin_profession,
                 Service_Category:       this.select_category_now,
                 subcategory:            this.visuals_subcategory_data + this.graphics_subcategory_data,
-                admin_database_token:   this.admin_database_token,                
+                admin_database_token:   this.admin_database_token,
+                account_details:        account_details,                
                 Admin_Membership_Time:  new Date()
                                               };
 
@@ -240,6 +268,8 @@ export default {
                 localStorage.removeItem(`admin_database_token`);
                 localStorage.removeItem(`random_admin_image`);
                 localStorage.removeItem(`admin_image_url`);
+                // include another input box to verify phonenumber before admin can be created
+                if(this.user_ID){return true}else{false}
                 // this.$refs.admin_profile_image.files[0]='';
                 document.getElementById("admindatabase").reset();
                
@@ -247,6 +277,7 @@ export default {
             this.account_number='',
             this.bank_name='',
             this.residential_address = '',
+            this.admin_phonenumber='',
             this.admin_image_url = '',
             this.display_select_category = true,
             this.Visuals_Art_Services_selected = false,

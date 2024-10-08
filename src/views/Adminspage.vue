@@ -1,356 +1,4 @@
-<style scoped>
-.b-create-ad-card-header__button{
-    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
-    color: #464b4f;
-    font-size: 13px;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    width: 55px;
-}
 
-.btn_postad_top{        
-
-color:black;
-width:100%;
-height:30px;
-border-radius:5px;
-}
-
-.btn_postad{        
-background-color:black;
-color:white;
-width:100%;
-height:30px;
-border-radius:5px;
-margin-top:10px;
-}
-
-
-
-.direct_left
-{
-float:left;
-width:40%;
-height:auto;
-display:float;
-position: relative;
-
-
-}
-
-.direct_right
-{
-float:left;
-width:10%;
-height:auto;
-display:float;
-position: relative;
-left:40%;
-
-}
-
-.postad_left {
-    position:relative;
-    margin-top:10px;
-    left:40%;
-}
-
-.btn_clear{
-background-color:black;
-color:white;
-width:50px;
-height:30px;
-border-radius:5px;
-}
-
-.category_input_position1{
-    position:relative;
-    margin-top: 10px;
-    float:left;
-    margin-left:0%;
-    margin-right:20%;
-    width:100%;
-    height:50px;
-}
-.category_input_position2{
-    float:left;
-    margin-top: 10px;
-    margin-left:0%;
-    margin-right:20%;
-    width:100%;
-    height:50px;
-}
-.category_input_position3{
-    float:left;
-    margin-top: 10px;
-    margin-left:0%;
-    margin-right:20%;
-    width:100%;
-    height:50px;
-}
-
-.social_media_link_input_position{
-    float:left;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left:7%;
-    margin-right:0%;
-    width:70%;
-    height:50px;
-}
-
-.price{  
-    float:left;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    margin-left:10%;
-    margin-right:10%;
-    width:100%;
-    height:10px;
-
-}
-
-.input_category_form {
-float:left;
-width:70%;
-left:-10%;
-position: relative;
-margin-left:20%;
-margin-right:20%;
-}
-.input_category_form_size_quantity {
-float:left;
-width:10%;
-left:30%;
-position: relative;
-margin-left:3%;
-margin-right:3%;
-}
-
-.input_quantity {
-float:left;
-width:70%;
-left:-10%;
-position: relative;
-margin-left:20%;
-margin-right:20%;
-}
-
-
-.policy_checkbox_input_category_form{
-float:left;
-width:70%;
-left:0;
-position: relative;
-margin-left:20%;
-margin-right:20%;
-}
-
-.file_input_category_form {
-float:left;
-width:100%;
-margin-top:0%;
-margin-left:0%;
-position: relative;
-padding-top:10px;
-padding-left:20%;
-padding-right:20%;
-
-}
-
-
-
-.select-image{
-    position:relative;
-    border: 3px solid grey;
-    border-radius: 10px;
-    background-color: white;
-    width: 100px;
-    height: 100px;
-    float:left;
-    margin: 10px;
-
-}
-
-.select-image_choose{
-    position:relative;
-    border: 3px solid grey;
-    border-radius: 10px;
-    background-color: white;
-    padding:5px;
-    width: 95px; 
-    height: 20px;
-    float:left;
-    margin: 10px;
-}
-
-.select-image-button{ 
-    position:relative;
-    border: 3px solid grey;
-    border-radius: 10px;
-    background-color: white;
-    width: 100px; 
-    height: 100px;
-    float: left;
-    margin: 10px;
-}
-
-.select-video-button{
-    position: relative;
-    border: 3px solid grey;
-    border-radius: 10px;
-    background-color: white;
-    width: 100px; 
-    height: 50px;
-    float: left;
-    margin: 10px;
-}
-
-.choosefile_instruction{
-    width: 100%;
-    display: block;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    color: grey;
-}
-
-.chooseimage_instruction{
-    width: 100%;
-    display: float;
-    float: left;
-    margin-top:10px;
-    margin-bottom:10px;
-    color: grey;
-}
-
-.upload_errormessage{
-    width: 100%;
-    display: float;
-    float: left;
-    margin-top:10px;
-    margin-bottom:10px;
-    color: red;
-}
-
-.b-add-image-section__static-hints, .h-mt-5{
-    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
-    pointer-events: none;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    color: #6c8ea0;
-    font-size: 14px;
-    line-height: 20px;
-    margin-top: 5px;}
-
-    .input_div1 {
-        position:relative;
-    margin-top: 10px;
-    top:5px;
-    float:left;
-    justify-content: center;
-    margin-left:10%;
-    margin-right:10%;
-    width:100%;
-    height:70px;
-    }
-    .input_div2 {
-        position:relative;
-    margin-top: 10px;
-    top:5px;
-    float:left;
-    justify-content: center;
-    margin-left:10%;
-    margin-right:10%;
-    width:100%;
-    height:70px;
-    }
-    
-    .input_div2_display_none {
-        display:none;
-        position:relative;
-    margin-top: 10px;
-    top:5px;
-    float:left;
-    justify-content: center;
-    margin-left:10%;
-    margin-right:10%;
-    width:100%;
-    height:70px;
-    }
-
-    .input_div3 {
-        position:relative;
-    margin-top: 10px;
-    top:5px;
-    float:left;
-    justify-content: center;
-    margin-left:10%;
-    margin-right:10%;
-    width:100%;
-    height:70px;
-    }
-
-    .admin_description{
-        position:relative;
-    margin-top: 10px;
-    top:5px;
-    float:left;
-    justify-content: center;
-    margin-left:17%;
-    margin-right:15%;
-    width:70%;
-    height:100%;
-    }
-
-    .A{
-        position:relative;
-    margin-top: 10px;
-    top:5px;
-    float:left;
-    justify-content: center;
-    margin-left:17%;
-    margin-right:15%;
-    width:70%;
-    height:100%;
-    }
-
-    .input_div_social_media_link {
-        position:relative;
-    margin-top: 10px;
-    top:5px;
-    float:left;
-    justify-content: center;
-    margin-left:10%;
-    margin-right:10%;
-    width:100%;
-    height:70px;
-    }
-
-
-    .category_style{
-        position: absolute; margin-top: 15px; color: grey;
-
-    }
-    
-
-    .category_style_Visual_Art_Service{
-        position: absolute; margin-top: 15px; color: grey;
-    }
-
-    .category_style_Graphics_Art_and_Technology{
-        position: absolute; margin-top: 15px; color: grey;
-    }
-    
-    .category_style_select_category{
-        position: absolute; margin-top: 15px; z-index: 3; color: grey;
-    }
-    .supported_picture_format{
-        position:relative; display:float; float:left; justify-content: center; left: 32%; color: grey;
-    }
-    .admin_container{border-radius:5px; background-color: #f2f2f2; padding: 20px; margin-right: 20%; margin-bottom: 100px; margin-left: 20%;}
-</style>
 <template>
     <form class="admin_container" id="adminspage" @submit.prevent="onsubmit_category()" action="/action_page.php" >
     <div class="btn_postad_top">
@@ -993,7 +641,7 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
                 Second_image_selected:  this.url2,
                 video_selected:         this.url_video,
                 price:                  this.main_price,
-                main_quantity:          this.main_quantity,
+                qty_per_mainprice:       1,
                 youtubelink:            this.youtubelink,
                 Admin_item_token:       Admin_item_token,
                 Admin_upload_date:      new Date(),
@@ -1100,3 +748,355 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
 };
 
 </script>
+<style scoped>
+.b-create-ad-card-header__button{
+    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+    color: #464b4f;
+    font-size: 13px;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    width: 55px;
+}
+
+.btn_postad_top{        
+
+color:black;
+width:100%;
+height:30px;
+border-radius:5px;
+}
+
+.btn_postad{        
+background-color:black;
+color:white;
+width:100%;
+height:30px;
+border-radius:5px;
+margin-top:10px;
+}
+
+
+
+.direct_left
+{
+float:left;
+width:40%;
+height:auto;
+display:float;
+position: relative;
+
+
+}
+
+.direct_right
+{
+float:left;
+width:10%;
+height:auto;
+display:float;
+position: relative;
+left:40%;
+
+}
+
+.postad_left {
+    position:relative;
+    margin-top:10px;
+    left:40%;
+}
+
+.btn_clear{
+background-color:black;
+color:white;
+width:50px;
+height:30px;
+border-radius:5px;
+}
+
+.category_input_position1{
+    position:relative;
+    margin-top: 10px;
+    float:left;
+    margin-left:0%;
+    margin-right:20%;
+    width:100%;
+    height:50px;
+}
+.category_input_position2{
+    float:left;
+    margin-top: 10px;
+    margin-left:0%;
+    margin-right:20%;
+    width:100%;
+    height:50px;
+}
+.category_input_position3{
+    float:left;
+    margin-top: 10px;
+    margin-left:0%;
+    margin-right:20%;
+    width:100%;
+    height:50px;
+}
+
+.social_media_link_input_position{
+    float:left;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left:7%;
+    margin-right:0%;
+    width:70%;
+    height:50px;
+}
+
+.price{  
+    float:left;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left:10%;
+    margin-right:10%;
+    width:100%;
+    height:10px;
+
+}
+
+.input_category_form {
+float:left;
+width:70%;
+left:-10%;
+position: relative;
+margin-left:20%;
+margin-right:20%;
+}
+.input_category_form_size_quantity {
+float:left;
+width:10%;
+left:30%;
+position: relative;
+margin-left:3%;
+margin-right:3%;
+}
+
+.input_quantity {
+float:left;
+width:70%;
+left:-10%;
+position: relative;
+margin-left:20%;
+margin-right:20%;
+}
+
+
+.policy_checkbox_input_category_form{
+float:left;
+width:70%;
+left:0;
+position: relative;
+margin-left:20%;
+margin-right:20%;
+}
+
+.file_input_category_form {
+float:left;
+width:100%;
+margin-top:0%;
+margin-left:0%;
+position: relative;
+padding-top:10px;
+padding-left:20%;
+padding-right:20%;
+
+}
+
+
+
+.select-image{
+    position:relative;
+    border: 3px solid grey;
+    border-radius: 10px;
+    background-color: white;
+    width: 100px;
+    height: 100px;
+    float:left;
+    margin: 10px;
+}
+
+.select-image_choose{
+    position:relative;
+    border: 3px solid grey;
+    border-radius: 10px;
+    background-color: white;
+    padding:5px;
+    width: 95px; 
+    height: 20px;
+    float:left;
+    margin: 10px;
+}
+
+.select-image-button{ 
+    position:relative;
+    border: 3px solid grey;
+    border-radius: 10px;
+    background-color: white;
+    width: 100px; 
+    height: 100px;
+    float: left;
+    margin: 10px;
+}
+
+.select-video-button{
+    position: relative;
+    border: 3px solid grey;
+    border-radius: 10px;
+    background-color: white;
+    width: 100px; 
+    height: 50px;
+    float: left;
+    margin: 10px;
+}
+
+.choosefile_instruction{
+    width: 100%;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: grey;
+}
+
+.chooseimage_instruction{
+    width: 100%;
+    display: float;
+    float: left;
+    margin-top:10px;
+    margin-bottom:10px;
+    color: grey;
+}
+
+.upload_errormessage{
+    width: 100%;
+    display: float;
+    float: left;
+    margin-top:10px;
+    margin-bottom:10px;
+    color: red;
+}
+
+.b-add-image-section__static-hints, .h-mt-5{
+    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+    pointer-events: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #6c8ea0;
+    font-size: 14px;
+    line-height: 20px;
+    margin-top: 5px;}
+
+    .input_div1 {
+        position:relative;
+    margin-top: 10px;
+    top:5px;
+    float:left;
+    justify-content: center;
+    margin-left:10%;
+    margin-right:10%;
+    width:100%;
+    height:70px;
+    }
+    .input_div2 {
+        position:relative;
+    margin-top: 10px;
+    top:5px;
+    float:left;
+    justify-content: center;
+    margin-left:10%;
+    margin-right:10%;
+    width:100%;
+    height:70px;
+    }
+    
+    .input_div2_display_none {
+        display:none;
+        position:relative;
+    margin-top: 10px;
+    top:5px;
+    float:left;
+    justify-content: center;
+    margin-left:10%;
+    margin-right:10%;
+    width:100%;
+    height:70px;
+    }
+
+    .input_div3 {
+        position:relative;
+    margin-top: 10px;
+    top:5px;
+    float:left;
+    justify-content: center;
+    margin-left:10%;
+    margin-right:10%;
+    width:100%;
+    height:70px;
+    }
+
+    .admin_description{
+        position:relative;
+    margin-top: 10px;
+    top:5px;
+    float:left;
+    justify-content: center;
+    margin-left:17%;
+    margin-right:15%;
+    width:70%;
+    height:100%;
+    }
+
+    .A{
+        position:relative;
+    margin-top: 10px;
+    top:5px;
+    float:left;
+    justify-content: center;
+    margin-left:17%;
+    margin-right:15%;
+    width:70%;
+    height:100%;
+    }
+
+    .input_div_social_media_link {
+        position:relative;
+    margin-top: 10px;
+    top:5px;
+    float:left;
+    justify-content: center;
+    margin-left:10%;
+    margin-right:10%;
+    width:100%;
+    height:70px;
+    }
+
+
+    .category_style{
+        position: absolute; margin-top: 15px; color: grey;
+
+    }
+    
+
+    .category_style_Visual_Art_Service{
+        position: absolute; margin-top: 15px; color: grey;
+    }
+
+    .category_style_Graphics_Art_and_Technology{
+        position: absolute; margin-top: 15px; color: grey;
+    }
+    
+    .category_style_select_category{
+        position: absolute; margin-top: 15px; z-index: 3; color: grey;
+    }
+    .supported_picture_format{
+        position:relative; display:float; float:left; justify-content: center; left: 32%; color: grey;
+    }
+    .admin_container{border-radius:5px; background-color: #f2f2f2; padding: 20px; margin-right: 20%; margin-bottom: 100px; margin-left: 20%;}
+</style>

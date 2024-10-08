@@ -144,6 +144,30 @@ try {
   res.status(500).json({ error: error.message });
 }
 })
+app.post('/send-sms-after-client-payment', async (req, res) => {
+//cons {to,message} = req.body || res.status
+console.log('POST /send-sms-after-client-payment hit');
+try {
+  const { to, message } = req.body;
+  console.log('Request body:', req.body);
+  const response = await axios.post('https://api.sandbox.africastalking.com/version1/messaging', 
+    new URLSearchParams({
+      username: 'sandbox',
+      to,
+      message
+    })
+  , {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'apiKey': 'atsk_fd221a40d30b04649873b9094a955a5ffaf688e6f56ec3eecd05dc520b220617e5d4fd8c'
+    }
+  });
+  res.json(response.data);
+} catch (error) {
+  console.error('Error in /send-sms-after-client-payment:', error.response ? error.response.data : error.message);  // Log the error
+  res.status(500).json({ error: error.message });
+}
+})
 
 const PORT = 3003||3000;
 

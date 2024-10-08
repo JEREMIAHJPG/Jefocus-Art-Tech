@@ -378,7 +378,6 @@ this.load_page_video_check();
                 })});
 
                 
-
                 //UPLOAD QUERYING
                 await onSnapshot(query(collection(db, 'admin_current_database'), where('adminnew_id', '==' , this.$route.params.Adminmonitor_id)),
             (checkadvert) =>{checkadvert.forEach((doc) => {this.monitor_data.push(doc.data())
@@ -400,8 +399,7 @@ this.load_page_video_check();
         //               async load_page(){
                       
         // },
-
-        
+              
        async post_button(monitor_data_value){
         await getDocs(query(collection(db,'admin_current_database'),
             where('admin_current_database_adminnew_id', '==',  monitor_data_value.admin_current_database_adminnew_id))).then(post=>{ 
