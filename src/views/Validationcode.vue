@@ -217,9 +217,6 @@ fetch(targetUrl,{
 .then(response => response.json())
 .then(data => console.log(data))
 .catch(error => console.error(error) );
-
-      
-     
         
         //remove code_expired statement and //clear code to empty the boxes
         this.code =  Array(6).fill(''),

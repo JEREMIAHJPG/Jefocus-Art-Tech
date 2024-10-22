@@ -130,17 +130,35 @@ export default{
                        }
              var New_Password_array = await {
                     email : this.email,
-                    password: this.New_Password
+                    password: this.New_Password,
+                    returnSecureToken: true
                     }
-         await setDoc(doc(db,'getting_user_id',this.$route.params.Changepassword), 
+        //  await setDoc(doc(db,'getting_user_id',this.$route.params.Changepassword), 
+        //             {password: this.New_Password}, {merge:true});
+                    
+        // await setDoc(doc(db,'current_user_profile',this.$route.params.Changepassword), 
+        //             {password: this.New_Password}, {merge:true});
+                    //
+        await axios.POST('https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyDt8TxIM_m7OaUlxT2WgDhS13jYFp7VvhE', New_Password_array ).then(()=>{
+             updateDoc(doc(db,'getting_user_id',this.$route.params.Changepassword),
+                {
+                    password :  deleteField(),                                                        
+                },)
+         updateDoc(doc(db,'current_user_profile',this.$route.params.Changepassword),
+                {
+                    password :  deleteField(),                                                        
+                },)
+         setDoc(doc(db,'getting_user_id',this.$route.params.Changepassword), 
                     {password: this.New_Password}, {merge:true});
                     
-        await setDoc(doc(db,'current_user_profile',this.$route.params.Changepassword), 
+         setDoc(doc(db,'current_user_profile',this.$route.params.Changepassword), 
                     {password: this.New_Password}, {merge:true});
-                    //
-        // await axios.get('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDt8TxIM_m7OaUlxT2WgDhS13jYFp7VvhE');           
             //direct to login page for relogin
             this.$router.replace('/LoginPage')
+        }).catch((error)=>{
+            alert(`${error.statement}`);
+        })
+       
 
         }
     }

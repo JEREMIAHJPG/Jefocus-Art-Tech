@@ -59,7 +59,9 @@
       <h1 style="color:white; font-size:xx-large; position: relative; z-index:8; left:40%; top:30%;">{{ number_of_orders }}</h1>
     </div>
     <div style="border-radius:100%; position:sticky; top:70%; z-index:2; width:100px; height: 100px; background-color: black; " @click="view_cart()" >
-      <h1 style="color:white; font-size:xx-large; position: relative; z-index:8; left:80%; top:30%;"><router-link :to="{name:'Cartpage', params:{Cartpage: this.client_token_ID}}"><span class="material-symbols-outlined">shopping_cart_checkout</span><span class="cart_font_style">View Cart</span></router-link></h1>
+      <h1 style="color:white; font-size:xx-large; position: relative; z-index:8; left:80%; top:30%;">
+        <!-- <router-link :to="{name:'Cartpage', params:{Cartpage: this.client_token_ID}}"><span class="material-symbols-outlined">shopping_cart_checkout</span><span class="cart_font_style">View Cart</span></router-link>-->
+        </h1> 
     </div>
         <!-- <ul class="sidenav">
             <li class="foot1" style="background-color:#555; color: white; width: 100%; text-align:center; font-size:x-large;">Buy Art </li>
@@ -71,9 +73,8 @@
             <li><a href=""><input type="checkbox">Photography</a></li>
         </ul> -->
 
-        <!-- <div class="content"> -->
-            
-            
+        <!-- <div class="content"> -->     
+
              <div class="bottom">
                  <div class="row1" >
                      <div class="base1" style="background-color:aquamarine;">
@@ -276,7 +277,7 @@ data(){return{
 
       onSnapshot(query(collection(db, 'getting_token_user_id'), where('get_ID', '==' , localStorage.getItem(`user_id`))),
             (client) =>{client.forEach((doc) => {
-              this.client_token_ID = doc.data().Admin_item_token
+              this.client_token_ID = doc.data().reclaimed_get_token
             
             })  });
       onSnapshot(query(collection(db, 'approved_checked_adverts'), where('display_art', '==' , true)),
@@ -315,7 +316,7 @@ data(){return{
       // console.log(numberoforders);
     ///outline the received data
     // var total_amount = items_to_display.qty * items_to_display.price;
-      var data = {          seller_ID: items_to_display.user_ID,
+      var data = {         seller_ID: items_to_display.user_ID,
                            id: this.client_selected_approved_item_token, 
                            main_quantity:items_to_display.main_quantity, 
                            First_image_selected:items_to_display.First_image_selected, 
@@ -324,19 +325,19 @@ data(){return{
                            qty:  items_to_display.qty_per_mainprice,
                            total_amount: '',
                            size: items_to_display.Size,
-                          price: items_to_display.price, 
-                          client_token_ID:  this.client_token_ID,
-                          client_email : localStorage.getItem(`client_email`),
-                          client_selected_approved_item_token : items_to_display.Admin_item_token,
-                          client_selected_approved_item_admin_monitor_new_id : items_to_display.admin_monitor_new_id,
-                          addtocart: items_to_display.addtocart, 
+                           price: items_to_display.price, 
+                           client_token_ID:  this.client_token_ID,
+                           client_email : localStorage.getItem(`client_email`),
+                           client_selected_approved_item_token : items_to_display.Admin_item_token,
+                           client_selected_approved_item_admin_monitor_new_id : items_to_display.admin_monitor_new_id,
+                           addtocart: items_to_display.addtocart, 
                    
                    };
           // save the data to localStorage
      if (items_to_display.addtocart)  {localStorage.setItem(`cart_${items_to_display.Admin_item_token}`, JSON.stringify(data))};
      if (!items_to_display.addtocart)  {localStorage.removeItem(`cart_${items_to_display.Admin_item_token}` );}
 
-      this.$router.replace({name:'Cartpage', params:{Cartpage: this.client_token_ID}})
+      this.$router.push({name:'Cartpage', params:{Cartpage: this.client_token_ID}})
     },
     increament(){ return this.number_of_orders++ },
 
@@ -412,7 +413,7 @@ data(){return{
                            main_quantity:items_to_display.main_quantity, 
                           //  First_image_selected:items_to_display.First_image_selected, 
                           //  Second_image_selected:items_to_display.Second_image_selected, 
-                           title: items_to_display.title,
+                           title: items_to_display.Title,
                           //  total_amount: total_amount,
                           size: items_to_display.Size,
                           //  price: items_to_display.price,
@@ -420,14 +421,13 @@ data(){return{
                           client_email : localStorage.getItem(`client_email`),
                           client_selected_approved_item_token : items_to_display.Admin_item_token,
                           client_selected_approved_item_admin_monitor_new_id : items_to_display.admin_monitor_new_id,
-                          addtocart: items_to_display.addtocart,
-                           
+                          addtocart: items_to_display.addtocart,                       
                            };
         if (items_to_display.isfav)  {await addDoc(collection(db,'client_favorites'), data_favorite );};
 
                           //  get favorites ID
                           onSnapshot(query(collection(db,'client_favorites'), where('client_selected_approved_item_token', '==' , items_to_display.Admin_item_token)),
-            (favorite_contents) =>{favorite_contents.forEach((doc) => {client_favorites_id = doc.id
+            (favorite_contents) =>{favorite_contents.forEach((doc) => {this.client_favorites_id = doc.id
             })  }) 
 
         if (!items_to_display.isfav)  { await deleteDoc(doc(db, 'client_favorites', this.client_favorites_id))

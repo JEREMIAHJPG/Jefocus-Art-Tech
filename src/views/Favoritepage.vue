@@ -254,7 +254,7 @@ methods:{
 
 // }
 
-return favorites;
+return favorites;G
 },
 convert_all_favorites_to_database(){
           var favorite_contents_list = [];

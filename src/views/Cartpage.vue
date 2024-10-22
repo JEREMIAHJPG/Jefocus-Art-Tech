@@ -196,6 +196,7 @@ export default {
         pickuplocation:"",
         errorstatement:false,
         cartdate:"",
+        Order_No:'',
         // items_to_display:[]
           //cartpostprofile:[],
          // number:'',
@@ -267,7 +268,7 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
             //payment done
             //transaction ID generation
             var Order_No = await `YE${transaction_code_a}SH${transaction_code_b}UA`;
-          
+            this.Order_No = Order_No;
             //get newcart
             for( var key in localStorage ){
             if(key.split('_')[0] == 'cart'){
@@ -275,12 +276,12 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
                }
                }
                //time of order placed 
-            let currentTime = new Date()
+            var currentTime = Date()
             var hoursT = currentTime.getHours();
             var minsT  = currentTime.getMinutes();
             var secT   = currentTime.getSeconds();
 
-            let deadline_Time = new Date() + (3*24*60*60)
+            var deadline_Time = Date() + (3*24*60*60*1000)
             var deadline_Time_hoursT = deadline_Time.getHours();
             var deadline_Time_minsT  = deadline_Time.getMinutes();
             var deadline_Time_secT   = deadline_Time.getSeconds();
@@ -294,7 +295,8 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
                                                                               currentTime:           currentTime
                                               },
 
-                                              time_details_deadline_Time :{deadline_time_of_order_placed: deadline_time_of_order_placed,                                                                      deadline_Time:                  deadline_Time
+                                              time_details_deadline_Time :{deadline_time_of_order_placed: deadline_time_of_order_placed,                                                                      
+                                                                   deadline_Time:                  deadline_Time
                                               }
                                              }
             var receipt = {total_amount:this.sum_value, fullname:fullname, payment_email: this.payment_email, countryphonenumber:countryphonenumber, 
@@ -337,17 +339,62 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
               })
               })
                         
-            });
+            }
+          
+          );
             })  
           }) .then(response => response.json())
               .then(data => console.log(data))
               .catch(error => console.error(error));
+              //send each order to the database for fetching in tracking input
+              await this.get_all_new_cart.forEach((tracking_input)=>{
+                var seller_ID = tracking_input.seller_ID;
+                var order_details_for_tracking_and_payment = {
+                          seller_ID: tracking_input.seller_ID,
+                           id: tracking_input.id, 
+                           main_quantity:tracking_input.main_quantity, 
+                           First_image_selected:tracking_input.First_image_selected, 
+                           Second_image_selected:tracking_input.Second_image_selected, 
+                           title: tracking_input.title,
+                           qty:  tracking_input.qty,
+                           total_amount: tracking_input.total_amount,
+                           size: tracking_input.size,
+                          price: tracking_input.price, 
+                          client_token_ID:  this.$route.params.Cartpage,
+                          client_email : localStorage.getItem(`client_email`),
+                          client_selected_approved_item_token : tracking_input.client_selected_approved_item_token,
+                          client_selected_approved_item_admin_monitor_new_id : tracking_input.client_selected_approved_item_admin_monitor_new_id,
+                          specific_order_id:                `${this.Order_No}+${tracking_input.client_selected_approved_item_admin_monitor_new_id}`,
+                          addtocart:                        tracking_input.addtocart,
+                          Order_No:                         this.Order_No,          
+                          time_details_of_order_placed:     time_details_of_order_placed,
+                          delivery_status:                  "delivery pending",
+                          shipment_status:                  "shipment pending",
+                          tracking_id:                      "Input Tracking ID",
+                          net_profit:                       null,
+                          currentTime:                      currentTime,
+                          time_delay_commission:            null
 
-            //add database_for_paid_orders
-            await addDoc( collection(db, 'database_for_paid_orders_database'), database_for_paid_orders )
-           
+                        };
+
+                          getDocs(query(collection(db,  'order_details_for_tracking_and_payment'), where('seller_ID', '==' , seller_ID))). 
+                     then(cart_sellers_snap => cart_sellers_snap.forEach((doc)=>{this.find_admin_seller = doc.data().seller_ID; 
+                     console.log(this.find_cart_admin_seller)}));
+
+            switch(this.find_cart_admin_seller){ 
+            case '' : addDoc(collection(db, 'list_of_order_details_for_tracking_and_payment'), order_details_for_tracking_and_payment),
+                      addDoc(collection(db, 'order_details_for_tracking_and_payment'), order_details_for_tracking_and_payment)
+             
+            break;
+            default: addDoc(collection(db, 'list_of_order_details_for_tracking_and_payment'), order_details_for_tracking_and_payment);
+          }
+                         })
             
-
+             //code for if qty is greater than or equal to main_quantity let the item in approved_adverts be deleted
+            
+             //add database_for_paid_orders FOR RECIEPT AND  HISTORY
+            await addDoc( collection(db, 'database_for_paid_orders_database'), database_for_paid_orders )
+            
             let order_receipt = JSON.stringify(receipt);
             localStorage.setItem(`receipt_key`, order_receipt);
             this.$router.push('/Receiptpage');
@@ -421,17 +468,17 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
               //var new_price = '',
               //updated_price = document.querySelector(`#items_to_displaycart_price_${items_to_display.Admin_item_token}`).value,
                 //get the existing data from localStorage and update it with the new data;
-              existing_data = JSON.parse( localStorage.getItem(`cart_`+items_to_display.Admin_item_token) );
+              //existing_data = JSON.parse( localStorage.getItem(`cart_`+items_to_display.Admin_item_token) );
               // updated_amount=JSON.parse(localStorage.getItem(`items_to_displaycart_`+items_to_display.total_amount));
               //return console.log( updated_price );
-                if( existing_data ){
+                //if( existing_data ){
                   //  new_amount = updated_price * items_to_display.price; 
-                   existing_data['price'] = doc.data().price;
-                   existing_data['qty'] = doc.data().qty_per_mainprice;
+                   //existing_data['price'] = doc.data().price;
+                   //existing_data['qty'] = doc.data().qty_per_mainprice;
                   // existing_data['qty'] = doc.data().qty;
                   // existing_data['total_amount']= new_amount; 
-                   localStorage.setItem(`cart_`+items_to_display.Admin_item_token, JSON.stringify( existing_data )); 
-                };
+                  // localStorage.setItem(`cart_`+items_to_display.Admin_item_token, JSON.stringify( existing_data )); 
+               // };
             })  }) 
           })
           console.log(cart_contents_list);
@@ -461,7 +508,7 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
         localStorage.removeItem(`cart_${items_to_display.Admin_item_token}` );
         this.showcart = false},
          
-          //  cartpost.addtocart=!cartpost.addtocart
+          // cartpost.addtocart=!cartpost.addtocart
             
           // console.log(this.cartpostprofile);
         
@@ -491,7 +538,7 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
                    existing_data['total_amount']= new_amount; 
                    localStorage.setItem(`cart_`+items_to_display.Admin_item_token, JSON.stringify( existing_data )); 
                 };
-                console.log()
+                console.log("updated");
                
                 // this.display_cart_items();
                 

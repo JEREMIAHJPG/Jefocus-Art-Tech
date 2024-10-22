@@ -306,8 +306,15 @@ padding:5px;
 // check how to launch website with GitHub(use brad traversy) --     
 // create view-order history, view artworks page -
 // create a confirm recieve item button on the receipt page ---
-// add payment stack using flutterwave documentation ---
+// add payment stack using paystack documentation ---
 // Responsiveness, Material-Icons and SVGs -   
+
+//make History for client orders---
+//in one page place column for pending payment---
+//input tracking ID for orders made in it fetch token
+// if not empty delete the previous database the delete after succesfull input,
+//payment successfull---
+//make your page for tracking and checking items delivered---
 
 import axios from 'axios';
 import {db,storage} from  "@/firebase";
@@ -358,6 +365,7 @@ this.load_page_video_check();
             ,(admin_monitor_admin_id)=>{ 
             admin_monitor_admin_id.forEach ((doc)=>{
                 this.video_exist.push(doc.data().video_selected)
+                
                 console.log(this.video_exist[0]);
                 // this.video_exist.push(doc.data());
             // this.sellers_id.push(doc.data().adminnew_id);

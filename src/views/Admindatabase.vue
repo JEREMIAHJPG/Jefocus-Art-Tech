@@ -2,7 +2,7 @@
 <template>
     <div class="admindatabase">
         <center class="admin_top">Administrators</center>
-        <form @submit.prevent="add_admin()" id="admindatabase" >  
+        <form @submit.prevent="add_admin()" id="admindatabaseclear" >  
            <center> <img class="admin_image" :src= admin_image_url></center>      
            <center class="image_input"> <input type="file" name="admin_profile_image" @change="admin_profile_image()" ref="admin_profile_image" > </center>
             <center><input class="username"  v-model = "username"  type="text" placeholder="Business name or Username"></center>
@@ -70,7 +70,7 @@ import {storage, db} from "@/firebase"
 
 import { ref,uploadBytes,getDownloadURL } from "firebase/storage"
 
-import { doc,collection, addDoc, getDocs, query, where, setDoc } from 'firebase/firestore';
+import {  onSnapshot,collection, addDoc, setDoc, getDoc, getDocs, query, where, doc } from 'firebase/firestore';
 
 export default {
     name: 'Admindatabase',
@@ -197,7 +197,7 @@ export default {
         
         //getting phonenumber
         await onSnapshot(query(collection(db, 'getting_user_id'), where('email', '==', this.admin_email )),
-            (checkadvert) =>{checkadvert.forEach((doc) => {this.admin_phonenumber = this.phonenumber
+            (checkadvert) =>{checkadvert.forEach((doc) => {this.admin_phonenumber = doc.data().phonenumber
 
                   
                 // if(!doc.data().exists()){
@@ -207,7 +207,7 @@ export default {
                 //     deleteDoc(doc(db, 'admin_sellers_database', this.sellers_id))
                 //     }
                     // console.log("items uploaded");
-            })  }) 
+            })  });
         //creating admin 
         await getDocs(query(collection(db,'current_user_profile'),
         where('email', '==', this.admin_email))).then(admin_database_admin=>{ 
@@ -241,7 +241,9 @@ export default {
                 Service_Category:       this.select_category_now,
                 subcategory:            this.visuals_subcategory_data + this.graphics_subcategory_data,
                 admin_database_token:   this.admin_database_token,
-                account_details:        account_details,                
+                account_details:        account_details,
+                deduction_amount_late_shipment :'',
+                final_net_profit:               '',                
                 Admin_Membership_Time:  new Date()
                                               };
 
@@ -271,7 +273,7 @@ export default {
                 // include another input box to verify phonenumber before admin can be created
                 if(this.user_ID){return true}else{false}
                 // this.$refs.admin_profile_image.files[0]='';
-                document.getElementById("admindatabase").reset();
+                document.getElementById("admindatabaseclear").reset();
                
             this.account_name='',
             this.account_number='',

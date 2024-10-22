@@ -286,8 +286,7 @@ import router from '@/router';
               var recieved_getting_user_identity_database = await addDoc(user_profile, recieved_getting_user_identity);
 
                                        console.log("Users Document created with name:", this.recieved_user_id_name );
- 
-        
+                                          
         },
         
     },

@@ -15,7 +15,6 @@ import Adminitems from '../views/Adminitems.vue';
 import Admindatabase from '@/views/Admindatabase.vue';
 import Adminserviceslist from '@/views/Adminserviceslist.vue';
 import Adminviewadverts from '@/views/Adminviewadverts.vue';
-import HistoryofOrderplaced from '@/views/HistoryofOrderplaced.vue';
 import Forgotpasswordpage from '@/views/Forgotpasswordpage.vue';
 import Home from '@/views/Home.vue';
 import About from '@/views/About.vue';
@@ -26,6 +25,11 @@ import Changepassword from '@/views/Changepassword.vue';
 import Replycontactformpage from '@/views/Replycontactformpage.vue';
 import Replycontactformpagenext from '@/views/Replycontactformpagenext.vue';
 import Jefocus_Art_product_and_services from '@/views/Jefocus_Art_product_and_services.vue';
+import vuetify_practice from '@/views/vuetify_practice.vue';
+import Trackinginput from '@/views/Trackinginput.vue';
+import Trackingpage from '@/views/Trackingpage.vue';
+import HistoryofOrderplaced from '@/views/HistoryofOrderplaced.vue';
+
 //  Vue.use(router);
 const routes = [
  {
@@ -33,22 +37,33 @@ const routes = [
     name: 'Home',
     component: Home
  },
+ {
+    path: '/vuetify_practice',
+    name: 'vuetify_practice',
+    component: vuetify_practice
+ },
 
  {
   path: '/About',
   name: 'About',
   component: About
 },
- {
-  path: '/About',
-  name: 'About',
-  component: About
-},
+
 
 {
   path: '/:Jefocus_Art_product_and_services',
   name: 'Jefocus_Art_product_and_services',
   component: Jefocus_Art_product_and_services
+},
+{
+  path: '/Trackinginput',
+  name: 'Trackinginput',
+  component: Trackinginput
+},
+{
+  path: '/Trackingpage',
+  name: 'Trackingpage',
+  component: Trackingpage
 },
 
 {
@@ -75,6 +90,13 @@ const routes = [
     path: '/Forgotpasswordpage',
     name: 'Forgotpasswordpage',
     component: Forgotpasswordpage,
+    meta:{auth:true}
+  },
+
+  {
+    path: '/:Validationcode',
+    name: 'Validationcode',
+    component: Validationcode,
     meta:{auth:true}
   },
 
@@ -190,7 +212,7 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
-})
+});
 
 // router.beforeEach(()=>{console.log(store.state.auth);});
 

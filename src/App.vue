@@ -13,8 +13,8 @@
       <!-- <div class="header4"><input type="text" class="maininput" style="width: 150px;" placeholder="Categories, Topic..."></div>  --> 
     <!-- </div>  -->
     <!-- </div> -->
-    <ul class="sidenav">
-            
+     
+    <ul class="sidenav">         
             <li ><router-link  to="/"><span class="material-symbols-outlined">home</span>Home</router-link> </li>
             <li ><router-link  to="/About"><span class="material-symbols-outlined">info</span>About</router-link></li>
             <li v-if="!isAuthenticated"><router-link  to="/LoginPage"><span class="material-symbols-outlined">login</span>Login</router-link></li>
@@ -22,7 +22,7 @@
             <li v-if="isAuthenticated"><a href="#" @click.prevent="onLogout()" ><span class="material-symbols-outlined">logout</span>Log out</a></li>
             <li v-if="!isAuthenticated"><router-link  to="/Signupformpage"><span class="material-symbols-outlined">app_registration</span>Sign Up</router-link></li>
             <li v-if="!isAuthenticated"><router-link  to="/Tradepage" class="linktrade"><span class="material-symbols-outlined">diversity_1</span>Jefocus Art Community</router-link></li>
-            <li v-if="isAuthenticated"><router-link to="/Artworkpage" @click="Artworkpage_loading" ><span class="material-symbols-outlined">shopping_cart</span>Buy and Explore Art</router-link></li>
+            <li v-if="isAuthenticated"><router-link to="/Artworkpage"  ><span class="material-symbols-outlined">shopping_cart</span>Buy and Explore Art</router-link></li>
             <!-- <li><a href=""><input type="checkbox">Jefocus Community</a></li> -->
             <li v-if="isAuthenticated"><div @click="favorite_click()"><span class="material-symbols-outlined">favorite</span>Favorite</div></li>
             <!-- <li v-if="isAuthenticated" @click="view_cart()"><router-link  to="/Cartpage"><span class="material-symbols-outlined">shopping_cart_checkout</span>View Cart</router-link></li> -->
@@ -46,10 +46,10 @@
             <li v-if="isAuthenticated"><div @click="favorite_click()"><span class="material-symbols-outlined">favorite</span>Favorite</div></li>
             <!-- <li v-if="isAuthenticated" @click="view_cart()"><router-link  to="/Cartpage"><span class="material-symbols-outlined">shopping_cart_checkout</span>View Cart</router-link></li> -->
             <!-- <li><router-link><input type="checkbox">Orders History</router-link></li> -->  
-            <li v-if="isAuthenticated"><router-link to="/HistoryofOrderplaced" @click="HistoryofOrderplaced_loading" v-if="HistoryofOrderplaced"><span class="material-symbols-outlined">history</span>History of Order placed</router-link></li>             
+            <li v-if="isAuthenticated"><router-link to="/HistoryofOrderplaced"  v-if="HistoryofOrderplaced"><span class="material-symbols-outlined">history</span>History of Order placed</router-link></li>             
             <li v-if="isAuthenticated"><router-link to="/Adminspage"><span class="material-symbols-outlined">sell</span>Sell</router-link></li>
             <li v-if="isAuthenticated"><router-link to="/Adminserviceslist" v-if="Check_Admins_Adverts"><span class="material-symbols-outlined">checklist_rtl</span>Check Admins Adverts</router-link></li>
-            <li v-if="isAuthenticated"><router-link :to="{name:'Adminviewadverts', params:{Adminviewadverts: this.adminnew_id}}"  v-if="View_your_Adverts"><span class="material-symbols-outlined">view_list</span>View your Adverts</router-link></li>
+            <li v-if="isAuthenticated"><div @click="adminviewadvertpage()"  v-if="View_your_Adverts"><span class="material-symbols-outlined">view_list</span>View your Adverts</div></li>
             <li v-if="isAuthenticated"><router-link to="/Admindatabase" v-if="Admin_Creation"><span class="material-symbols-outlined">admin_panel_settings</span>Admin Creation</router-link></li>
             <li v-if="isAuthenticated"><router-link to="/Replycontactformpage" v-if="Admin_Creation"><span class="material-symbols-outlined">admin_panel_settings</span>Reply Guest Message</router-link></li>
             <li v-if="isAuthenticated"><a href="#" @click.prevent="onLogout()" ><span class="material-symbols-outlined">logout</span>Log out</a></li>
@@ -69,10 +69,10 @@
             <li v-if="isAuthenticated"><div @click="favorite_click()"><span class="material-symbols-outlined">favorite</span>Favorite</div></li>
             <!-- <li v-if="isAuthenticated" @click="view_cart()"><router-link  to="/Cartpage"><span class="material-symbols-outlined">shopping_cart_checkout</span>View Cart</router-link></li> -->
             <!-- <li><router-link><input type="checkbox">Orders History</router-link></li> -->  
-            <li v-if="isAuthenticated"><router-link to="/HistoryofOrderplaced" @click="HistoryofOrderplaced_loading" v-if="HistoryofOrderplaced"><span class="material-symbols-outlined">history</span>History of Order placed</router-link></li>             
+            <li v-if="isAuthenticated"><router-link to="/HistoryofOrderplaced"  v-if="HistoryofOrderplaced"><span class="material-symbols-outlined">history</span>History of Order placed</router-link></li>             
             <li v-if="isAuthenticated"><router-link to="/Adminspage"><span class="material-symbols-outlined">sell</span>Sell</router-link></li>
             <li v-if="isAuthenticated"><router-link to="/Adminserviceslist" v-if="Check_Admins_Adverts"><span class="material-symbols-outlined">checklist_rtl</span>Check Admins Adverts</router-link></li>
-            <li v-if="isAuthenticated"><router-link :to="{name:'Adminviewadverts', params:{Adminviewadverts: this.adminnew_id}}"  v-if="View_your_Adverts"><span class="material-symbols-outlined">view_list</span>View your Adverts</router-link></li>
+            <li v-if="isAuthenticated"><div @click="adminviewadvertpage()"  v-if="View_your_Adverts"><span class="material-symbols-outlined">view_list</span>View your Adverts</div></li>
             <li v-if="isAuthenticated"><router-link to="/Admindatabase" v-if="Admin_Creation"><span class="material-symbols-outlined">admin_panel_settings</span>Admin Creation</router-link></li>
             <li v-if="isAuthenticated"><router-link to="/Replycontactformpage" v-if="Admin_Creation"><span class="material-symbols-outlined">admin_panel_settings</span>Reply Guest Message</router-link></li>
             <li v-if="isAuthenticated"><a href="#" @click.prevent="onLogout()" ><span class="material-symbols-outlined">logout</span>Log out</a></li>
@@ -85,16 +85,16 @@
             <li v-if="!isAuthenticated"><router-link  to="/LoginPage"><span class="material-symbols-outlined">login</span>Login</router-link></li>
             <!-- <li><router-link><input type="checkbox">Log out</router-link></li> -->
             <li v-if="!isAuthenticated"><router-link  to="/Signupformpage" ><span class="material-symbols-outlined">app_registration</span>Sign Up</router-link></li>
-            <li v-if="isAuthenticated"><router-link to="/Artworkpage" @click="Artworkpage_loading" ><span class="material-symbols-outlined">shopping_cart</span>Buy and Explore Art</router-link></li>
-            <li v-if="!isAuthenticated"><router-link  to="/Tradepage" @click="Tradepage_loading" class="linktrade" ><span class="material-symbols-outlined">diversity_1</span>Jefocus Community</router-link></li>
+            <li v-if="isAuthenticated"><router-link to="/Artworkpage"  ><span class="material-symbols-outlined">shopping_cart</span>Buy and Explore Art</router-link></li>
+            <li v-if="!isAuthenticated"><router-link  to="/Tradepage" class="linktrade" ><span class="material-symbols-outlined">diversity_1</span>Jefocus Community</router-link></li>
             <li v-if="isAuthenticated"><div @click="favorite_click()"><span class="material-symbols-outlined">favorite</span>Favorite</div></li>
             <!-- <li v-if="isAuthenticated" @click="view_cart()"><router-link  to="/Cartpage" @click="Cartpage_loading"><span class="material-symbols-outlined">shopping_cart_checkout</span>View Cart</router-link></li> -->
-            <li v-if="isAuthenticated"><router-link to="/HistoryofOrderplaced" @click="HistoryofOrderplaced_loading" v-if="HistoryofOrderplaced"><span class="material-symbols-outlined">history</span>History of Order placed</router-link></li> 
-            <li v-if="isAuthenticated"><router-link to="/Adminspage" @click="Adminspage_loading"><span class="material-symbols-outlined">sell</span>Sell</router-link></li>
-            <li v-if="isAuthenticated"><router-link to="/Adminserviceslist" @click="Adminserviceslist_loading" v-if="Check_Admins_Adverts"><span class="material-symbols-outlined">checklist_rtl</span>Check Admins Adverts</router-link></li>
-            <li v-if="isAuthenticated"><router-link :to="{name:'Adminviewadverts', params:{Adminviewadverts: this.adminnew_id}}" @click="Adminviewadverts_loading" v-if="View_your_Adverts">
-            <span class="material-symbols-outlined">gallery_thumbnail</span>View your Adverts</router-link></li>
-            <li v-if="isAuthenticated"><router-link to="/Admindatabase" @click="Admindatabase_loading" v-if="Admin_Creation"><span class="material-symbols-outlined">admin_panel_settings</span>Admin Creation</router-link></li>
+            <li v-if="isAuthenticated"><router-link to="/HistoryofOrderplaced"  v-if="HistoryofOrderplaced"><span class="material-symbols-outlined">history</span>History of Order placed</router-link></li> 
+            <li v-if="isAuthenticated"><router-link to="/Adminspage" ><span class="material-symbols-outlined">sell</span>Sell</router-link></li>
+            <li v-if="isAuthenticated"><router-link to="/Adminserviceslist" v-if="Check_Admins_Adverts"><span class="material-symbols-outlined">checklist_rtl</span>Check Admins Adverts</router-link></li>
+            <li v-if="isAuthenticated"><div  @click="adminviewadvertpage()" v-if="View_your_Adverts">
+            <span class="material-symbols-outlined">gallery_thumbnail</span>View your Adverts</div></li>
+            <li v-if="isAuthenticated"><div to="/Admindatabase"  v-if="Admin_Creation"><span class="material-symbols-outlined">admin_panel_settings</span>Admin Creation</div></li>
             <li v-if="isAuthenticated"><router-link to="/Replycontactformpage" v-if="Admin_Creation"><span class="material-symbols-outlined">admin_panel_settings</span>Reply Guest Message</router-link></li>
             <li v-if="isAuthenticated"><a href="#" @click.prevent="onLogout()" ><span class="material-symbols-outlined">logout</span>Log out</a></li>
         </ul>
@@ -144,11 +144,7 @@
              </div>
             </div>
            
-          </div>
-              
-             
-   
-             
+          </div>          
             </div>
       </div> 
      -->
@@ -258,23 +254,19 @@ export default {
     adminnew_id:''
   }},
   // mounted(){
-      
-       
+            
   //   },
     created(){
       this.get_client_tokenID();
       this.on_load_categories();
-     this.$store.dispatch(`auth/${AUTO_LOGIN_ACTION}`);
+      this.$store.dispatch(`auth/${AUTO_LOGIN_ACTION}`);
      
       console.log(this.isAuthenticated)
       this.button_selection();
       console.log(this.getterstoken);
-    // axios.get('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDt8TxIM_m7OaUlxT2WgDhS13jYFp7VvhE/'this.getterstoken).then((response)=>{console.log(response);})
-    
+    // axios.get('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDt8TxIM_m7OaUlxT2WgDhS13jYFp7VvhE/'this.getterstoken).then((response)=>{console.log(response);})   
     },
 
-   
-    
     computed: {
       ...mapState({
         showLoading:(state)=>state.showLoading,
@@ -322,9 +314,9 @@ export default {
     ,
 
     get_client_tokenID(){
-      onSnapshot(query(collection(db, 'getting_token_user_id'), where('user_ID','==',localStorage.getItem(`user_id`))),
+      onSnapshot(query(collection(db, 'getting_token_user_id'), where('get_ID','==',localStorage.getItem(`user_id`))),
             (client_token) =>{client_token.forEach((doc) => {this.client_tokenID = doc.data().reclaimed_get_token
-      })  })
+      }) })
     },
     favorite_click(){
       this.$router.push({name:'Favoritepage', params:{Favoritepage: this.client_tokenID}})
@@ -335,15 +327,16 @@ export default {
    async button_selection(){
       //extracting ID for buton selection
       console.log('Buttons Selecting...');
-// localStorage.getItem(`user_id`)
+      // localStorage.getItem(`user_id`)
       await getDocs(query(collection(db,'admin_database'),
-                where('user_ID', '==',localStorage.getItem(`user_id`)))).then(database_id=>{ 
+                where('user_ID', '==', localStorage.getItem(`user_id`)))).then(database_id=>{ 
                 database_id.forEach ((doc)=>{
                   var button_selection = {
                           check_user_ID : doc.data().user_ID,                     
                   }
                   this.adminnew_id = doc.data().adminnew_id;
                  this.app_button_selection.push(button_selection);
+                 console.log('Buttons STILL Selected');
                   // console.log(this.app_button_selection[0].check_user_ID)
                 switch (this.app_button_selection[0].check_user_ID){
 
@@ -353,7 +346,7 @@ export default {
                             this.HistoryofOrderplaced= true
                 break;
 
-                case 'i0ljcRkT1wZPoxp3lQKW' :  this.Check_Admins_Adverts= true,
+                case '9IDv22UG0cznjBFYjBAR' :           this.Check_Admins_Adverts= true,
                                                         this.View_your_Adverts= true,
                                                         this.Admin_Creation= true,
                                                         this.HistoryofOrderplaced= true
@@ -365,7 +358,7 @@ export default {
                          this.HistoryofOrderplaced = true
                 }
                 } )
-
+                
                 });
                 console.log('Buttons Selected');
                    },
@@ -382,13 +375,18 @@ export default {
         // item_name: 'Sample Item'
  
 });
+
 console.log('Logged event: notification_received');
+    },
+    adminviewadvertpage(){
+      this.$router.push({name:'Adminviewadverts', params:{Adminviewadverts: this.adminnew_id}})
     },
 
 //products and services view
 service_Visual_view(Visual_Art_Service_category){
   this.$router.push({name:'Jefocus_Art_product_and_services', params:{Jefocus_Art_product_and_services: Visual_Art_Service_category.service}})
 },
+// "
 
 service_Graphics_view(Graphics_Art_and_Technology_category){
 this.$router.push({name:'Jefocus_Art_product_and_services', params:{Jefocus_Art_product_and_services:Graphics_Art_and_Technology_category.service}})
@@ -440,7 +438,7 @@ this.$router.push({name:'Jefocus_Art_product_and_services', params:{Jefocus_Art_
             ul.sidenav_top li a:hover:not(.active){background-color: #555; color: white;}
             div.content {margin-left: 15%; padding: 0px 0px; height: 1000px;}
             
-            @media screen and (min-width: 320px) and (max-width: 770px) { ul.sidenav_top{top :130px; width:100px; height: auto; position: absolute;} ul.sidenav_top{width:50%; height: auto;} ul.sidenav_top_staticli a { right:0%; float:left; padding: 15px;} div.content{margin-left: 0;}}
+            @media screen and (min-width: 320px) and (max-width: 770px) { ul.sidenav_top{top :130px; width:100px; height: auto; position: fixed;} ul.sidenav_top{width:50%; height: auto;} ul.sidenav_top_staticli a { right:0%; float:left; padding: 15px;} div.content{margin-left: 0;}}
             @media screen and (min-width: 768px) and (max-width:1500px) {ul.sidenav_top li a {width:auto; text-align: center; float: left;}  ul.sidenav_top{ width:100%; height: auto; top: 0%;} }
             .dropdown{position: relative; display: inline-block}
             .dropdown-content{display: none; position: absolute; background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);padding: 12px 16px; z-index: 1;}

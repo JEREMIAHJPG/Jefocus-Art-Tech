@@ -107,8 +107,8 @@
     <div class="admin_description">
                   <textarea maxlength = "777" id="Admin_description" name="Admin_description" v-model="Admin_description" placeholder="Describe the Item uploaded with maximum of 777 words" style="min-width: 100%; height: 100px;" required></textarea>
               </div>
-    <div class="A">
-                  <textarea maxlength = "777" id="Title" name="Title" v-model="A" placeholder="Title" style="min-width: 100%; height: 100px;" required></textarea>
+    <div class="Admin_title">
+                  <textarea maxlength = "777" id="Title" name="Title" v-model="Admin_title" placeholder="Title" style="min-width: 100%; height: 100px;" required></textarea>
               </div>
               <!-- size -->
     <div class="input_category_form_size_quantity">
@@ -180,7 +180,7 @@ export default {
         Size:'',
         youtubelink:'',
         Admin_description:'',
-        A:'',
+        Admin_title:'',
         First_selectedFile: null,
         Second_selectedFile: null,
         visuals_subcategory_data:'',
@@ -631,7 +631,7 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
                 width:                  this.width,
                 height:                 this.height,
                 addtocart:              false,
-                isFav:                  false,
+                isfav:                  false,
                 admin_image_url:        this.admin_image_url,
                 adminnew_id:            this.adminnew_id,
                 admin_name:             this.admin_name,
@@ -759,8 +759,7 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
     width: 55px;
 }
 
-.btn_postad_top{        
-
+.btn_postad_top{ 
 color:black;
 width:100%;
 height:30px;
@@ -776,8 +775,6 @@ border-radius:5px;
 margin-top:10px;
 }
 
-
-
 .direct_left
 {
 float:left;
@@ -785,8 +782,6 @@ width:40%;
 height:auto;
 display:float;
 position: relative;
-
-
 }
 
 .direct_right
@@ -1053,7 +1048,7 @@ padding-right:20%;
     height:100%;
     }
 
-    .A{
+    .Admin_title{
         position:relative;
     margin-top: 10px;
     top:5px;
