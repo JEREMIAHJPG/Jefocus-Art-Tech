@@ -1,5 +1,6 @@
 
    <template>
+  <div style="overflow-y:auto;">
      <div class="reply_form_view_background_view" v-if="show_artwork_view_form" >
          
         <center>
@@ -54,13 +55,13 @@
      
     
     </div>
-<div v-if="view_artwork_page">
-    <div style="border-radius:100%; position:sticky; top:70%; z-index:2; width:100px; height: 100px; background-color: black; "  >
-      <h1 style="color:white; font-size:xx-large; position: relative; z-index:8; left:40%; top:30%;">{{ number_of_orders }}</h1>
+<div v-if="view_artwork_page" >
+    <div style="border-radius:100%; position:fixed; top:70%; left: 80%; z-index:2; width:77px; height: 77px; background-color: black; "  >
+      <h1 style="color:white; font-size:xx-large; position: relative; z-index:8; left:40%; top:15%;">{{ number_of_orders }}</h1>
     </div>
-    <div style="border-radius:100%; position:sticky; top:70%; z-index:2; width:100px; height: 100px; background-color: black; " @click="view_cart()" >
-      <h1 style="color:white; font-size:xx-large; position: relative; z-index:8; left:80%; top:30%;">
-        <!-- <router-link :to="{name:'Cartpage', params:{Cartpage: this.client_token_ID}}"><span class="material-symbols-outlined">shopping_cart_checkout</span><span class="cart_font_style">View Cart</span></router-link>-->
+    <div style="border-radius:100%; position:fixed; top:70%; z-index:2; width:77px; height: 77px; background-color: black; " @click="view_cart()" >
+      <h1 style="color:white; font-size:xx-large; position: relative; z-index:8; top:10%;">    
+        <span class="material-symbols-outlined" style="font-size: small;">shopping_cart_checkout</span><span class="cart_font_style">View Cart</span>
         </h1> 
     </div>
         <!-- <ul class="sidenav">
@@ -195,7 +196,7 @@
    </div> 
 
    </div>
-
+</div>
    </template>
    
    
@@ -366,7 +367,7 @@ data(){return{
                            Second_image_selected:items_to_display.Second_image_selected, 
                            title: items_to_display.Title,
                            qty:  items_to_display.qty_per_mainprice,
-                           total_amount: '',
+                           total_amount: items_to_display.total_amount,
                            size: items_to_display.Size,
                           price: items_to_display.price, 
                           client_token_ID:  this.client_token_ID,
@@ -409,6 +410,7 @@ data(){return{
        
       async togglefavorite1(items_to_display){ 
         items_to_display.isfav=!items_to_display.isfav;
+        
         var data_favorite = { id: this.client_selected_approved_item_token, 
                            main_quantity:items_to_display.main_quantity, 
                           //  First_image_selected:items_to_display.First_image_selected, 
@@ -426,21 +428,19 @@ data(){return{
         if (items_to_display.isfav)  {await addDoc(collection(db,'client_favorites'), data_favorite );};
 
                           //  get favorites ID
-                          onSnapshot(query(collection(db,'client_favorites'), where('client_selected_approved_item_token', '==' , items_to_display.Admin_item_token)),
+          onSnapshot(query(collection(db,'client_favorites'), where('client_selected_approved_item_token', '==' , items_to_display.Admin_item_token)),
             (favorite_contents) =>{favorite_contents.forEach((doc) => {this.client_favorites_id = doc.id
             })  }) 
 
-        if (!items_to_display.isfav)  { await deleteDoc(doc(db, 'client_favorites', this.client_favorites_id))
-        console.log("This Favorite is deleted from the client_favorites collection with id :", this.client_favorites_id);}
+        if (!items_to_display.isfav){await deleteDoc(doc(db, 'client_favorites', this.client_favorites_id))
+        console.log("This Favorite is deleted from the client_favorites collection with id :", this.client_favorites_id);
+                                    }
         // if (items_to_display.isfav)  {localStorage.setItem(`favorites_${items_to_display.Admin_item_token}`, JSON.stringify(data_favorite))};
         // if (!items_to_display.isfav)  {localStorage.removeItem(`favorites_${items_to_display.Admin_item_token}` );}
         
       },
     tooglelpdisplay(items_to_display){items_to_display.display=!items_to_display.display},
-  
-   
-
-         
+          
     props: {pages: {type:null,
         default:2 }
 }, 

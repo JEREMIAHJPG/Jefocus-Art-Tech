@@ -1,8 +1,7 @@
 <template>
     
 
-  <v-container class="bg-surface-variant" >
-
+  <v-container class="bg-surface-variant">
     
     <!-- <v-colno-gutters> -->
       <v-col
@@ -54,25 +53,18 @@
         <th class="text-left">
           Price
         </th>
-        <!-- <th class="text-left">
-          Time delay commission
-        </th> -->
-        <!-- <th class="" >
-            Tracking ID         
-        </th> -->
-        <!-- <th class="text-left">
-          VAT Commission
-        </th> -->
-        <!-- <th class="text-left">
-            Net Profit
-        </th> -->
+       
         
       </tr>
     </thead>
  <tbody>
       <tr v-for="(list_of_order_details_data, index) in list_of_order_details" :key="index">
         <td>{{list_of_order_details_data.Order_No}} </td>
-        <td>{{list_of_order_details_data.Image}} </td>
+        <td>
+          <div class="image_view_tracking">
+        <img style="z-index:-1;" :src="list_of_order_details_data.First_image_selected"  class="image_view_content_tracking" >
+        </div>         
+        </td>
         <td>{{list_of_order_details_data.title}} </td>
         <td>{{list_of_order_details_data.time_details_of_order_placed.time_details_currentTime.time_of_order_placed}} </td>
         <td>{{list_of_order_details_data.price}} </td>
@@ -141,7 +133,11 @@
  <tbody>
       <tr v-for="(order_details_data, index) in order_details" :key="index">
         <td>{{order_details_data.Order_No}} </td>
-        <td>{{order_details_data.Image}} </td>
+        <td>
+          <div class="image_view_tracking">
+        <img style="z-index:-1;" :src="order_details_data.First_image_selected"  class="image_view_content_tracking" >
+          </div>    
+      </td>
         <td>{{order_details_data.time_details_of_order_placed.time_details_currentTime.time_of_order_placed}} </td>
         <td>{{order_details_data.time_details_of_order_placed.time_details_deadline_Time.deadline_Time}} </td>
         <td>{{order_details_data.price}} </td>
@@ -293,7 +289,11 @@
     <tbody>
       <tr  v-for="(delivery_order_details_data, index) in order_details" :key="index">
         <td>{{delivery_order_details_data.Order_No}} </td>
-        <td>{{delivery_order_details_data.Image}} </td>
+        <td>
+          <div class="image_view_tracking">
+        <img style="z-index:-1;" :src="delivery_order_details_data.First_image_selected"  class="image_view_content_tracking" >
+        </div>
+        </td>
         <td>{{delivery_order_details_data.time_details_of_order_placed.time_details_currentTime.time_of_order_placed}} </td>
         <td>{{delivery_order_details_data.time_details_of_order_placed.date_of_shipment_notification}} </td>
         <td>{{delivery_order_details_data.price}}</td>
@@ -378,7 +378,11 @@
        
       >
         <td>{{HistoryofOrderplaced_list_data.Order_No}} </td>
-        <td>{{HistoryofOrderplaced_list_data.Image}} </td>
+        <td>
+          <div class="image_view_tracking">
+        <img style="z-index:-1;" :src="HistoryofOrderplaced_list_data.First_image_selected"  class="image_view_content_tracking" >
+        </div>
+         </td>
         <td>{{HistoryofOrderplaced_list_data.time_details_of_order_placed.time_details_currentTime.time_of_order_placed}} </td>
         <td>{{HistoryofOrderplaced_list_data.date_of_shipment_notification}} </td>
         <td>{{HistoryofOrderplaced_list_data.price}} </td>
@@ -615,9 +619,9 @@ async Adminpostlist_collection(){
 }
 
           this.dialog=true
-          //set account straight from admin creation
-          //then set deduction field to negative 10% price so that the net profit during payment is calculated
-          //call this in tracking iframe
+          //set account straight from admin creation--
+          //then set deduction field to negative 10% price so that the net profit during payment is calculated--
+          //call this in tracking iframe--
         },
 
 //   migrate_to_monitor_admin(admin_profile){
@@ -635,10 +639,20 @@ async Adminpostlist_collection(){
 // deadline--
 // (compare with the time of inputation
 //  if greater than,
-//  then if greater create a variable for delayed
-//   that will deduct 5000naira send this and tracking_ID data to new database)
+//  then if greater create a variable for delayed---
+//   that will deduct 5000naira send this and tracking_ID data to new database)---
 </script>
 
 <style>
+.image_view_tracking{
+    max-height:200px;
+    min-width:fit-content;
+    background-color: rgb(163, 163, 163);  
+}
 
+.image_view_content_tracking{
+   max-height: 200px;
+   height: 150px;
+    max-width:150px;
+}
 </style>

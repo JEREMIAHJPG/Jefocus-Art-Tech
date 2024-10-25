@@ -277,7 +277,7 @@ fetch(targetUrl,{
         .catch((error)=>{
             this.error_sending_verification_email = true;
             alert(error.message);
-        })
+        })  
         this.$router.replace('/LoginPage')     
     },
     

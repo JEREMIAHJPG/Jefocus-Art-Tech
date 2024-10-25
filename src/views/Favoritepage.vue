@@ -61,7 +61,7 @@
   <div v-if="view_artwork_page_favorite" style="border-radius:100%; position:sticky; top:70%; z-index:2; width:100px; height: 100px; background-color: black; "  >
       <h1 id="numberoforders" style="color:white; font-size:xx-large;  position: relative; z-index:8; left:40%; top:30%;">{{ numberoforders }}</h1>
     </div>
-  <div v-for="(favorite ,index) in convert_all_favorites_to_database()" :key="index" class="Slides_favorite" style="height: 751px; top: 0px;">
+  <div v-for="(favorite ,index) in favorite_contents_list" :key="index" class="Slides_favorite" style="height: 751px; top: 0px;">
    
     <div class=" itemstoorder_favorite "  >
                           <!-- <div class="itemimage " > -->
@@ -130,12 +130,12 @@
 
         <div>
                                 <button :id="'favorites_'+favorite.Admin_item_token" @click="remove_favorite(favorite)" class="buy_favorite" v-if="!favorite.isfav ">
-                                  <span class="material-symbols-outlined">favorite</span>
-                                  <span>Add to Favorite</span>
+                                  <span class="material-symbols-outlined">close</span>
+                                Remove from Favorite          
                               </button>
                               <button @click="remove_favorite(favorite)" class="buy_favorite" v-else>
-                                <span class="material-symbols-outlined">close</span>
-                                Remove from Favorite
+                                <span class="material-symbols-outlined">favorite</span>
+                                  <span>Add to Favorite</span>
                               </button>  
                             
                               </div>
@@ -195,15 +195,16 @@
 </template>
 
 <script>
-import { computed } from 'vue'
-import { collection, addDoc,where,setDoc, onSnapshot, deleteDoc, doc, getDocs, query, getDoc } from 'firebase/firestore';
+import { computed } from 'vue';
+import {db,storage} from  "@/firebase";
+import {onSnapshot,collection,deleteDoc, getAggregateFromServer,sum,updateDoc,deleteField,addDoc, query,setDoc, getDoc, getDocs, where, doc } from 'firebase/firestore';
 export default {
 
 name:'Favoritepage',
 
 data(){
     return{ 
-
+      favorites:[],
       Price:'',
       Description:'',
       Title:'',
@@ -218,15 +219,18 @@ data(){
       numberoforders:'',
       favoritenow:false,
       delete_id:'',
+      favorite_contents_list:[]
     }
 
 },
 
+created(){
+  this.get_favoriteitems();
+},
 
 mounted(){
-this.get_favoriteitems();
-// this.get_number_of_items_from_number_of_carts
-
+//this.get_number_of_items_from_number_of_carts
+//this.convert_all_favorites_to_database();
 this.number_of_orders();
 
 },
@@ -235,15 +239,17 @@ computed:{
 },
 
 methods:{
-  
-  get_favoriteitems(){
-    
-    var favorites = [];
-
+  async get_favoriteitems(){
     // get favorites from client_favorites
     onSnapshot(query(collection(db,'client_favorites'), where('client_token_ID', '==' , this.$route.params.Favoritepage)),
-            (favorite_contents) =>{favorite_contents.forEach((doc) => {favorites.push(doc.data())
-            })})
+            (favorite_contents) =>{favorite_contents.forEach((storage_favorite)=>{
+            onSnapshot(query(collection(db, 'approved_checked_adverts'), where('Admin_item_token', '==' , storage_favorite.data().client_selected_approved_item_token)),
+            (favorite_contents) =>{favorite_contents.forEach((doc) => {this.favorite_contents_list.push(doc.data())
+              console.log('fetchfavorites2');
+            })  }) 
+          })});
+
+           // this.favorites.forEach()
 // for(var key in localStorage)
 
 // {
@@ -253,28 +259,17 @@ methods:{
 // }
 
 // }
-
-return favorites;G
 },
-convert_all_favorites_to_database(){
-          var favorite_contents_list = [];
-          this.get_favoriteitems().forEach((storage_favorite)=>{
-            onSnapshot(query(collection(db, 'approved_checked_adverts'), where('id', '==' , storage_favorite.client_selected_approved_item_token)),
-            (favorite_contents) =>{favorite_contents.forEach((doc) => {favorite_contents_list.push(doc.data())
-            })  }) 
-          })
-          return favorite_contents_list;
-         }
-,
+// convert_all_favorites_to_database(){
+                 
+//          },
+         
 // filter(all addtocart= false) then display via mounted then filter all addtocart again to true then push to local storage
 number_of_orders(){
-
   var numberofitems = JSON.parse(localStorage.getItem('numberofordersaddedtocart'));
   this.numberoforders = numberofitems;
 console.log(numberofitems)
   // numberoforders+= document.getElementById('.numberoforders').innerHTML; 
-
-  
 },
 increament(){ return this.numberoforders++ },
 
@@ -283,13 +278,14 @@ decreament(){ return this.numberoforders-- },
 async view_artwort_button_favorite(favorite){
       this.show_artwork_view_form_favorite = true;
       this.view_artwork_page_favorite=false;
-      this.Price=favorite.price,
+      this.Price = favorite.price,
       this.Description=favorite.Admin_description,
       this.Title=favorite.Title,
       this.view_first_image=favorite.First_image_selected,
       this.view_second_image=favorite.Second_image_selected,
       this.Size=favorite.Size
     },
+
     back_view_button_favorite(){
       this.show_artwork_view_form_favorite = false;
       this.view_artwork_page_favorite = true;
@@ -320,8 +316,7 @@ async buy_button_favorite(favorite){
                           client_email : localStorage.getItem(`client_email`),
                           client_selected_approved_item_token : favorite.Admin_item_token,
                           client_selected_approved_item_admin_monitor_new_id : favorite.admin_monitor_new_id,
-                          addtocart: favorite.addtocart, 
-                   
+                          addtocart: favorite.addtocart,                    
                    };
           // save the data to localStorage
      if (favorite.addtocart)  {localStorage.setItem(`cart_${favorite.Admin_item_token}`, JSON.stringify(data))};
@@ -340,7 +335,7 @@ async toggleaddtocart_from_favorite(favorite=''){
     ///outline the received data
     //  var total_amount = favorite.qty * favorite.price;
       var data = { id: this.client_selected_approved_item_token, 
-        main_quantity:favorite.main_quantity, 
+                   main_quantity:favorite.main_quantity, 
                    First_image_selected:favorite.First_image_selected, 
                    Second_image_selected:favorite.Second_image_selected, 
                    title: favorite.Title,
@@ -357,13 +352,17 @@ async toggleaddtocart_from_favorite(favorite=''){
 
                    // save the data to localStorage
              if (favorite.addtocart)  {localStorage.setItem(`cart_${favorite.Admin_item_token}`, JSON.stringify(data))};
-             if (!favorite.addtocart)  {localStorage.removeItem(`cart_${favorite.Admin_item_token}`);} 
+             if (!favorite.addtocart)  {localStorage.removeItem(`cart_${favorite.Admin_item_token}`);
+              onSnapshot(query(collection(db,'client_favorites'), where('client_selected_approved_item_token', '==' , favorite.client_selected_approved_item_token)),
+                          (favorite_contents) =>{favorite_contents.forEach((doc) => {
+                                            deleteDoc(doc(db, 'client_favorites', doc.id))
+                          })  })
+             } 
  
   // document.getElementByClassName('.buy').addeventlistener('onclick',toggleaddtocart_from_favorite )
   // document.querySelector('.buy').display = none;
-
-    
-   this.favoritenow = !this.favoritenow; 
+ 
+this.favoritenow = !this.favoritenow; 
 var cart_items_from_favorite= JSON.stringify(favorite);
  localStorage.setItem('cart_'+favorite.Admin_item_token, cart_items_from_favorite);
   console.log(favorite.addtocart);
@@ -499,13 +498,12 @@ margin: 5px;
                       }
 
                       .Slides_favorite {
-                        display: inline-block;
-    height: 300px;
-    width: auto;
-   position: relative;
-    
-    overflow-x: auto;
-    overflow: auto;
+                        transition: top 1s ease-out;
+    position: relative;
+    display: inline-block;
+  
+  height: auto;
+  overflow: visible !important;
                       }
 
                       /* .itemimage{

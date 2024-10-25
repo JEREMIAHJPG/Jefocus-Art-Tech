@@ -57,13 +57,16 @@
     </thead>
  <tbody>
       <tr v-for="(Tracking_data_list_data, index) in Tracking_data_list" :key="index">
-        <td>Tracking_data_list_data.Order.No</td>
-        <td>Tracking_data_list_data.Image</td>
-        <td>Tracking_data_list_data.time_details_of_order_placed.time_details_currentTime.time_of_order_placed</td>
-        <td>Tracking_data_list_data.time_details_of_order_placed.time_details_deadline_Time.deadline_Timet</td>
-        <td>Tracking_data_list_data.price</td>
+        <td>{{Tracking_data_list_data.Order_No}}</td>
         <td>
-        Tracking_data_list_data.Tracking ID Link
+          <div class="image_view_tracking_page">
+        <img style="z-index:-1;" :src="Tracking_data_list_data.First_image_selected"  class="image_view_content_tracking_page" >
+        </div>
+        </td>
+        <td>{{Tracking_data_list_data.time_details_of_order_placed.time_details_currentTime.time_of_order_placed}}</td>
+        <td>{{Tracking_data_list_data.time_details_of_order_placed.time_details_deadline_Time.deadline_Time}}</td>
+        <td>{{Tracking_data_list_data.price}}</td>
+        <td>{{Tracking_data_list_data.tracking_id}}
         <div @click="iframe_link(Tracking_data_list_data)">
           <v-btn dark size="small" fab color="yellow" 
       text="Track Shipment"
@@ -251,8 +254,12 @@
       <tr v-for="(History_data_list_data, index) in History_data_list" :key="index"      
       >
         <td>{{History_data_list_data.Order_No}} </td>
-        <td>{{History_data_list_data.First_image_selected}} </td>
-        <td>{{History_data_list_data.time_details_of_order_placed.time_details_currentTime.time_of_order_placed}} </td>
+        <td>
+          <div class="image_view_tracking_page">
+        <img style="z-index:-1;" :src="History_data_list_data.First_image_selected"  class="image_view_content_tracking_page">
+        </div>        
+         </td>
+        <td>{{History_data_list_data.time_details_of_order_placed.time_details_currentTime.time_of_order_placed}}</td>
 
         <td>{{History_data_list_data.date_of_shipment_notification}}</td>
         
@@ -446,8 +453,6 @@ onSnapshot(query(collection(db, 'order_details_for_tracking_and_payment'),where(
           this.specific_order_id = doc.data().specific_order_id;
           this.ID_delete = doc.id;
 
-          
-
           addDoc(collection(db, 'HistoryofOrderitemsplaced'), doc.data()).then(() => {
             
             deleteDoc(doc(db, 'list_of_order_details_for_tracking_and_payment', doc.id));
@@ -457,8 +462,8 @@ onSnapshot(query(collection(db, 'order_details_for_tracking_and_payment'),where(
 
     this.tracking_statement = 'Item/s returned';
     this.dialog3=true;
-    //CHECK DOCUMENTATION FOR ORDER QUERIES FOR ASCENDING AND DESCENDING ORDER
-    //do images and the iteraton contents
+    //CHECK DOCUMENTATION FOR ORDER QUERIES FOR ASCENDING AND DESCENDING ORDER---
+    //do images and the iteraton contents---
     //
 
 //Ayo
@@ -470,5 +475,15 @@ onSnapshot(query(collection(db, 'order_details_for_tracking_and_payment'),where(
 </script>
 
 <style>
+.image_view_tracking_page{
+    max-height:200px;
+    min-width:fit-content;
+    background-color: rgb(163, 163, 163);  
+}
 
+.image_view_content_tracking_page{
+   max-height: 200px;
+   height: 150px;
+    max-width:150px;
+}
 </style>

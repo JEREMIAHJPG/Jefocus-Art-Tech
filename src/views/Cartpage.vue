@@ -8,27 +8,29 @@
                     
                        
                     <div class="boxmain1" >
-                 
-        
-        
-      
-        <table class="fixed" border="1" width="100%">
+     
+        <table >
+          <thead>
+          <tr>
           <th><div class="items" style="background-color: #aaa;">Item Image</div></th>
           <th><div class="name" style="background-color: #bbb;">Name</div></th>
           <th><div class="size" style="background-color: #ccc;">Size</div></th>
           <th><div class="number" style="background-color: #ccc; margin-left: 15%">Number of pieces</div></th>
           <th><div class="pricepi" style="background-color: #ccc;">Price per item</div></th>
           <th><div class="price" style="background-color: #ccc; ">Total Price</div></th>
-
-            <tr v-show="showcart" v-for="(items_to_display, index) in convert_all_cart_to_database" :key="index" >
-            <td width="20%"><img class="items" :src = "items_to_display.First_image_selected" style="background-color: #aaa;"></td>
+          </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(items_to_display, index) in cart_contents_list" :key="index" >
+            <td width="20%"><div class="image_view_tracking_page_cart"><img class="image_view_content_tracking_page_cart" :src = "items_to_display.First_image_selected" style="background-color: #aaa;"></div></td>
             <td width="20%"> <div class="name" style="background-color: #bbb;">{{items_to_display.Title}}</div></td>
-            <td width="20%"><div class="size" style="background-color: #ccc;">{{items_to_display.size}}</div></td>
-            <td width="20%"><input class="number" type="number"  v-model="number" :id="'items_to_displaycart_qty_'+items_to_display.Admin_item_token" @input="update_cart(items_to_display)" style="background-color: #ccc;" title="Number of pieces"></td>
+            <td width="20%"><div class="size" style="background-color: #ccc;">{{items_to_display.Size}}</div></td>
+            <td width="20%"><input class="number" type="number"  :id="'items_to_displaycart_qty_' + items_to_display.Admin_item_token" :placeholder= "items_to_display.qty" @input="update_cart(items_to_display)" style="background-color: #ccc;" title="Number of pieces"></td>
             <td width="20%"><div class="pricepi" style="background-color: #ccc;">{{items_to_display.price}}</div></td>
             <td width="20%"><div class="price"  style="background-color: #ccc; font-size:x-large; font-weight:500;">{{items_to_display.total_amount}}</div></td>
             <!-- <td width="20%"><button class="removeitem" :id= "`cart_`+items_to_display.Admin_item_token " @click="removeitems(items_to_display)" style="background-color: #ccc;">Remove Item</button></td> -->
             </tr>
+          </tbody>
             </table>
 
           <!-- <div>
@@ -167,8 +169,7 @@
               <p class="cart_info">{{ cart.amount }}</p>
             </div>
            </section>
-           <!--///end display cart items -->
-        
+           <!--///end display cart items -->     
     </template>
 
 <script>
@@ -197,6 +198,7 @@ export default {
         errorstatement:false,
         cartdate:"",
         Order_No:'',
+        cart_contents_list:[],
         // items_to_display:[]
           //cartpostprofile:[],
          // number:'',
@@ -207,7 +209,9 @@ export default {
       },
           
       
-  
+  created(){
+    this.convert_all_cart_to_database();
+  },
   mounted(){
     // axios.get('http://localhost:3000/cartpostprofile')
     // .then(response=> this.cartpostprofile=response.data)
@@ -216,12 +220,11 @@ export default {
     this.check_cart_email_validation();
     // this.display_cart_items();
     this.get_all_items_in_cart();
-    this.convert_all_cart_to_database();
+    
   },
 
   computed:{
 filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostprofile)=>cartpostprofile.addtocart)},
-
   },
 
  methods:{
@@ -238,14 +241,34 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
             return false
           }
         },
+
+        get_all_new_items_data_in_cart(){
+          var items_to_redisplay = [];
+           for( var key in localStorage ){
+            if( key.split('_')[0] == 'cart'){
+              items_to_redisplay.push( JSON.parse(localStorage.getItem(key)));
+            }
+           }
+           return items_to_redisplay;            
+            },
+
+        total_new_cart_summation(){
+          var cart_items = this.get_all_new_items_data_in_cart();
+          var sum_value = cart_items.reduce((prev, curr) => prev + curr.total_amount,0);
+          this.sum_value = sum_value;
+          localStorage.setItem(`Total_Amount_to_pay`,this.sum_value);
+          //  console.log( sum_value );
+        },
+
         async change_sum_total(){
            //return the new sum total
            await this.get_all_new_items_data_in_cart();
           await this.total_new_cart_summation();
         },
+
          async payment(payment_email){
-           
-            payment_email = this.payment_email;
+
+            var payment_email = this.payment_email;
             let checkcart_email_validation = this.check_cart_email_validation(payment_email);
             let errorcomment = "";
             if (!checkcart_email_validation){this.errorcomment = "Invalid Email"};
@@ -253,7 +276,6 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
           //  let validation = Cartsignupvalidation(this.payment_email);
           //   this.errorstatement = validation.signupstatement(this.payment_email);
             
-
             // var Order_No= ((Math.random(777777777,999999999))*10000000000).toFixed(0);
             var fullname = `${this.payment_firstname} ${this.payment_lastname}`;
             var countryphonenumber = "+234" + this.phonenumber;
@@ -311,10 +333,9 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
             receipt:                          receipt
           }
 
-
           //fetch phonenumbers from the userid of the admindatabase from the seller_ID send sms to
-           await this.get_all_new_cart.forEach((fetch_phone_numbers)=>{
-            onSnapshot(query(collection(db, 'admin_database'), where('user_ID', '==' , fetch_phone_numbers.seller_ID)),
+           await this.get_all_new_cart().forEach((fetch_phone_numbers)=>{
+            onSnapshot(query(collection(db, 'admin_database'), where('user_ID', '==' , fetch_phone_numbers.data().seller_ID)),
             (contents) =>{contents.forEach((doc) => {
               //put the sms function 
                             var admin_phonenumber = doc.data().admin_phonenumber;
@@ -327,8 +348,7 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
                   headers: {
                       'Content-Type': "application/json",
                       'apiKey': 'atsk_fd221a40d30b04649873b9094a955a5ffaf688e6f56ec3eecd05dc520b220617e5d4fd8c',
-                    
-                  },
+                           },
                   body: JSON.stringify({
                   to: admin_phonenumber,
                   message: `JEfocus Art and Tech : Hello ${username} You have a new order. Order No: ${Order_No}
@@ -347,7 +367,7 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
               .then(data => console.log(data))
               .catch(error => console.error(error));
               //send each order to the database for fetching in tracking input
-              await this.get_all_new_cart.forEach((tracking_input)=>{
+              await this.get_all_new_cart().forEach((tracking_input)=>{
                 var seller_ID = tracking_input.seller_ID;
                 var order_details_for_tracking_and_payment = {
                           seller_ID: tracking_input.seller_ID,
@@ -420,30 +440,11 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
           //           `;
           //   });
 
-          //   document.querySelector('.display_cart_items').innerHTML = content;
-            
+          //   document.querySelector('.display_cart_items').innerHTML = content;          
          // },
 
-         get_all_items_in_cart(){
-           var items_to_display = [];
-           for( var key in localStorage ){
-            if( key.split('_')[0] == 'cart'){
-              items_to_display.push( JSON.parse(localStorage.getItem(key)));
+        
 
-            }
-           }
-           return items_to_display; 
-         },
-         get_all_new_items_data_in_cart(){
-           var items_to_display = [];
-           for( var key in localStorage ){
-            if( key.split('_')[0] == 'cart'){
-              items_to_display.push( JSON.parse(localStorage.getItem(key)));
-
-            }
-           }
-           return items_to_display; 
-         },
         //  new_cart(){
         //    var new_cart_info_database = this.get_all_items_in_cart();
         //    var new_cart_info_localstorage = this.convert_all_cart_to_database();
@@ -459,30 +460,24 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
         //   //  }
         //   //  return items_to_display; 
         //  },
+        get_all_items_in_cart(){
+          var items_to_display = [];
+           for( var key in localStorage){
+            if( key.split('_')[0] == 'cart'){
+              items_to_display.push( JSON.parse(localStorage.getItem(key)));
+            }
+            }
+           return items_to_display;
+         },
 
-         convert_all_cart_to_database(){
-          var cart_contents_list = [];
+         convert_all_cart_to_database(){ 
           this.get_all_items_in_cart().forEach((fetch_phone_numbers)=>{
             onSnapshot(query(collection(db, 'approved_checked_adverts'), where('Admin_item_token', '==' , fetch_phone_numbers.client_selected_approved_item_token)),
-            (cart_contents) =>{cart_contents.forEach((doc) => {cart_contents_list.push(doc.data());
-              //var new_price = '',
-              //updated_price = document.querySelector(`#items_to_displaycart_price_${items_to_display.Admin_item_token}`).value,
-                //get the existing data from localStorage and update it with the new data;
-              //existing_data = JSON.parse( localStorage.getItem(`cart_`+items_to_display.Admin_item_token) );
-              // updated_amount=JSON.parse(localStorage.getItem(`items_to_displaycart_`+items_to_display.total_amount));
-              //return console.log( updated_price );
-                //if( existing_data ){
-                  //  new_amount = updated_price * items_to_display.price; 
-                   //existing_data['price'] = doc.data().price;
-                   //existing_data['qty'] = doc.data().qty_per_mainprice;
-                  // existing_data['qty'] = doc.data().qty;
-                  // existing_data['total_amount']= new_amount; 
-                  // localStorage.setItem(`cart_`+items_to_display.Admin_item_token, JSON.stringify( existing_data )); 
-               // };
+            (cart_contents) =>{cart_contents.forEach((doc) => {this.cart_contents_list.push(doc.data());
             })  }) 
           })
-          console.log(cart_contents_list);
-          return cart_contents_list;
+          console.log(this.cart_contents_list);
+          // return cart_contents_list;
          },
 
          total_cart_summation(){
@@ -490,18 +485,9 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
           var sum_value = cart_items.reduce((prev, curr) => prev + curr.total_amount,0);
           this.sum_value = sum_value;
           localStorage.setItem(`Total_Amount_to_pay`,this.sum_value);
-
           //  console.log( sum_value );
-          },
-         total_new_cart_summation(){
-          var cart_items = this.get_all_new_items_data_in_cart();
-          var sum_value = cart_items.reduce((prev, curr) => prev + curr.total_amount,0);
-          this.sum_value = sum_value;
-          localStorage.setItem(`Total_Amount_to_pay`,this.sum_value);
+          }, 
 
-          //  console.log( sum_value );
-          },
-         
         // ...mapMutations({
        // totalprice:NUMBEROFITEMS,}),
        removeitems(items_to_display){
@@ -523,25 +509,34 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
          // },
          // this.removeitem({removeitem:this});
 
-
-         update_cart(items_to_display=''){
-          
+         update_cart(items_to_display=''){      
           var new_amount = '',
+
               updated_qty = document.querySelector(`#items_to_displaycart_qty_${items_to_display.Admin_item_token}`).value,
                 //get the existing data from localStorage and update it with the new data;
+                //var cart_existing_data = items_to_display
               existing_data = JSON.parse( localStorage.getItem(`cart_`+items_to_display.Admin_item_token) );
               // updated_amount=JSON.parse(localStorage.getItem(`items_to_displaycart_`+items_to_display.total_amount));
               //return console.log( updated_qty );
                 if( existing_data ){
                    new_amount = updated_qty * items_to_display.price;                  
                    existing_data['qty'] = updated_qty;
-                   existing_data['total_amount']= new_amount; 
+                   existing_data['total_amount']= new_amount;                   
+                   //try add new_amount in totalamount 
                    localStorage.setItem(`cart_`+items_to_display.Admin_item_token, JSON.stringify( existing_data )); 
-                };
-                console.log("updated");
-               
-                // this.display_cart_items();
-                
+                  };
+
+                console.log("updated");              
+                if( items_to_display ){
+                   new_amount = updated_qty * items_to_display.price;                  
+                   items_to_display['qty'] = updated_qty;
+                   items_to_display['total_amount']= new_amount;                   
+                   //try add new_amount in totalamount 
+                   localStorage.setItem(`cart_`+items_to_display.Admin_item_token, JSON.stringify( items_to_display )); 
+                  };
+
+                console.log("updated cart qty");              
+                // this.display_cart_items();               
          },
 
       //  numberofitems(number, cartpost){
@@ -565,10 +560,7 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
                   
       //             //let totalprice= numberofitems*Price;
       //             this.totalprice1({Price:Price, numberofitems:numberofitems, realid:realid, cartstore:cartstore});
-                  //this.$refs.totalprice2.textContent.totalprice
-                  
-                 
-
+                  //this.$refs.totalprice2.textContent.totalprice                                   
        //          },
                  
 
@@ -592,13 +584,15 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
 *{box-sizing: border-box;}
 .bottom1 {font-family: Arial, Helvetica, sans-serif;}
 
-    .base2 {float:left; 
+    .base2 {
+      float:left; 
     text-align: center;
-    width:100%;
+    position:relative;
+    min-width:500px;
     justify-content: center;
     color: black;
      padding: 10px;
-      height: auto;
+      min-height: auto;
     background-color: white;}
 
 .base1 {float:left; 
@@ -615,10 +609,23 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
       .tradeh{
         font-size:x-large;
       }
+      .image_view_tracking_page_cart{
+    max-height:200px;
+    min-width:fit-content;
+    background-color: rgb(163, 163, 163);  
+}
+
+  .image_view_content_tracking_page_cart{
+   max-height: 200px;
+   height: 150px;
+    max-width:150px;
+}
 
       .boxmain1 {
         float: left;
         width: 100%;
+        min-width: 500px;
+        position: relative;
         background-color: #cfc;
       }
       .boxmain2{
@@ -781,11 +788,7 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
             height: auto;
            }
 
-           .boxmain1 {
-        float: left;
-        width: 100%;
-        background-color: #cfc;
-      }
+        
 
            .boxmain2{
             float: left;
@@ -818,11 +821,7 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
             height: auto;
            }
 
-           .boxmain1 {
-        float: left;
-        width: 100%;
-        background-color: #cfc;
-      }
+          
 
            .boxmain2{
             float: left;

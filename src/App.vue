@@ -77,7 +77,8 @@
             <li v-if="isAuthenticated"><router-link to="/Replycontactformpage" v-if="Admin_Creation"><span class="material-symbols-outlined">admin_panel_settings</span>Reply Guest Message</router-link></li>
             <li v-if="isAuthenticated"><a href="#" @click.prevent="onLogout()" ><span class="material-symbols-outlined">logout</span>Log out</a></li>
            </ul>
-            
+
+            <!-- <div style="overflow-y:auto; float: left; position: absolute"> -->
           <ul class="sidenav_top" v-if="dropdown_menu" >
             <li class="foot1_top" style="background-color:#555; color: white; width: 100%; text-align:center; font-size:x-large;"> Jefocus Art and Tech</li>
             <li ><router-link  to="/"><span class="material-symbols-outlined">home</span>Home</router-link> </li>
@@ -98,11 +99,11 @@
             <li v-if="isAuthenticated"><router-link to="/Replycontactformpage" v-if="Admin_Creation"><span class="material-symbols-outlined">admin_panel_settings</span>Reply Guest Message</router-link></li>
             <li v-if="isAuthenticated"><a href="#" @click.prevent="onLogout()" ><span class="material-symbols-outlined">logout</span>Log out</a></li>
         </ul>
-        
+        </div>
       <!-- side bar navigation -->
       
       
-    </div> 
+    <!-- </div>  -->
     
     <div style="position: relative; z-index: 1; top: 95px; padding-bottom:100px; ">
       <div class="loading-box" v-if="showLoading">
@@ -172,7 +173,7 @@
         <div class="base1" style="background-color:grey;">
             <h3 style="color: white;"> Visual Art Services </h3>
             <ul class="foot1" v-for="(Visual_Art_Service_category, index) in Visual_Art_Service_category_list " :key="index" >
-            <li class="foot12" @click= service_Visual_view(Visual_Art_Service_category)>  {{Visual_Art_Service_category.service}}</li>
+            <li class="foot12" @click= service_Visual_view(Visual_Art_Service_category)> {{Visual_Art_Service_category.service}}</li>
               <!-- <li class="foot12">Potrait Paintings</li>
             <li class="foot12">Canvas Paintings</li>
             <li class="foot12">Interior Decoration</li>
@@ -309,10 +310,7 @@ export default {
               this.Graphics_Art_and_Technology_category_list.push(doc.data())
               console.log(this.Graphics_Art_and_Technology_category_list)
             })  });
-
-    }
-    ,
-
+    },
     get_client_tokenID(){
       onSnapshot(query(collection(db, 'getting_token_user_id'), where('get_ID','==',localStorage.getItem(`user_id`))),
             (client_token) =>{client_token.forEach((doc) => {this.client_tokenID = doc.data().reclaimed_get_token
@@ -346,7 +344,7 @@ export default {
                             this.HistoryofOrderplaced= true
                 break;
 
-                case '9IDv22UG0cznjBFYjBAR' :           this.Check_Admins_Adverts= true,
+                case 'XaLISV874jaLXXPLDQke' :           this.Check_Admins_Adverts= true,
                                                         this.View_your_Adverts= true,
                                                         this.Admin_Creation= true,
                                                         this.HistoryofOrderplaced= true
@@ -374,7 +372,7 @@ export default {
         item_id: '12345',
         // item_name: 'Sample Item'
  
-});
+            });
 
 console.log('Logged event: notification_received');
     },
@@ -394,7 +392,6 @@ this.$router.push({name:'Jefocus_Art_product_and_services', params:{Jefocus_Art_
 
 }
 
-
 }
 
   
@@ -406,6 +403,7 @@ this.$router.push({name:'Jefocus_Art_product_and_services', params:{Jefocus_Art_
             width: 100%;
             height: auto;
            } 
+
            @keyframes textanimation {from{min-width:0px;} to{min-width:700px;}}
            @keyframes expansioncontraction {from {background-size: cover;} to{background-size: contain;}}
            @keyframes blackopacity {from { opacity:0.5} to{ opacity:0}}
@@ -420,6 +418,7 @@ this.$router.push({name:'Jefocus_Art_product_and_services', params:{Jefocus_Art_
             animation-name: blackopacity;  animation-direction: alternate;
              animation-duration:21s; animation-direction:normal; animation-timing-function:ease-in-out;
            } */
+
            .btn-register{
             background-color: burlywood;
             color: white;
@@ -438,21 +437,20 @@ this.$router.push({name:'Jefocus_Art_product_and_services', params:{Jefocus_Art_
             ul.sidenav_top li a:hover:not(.active){background-color: #555; color: white;}
             div.content {margin-left: 15%; padding: 0px 0px; height: 1000px;}
             
-            @media screen and (min-width: 320px) and (max-width: 770px) { ul.sidenav_top{top :130px; width:100px; height: auto; position: fixed;} ul.sidenav_top{width:50%; height: auto;} ul.sidenav_top_staticli a { right:0%; float:left; padding: 15px;} div.content{margin-left: 0;}}
+            @media screen and (min-width: 320px) and (max-width: 770px) { ul.sidenav_top{top :130px; width:100px; height: auto; position: absolute;} ul.sidenav_top{width:50%; height: auto;} ul.sidenav_top_staticli a { right:0%; float:left; padding: 15px;} div.content{margin-left: 0;}}
             @media screen and (min-width: 768px) and (max-width:1500px) {ul.sidenav_top li a {width:auto; text-align: center; float: left;}  ul.sidenav_top{ width:100%; height: auto; top: 0%;} }
             .dropdown{position: relative; display: inline-block}
             .dropdown-content{display: none; position: absolute; background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);padding: 12px 16px; z-index: 1;}
             .dropdown:hover .dropdown-content{display:block;}
 
             /* MOBILE PHONE DEVICE TOP header */
-            ul.sidenav{ display: visible; z-index:5; list-style-type: none; margin:0; padding:0; width: 100%; background-color: #f1f1f1; position: fixed; height: 50px; overflow: auto;}
+            ul.sidenav{ display: visible; z-index:5; list-style-type: none; margin:0; padding:0; width: 100%; background-color: #f1f1f1; position: relative; height: 50px; overflow: auto;}
             ul.sidenav li a { display: block; color: #000; padding: 8px 16px; text-decoration: none; float: left; width: 50px;}
             ul.sidenav li a.active {background-color: #4caf50; color: white;}
             ul.sidenav li a:hover:not(.active){background-color: #555; color: white;}
             div.content {margin-left: 15%; padding: 0px 0px; height: 1000px;} 
             
-            
-            
+                        
             @media screen and (min-width: 320px) and (max-width: 768px) { ul.sidenav li a {width:auto; text-align: center; float: left;}  ul.sidenav{display:visible; width:100%; height: auto;} }
             @media screen and (min-width: 768px) and (max-width: 1500px) { ul.sidenav{ display:none;  top :0px; left:0px; width:50%; height: auto; position: relative;} ul.sidenav li a {float:left; padding: 15px;} div.content{margin-left: 0;}}
             .dropdown{position: relative; display: inline-block}

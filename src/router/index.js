@@ -102,7 +102,7 @@ const routes = [
 
 
   {
-    path: '/:Cartpage',
+    path: '/Cartpage/:Cartpage',
     name: 'Cartpage',
     component: Cartpage,
     meta:{auth:true}
@@ -147,21 +147,21 @@ const routes = [
 
   {
     path: '/Receiptpage',
-    name: '/Receiptpage',
+    name: 'Receiptpage',
     component: Receiptpage,
     meta:{auth:true} 
   },
 
   {
-    path: '/:Favoritepage',
-    name: '/Favoritepage',
+    path: '/Favoritepage/:Favoritepage',
+    name: 'Favoritepage',
     component: Favoritepage,
     meta:{auth:false} 
   },
 
   {
     path: '/Adminspage',
-    name: '/Adminspage',
+    name: 'Adminspage',
     component: Adminspage,
      
   },
@@ -219,7 +219,7 @@ const router = createRouter({
 router.beforeEach((to, from, next)=>{
 if('auth' in to.meta && 
   to.meta.auth && !store.getters[`auth/${IS_USER_AUTHENTICATE_GETTER}`]){
-  next();
+  next('LoginPage');
 } else if('auth' in to.meta &&
   !to.meta.auth && store.getters[`auth/${IS_USER_AUTHENTICATE_GETTER}`]){
   next();

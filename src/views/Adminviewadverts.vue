@@ -881,10 +881,9 @@ this.load_Adminviewadverts_page()
     //                 // console.log("items uploaded");
     //         })  })
               
-            await onSnapshot(query(collection(db, 'approved_checked_adverts'), where('adminnew_id', '==' , this.$route.params.Adminviewadverts)),
-            
+            await onSnapshot(query(collection(db, 'approved_checked_adverts'), where('adminnew_id', '==' , this.$route.params.Adminviewadverts)),           
                    (check_id)=>{ 
-            check_id.forEach ((doc)=>{
+            check_id.forEach((doc)=>{
              var check_list = {
                 check : doc.data().video_selected};
              this.check_exist.push(check_list)
@@ -906,6 +905,7 @@ this.load_Adminviewadverts_page()
                     };
                     console.log("Admin advert APPROVED with admin_monitor_new_id:",this.$route.params.Adminviewadverts);
                     if(check_list=''){
+                        
                     //settimeout
                     this.show_advert_image=true,
                     this.show_advert_view_image=true,

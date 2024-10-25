@@ -21,7 +21,7 @@
                     <div class = "input_div2" v-if="Visuals_Art_Services_selected">
                         <sup v-if="display_Select_Visuals_Sub_category" id= "Visual_Art_Service" class="category_style_Visual_Art_Service" value="Visual Art Service">Select Visuals Sub-category</sup>
                         <h v-else></h>
-                         <select @click="visuals_subcategory(Visual_Art_Service_category)" type="text" name="visuals_subcateory" v-model="visuals_subcategory_data" placeholder=" Select Visuals Sub-category" class="category_input_position2" required>
+                         <select @click="visuals_subcategory(Visual_Art_Service_category)" type="text" name="visuals_subcateory" v-model="visuals_subcategory_data" placeholder="Select Visuals Sub-category" class="category_input_position2" required>
                             <option v-for="(Visual_Art_Service_category, index) in Visual_Art_Service_category_list " :key="index" :value = Visual_Art_Service_category.service>
                                 {{Visual_Art_Service_category.service}}
                             </option>
@@ -452,7 +452,7 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
 },
 //+2348125476065
    async visuals_subcategory(Visual_Art_Service_category){
-    // this.visuals_subcategory_data = Visual_Art_Service_category.service;
+     //this.visuals_subcategory_data = Visual_Art_Service_category.service;
     //    this.display_Select_Visuals_Sub_category = !this.display_Select_Visuals_Sub_category
        if (this.visuals_subcategory_data){ this.display_Select_Visuals_Sub_category = false;
             
@@ -474,8 +474,24 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
                 this.quantity_show = true,
                 this.Size = true
                 break;
+            case 'Framed/ Canvas Picture prints':
+                this.quantity_show = true,
+                this.Size = true
+                break;
+            case 'Canvas Paintings':
+                this.quantity_show = true,
+                this.Size = true
+                break;
             case 'Award and Plaques':
                 this.quantity_show = true
+                this.img_show=true,
+                this.video_show = false,
+                this.img_input_show = true,
+                this.video_input_show = false,
+                this.upload_image_button= true,
+                this.upload_video_button = false,
+                this.quantity_show = false,
+                this.Size = false
                 break;
             case 'Sculpts and Artifacts':
                 this.quantity_show = true
@@ -642,6 +658,7 @@ localStorage.setItem(`url3`, JSON.stringify(this.url_video))
                 video_selected:         this.url_video,
                 price:                  this.main_price,
                 qty_per_mainprice:       1,
+                total_amount:           this.main_price*1,
                 youtubelink:            this.youtubelink,
                 Admin_item_token:       Admin_item_token,
                 Admin_upload_date:      new Date(),
