@@ -361,7 +361,7 @@ data(){return{
             ///outline the received data
             //  var total_amount = items_to_display.qty * items_to_display.price;
               var data = { seller_ID: items_to_display.user_ID,
-                           id: this.client_selected_approved_item_token, 
+                           id: items_to_display.Admin_item_token, 
                            main_quantity:items_to_display.main_quantity, 
                            First_image_selected:items_to_display.First_image_selected, 
                            Second_image_selected:items_to_display.Second_image_selected, 
@@ -411,7 +411,9 @@ data(){return{
       async togglefavorite1(items_to_display){ 
         items_to_display.isfav=!items_to_display.isfav;
         
-        var data_favorite = { id: this.client_selected_approved_item_token, 
+        var data_favorite = {
+                            seller_ID: items_to_display.user_ID,
+                           id: items_to_display.Admin_item_token, 
                            main_quantity:items_to_display.main_quantity, 
                           //  First_image_selected:items_to_display.First_image_selected, 
                           //  Second_image_selected:items_to_display.Second_image_selected, 

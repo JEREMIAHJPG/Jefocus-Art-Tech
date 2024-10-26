@@ -117,12 +117,12 @@
         <center>
         <div >
            
-        <button :id="'cart_'+favorite.Admin_item_token" @click="toggleaddtocart1(favorite), increament()" class="buy_favorite" v-if="!favorite.addtocart ">
+        <button :id="'cart_'+favorite.Admin_item_token" @click="toggleaddtocart_from_favorite(favorite), increament()" class="buy_favorite" v-if="!favorite.addtocart ">
                                
           <span class="material-symbols-outlined">add_shopping_cart</span>
                               Add to Cart
                               </button>
-                              <button @click="toggleaddtocart1(favorite), decreament()" class="buy_favorite" v-else>
+                              <button @click="toggleaddtocart_from_favorite(favorite), decreament()" class="buy_favorite" v-else>
                                 <span class="material-symbols-outlined">remove_shopping_cart</span>
                               Remove from Cart
                               </button>       
@@ -246,6 +246,7 @@ methods:{
             onSnapshot(query(collection(db, 'approved_checked_adverts'), where('Admin_item_token', '==' , storage_favorite.data().client_selected_approved_item_token)),
             (favorite_contents) =>{favorite_contents.forEach((doc) => {this.favorite_contents_list.push(doc.data())
               console.log('fetchfavorites2');
+              console.log(this.favorite_contents_list);
             })  }) 
           })});
 
@@ -292,8 +293,8 @@ async view_artwort_button_favorite(favorite){
     },
 
 async buy_button_favorite(favorite){
-  this.client_selected_approved_item_token = await favorite.Admin_item_token;
-      this.client_selected_approved_item_admin_monitor_new_id = await favorite.admin_monitor_new_id;
+  this.client_selected_approved_item_token = favorite.Admin_item_token;
+      this.client_selected_approved_item_admin_monitor_new_id = favorite.admin_monitor_new_id;
    
       favorite.addtocart = !favorite.addtocart;
       
@@ -302,7 +303,7 @@ async buy_button_favorite(favorite){
       // console.log(numberoforders);
     //outline the received data
      //var total_amount = favorite.qty * favorite.price;
-      var data = {        seller_ID: favorite.user_ID,
+      var data_buy = {        seller_ID: favorite.user_ID,
                            id: this.client_selected_approved_item_token, 
                           main_quantity:favorite.main_quantity, 
                            First_image_selected:favorite.First_image_selected, 
@@ -319,11 +320,14 @@ async buy_button_favorite(favorite){
                           addtocart: favorite.addtocart,                    
                    };
           // save the data to localStorage
-     if (favorite.addtocart)  {localStorage.setItem(`cart_${favorite.Admin_item_token}`, JSON.stringify(data))};
-     if (!favorite.addtocart)  {localStorage.removeItem(`cart_${favorite.Admin_item_token}` );}
-
+     if (favorite.addtocart)  {localStorage.setItem(`cart_${favorite.Admin_item_token}`, JSON.stringify(data_buy))
+                                  console.log('items set')
+     };
+     if (!favorite.addtocart)  {localStorage.removeItem(`cart_${favorite.Admin_item_token}` );
+      console.log('items removed')
+     }
       this.$router.replace({name:'Cartpage', params:{Cartpage: this.client_token_ID}})
-},
+     },
 
 async toggleaddtocart_from_favorite(favorite=''){
 
@@ -334,7 +338,8 @@ async toggleaddtocart_from_favorite(favorite=''){
       // console.log(numberoforders);
     ///outline the received data
     //  var total_amount = favorite.qty * favorite.price;
-      var data = { id: this.client_selected_approved_item_token, 
+      var data_addtocart = { seller_ID: favorite.user_ID,
+                   id: this.client_selected_approved_item_token, 
                    main_quantity:favorite.main_quantity, 
                    First_image_selected:favorite.First_image_selected, 
                    Second_image_selected:favorite.Second_image_selected, 
@@ -351,31 +356,33 @@ async toggleaddtocart_from_favorite(favorite=''){
                    };
 
                    // save the data to localStorage
-             if (favorite.addtocart)  {localStorage.setItem(`cart_${favorite.Admin_item_token}`, JSON.stringify(data))};
+             if (favorite.addtocart)  {localStorage.setItem(`cart_${favorite.Admin_item_token}`, JSON.stringify(data_addtocart))};
              if (!favorite.addtocart)  {localStorage.removeItem(`cart_${favorite.Admin_item_token}`);
-              onSnapshot(query(collection(db,'client_favorites'), where('client_selected_approved_item_token', '==' , favorite.client_selected_approved_item_token)),
-                          (favorite_contents) =>{favorite_contents.forEach((doc) => {
-                                            deleteDoc(doc(db, 'client_favorites', doc.id))
-                          })  })
+              // onSnapshot(query(collection(db,'client_favorites'), where('client_selected_approved_item_token', '==' , favorite.Admin_item_token)),
+              //             (favorite_contents) =>{favorite_contents.forEach((doc) => {
+              //                               deleteDoc(doc(db, 'client_favorites', doc.id))
+              //             })  })
              } 
  
   // document.getElementByClassName('.buy').addeventlistener('onclick',toggleaddtocart_from_favorite )
   // document.querySelector('.buy').display = none;
  
-this.favoritenow = !this.favoritenow; 
-var cart_items_from_favorite= JSON.stringify(favorite);
- localStorage.setItem('cart_'+favorite.Admin_item_token, cart_items_from_favorite);
-  console.log(favorite.addtocart);
-  return favorite
+// this.favoritenow = !this.favoritenow; 
+// var cart_items_from_favorite= JSON.stringify(favorite);
+//  localStorage.setItem('cart_'+favorite.Admin_item_token, cart_items_from_favorite);
+//   console.log(favorite.addtocart);
+//   return favorite
   
 },
 
 async remove_favorite(favorite){
-  await onSnapshot(query(collection(db,'client_favorites'), where('client_selected_approved_item_token', '==' , favorite.Admin_item_token)),
-            (content) =>{content.forEach((doc) => {this.delete_id = doc.id
-            })  })
+  onSnapshot(query(collection(db, 'client_favorites'), where('client_selected_approved_item_token', '==', favorite.Admin_item_token)),
+    (content) => {content.forEach((rev) => {
+        deleteDoc(doc(db, 'client_favorites', rev.id));
+      });
+    })
 
-  await deleteDoc(doc(db, 'client_favorites', this.delete_id))
+  
 }
 }}
       
