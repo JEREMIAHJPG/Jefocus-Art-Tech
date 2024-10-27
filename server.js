@@ -89,12 +89,12 @@ const app = express();
 
 // Require the AT package
 
-
+const PORT2 = 8080||8081;
 //const sms = AT.SMS;
 //send SMS route
 //Enable CORS with specific settings
 app.use(cors({
-  origin: 'http://localhost:8080',  // Allow only your Vue app's origin
+  origin: `http://localhost:${PORT2}`,  // Allow only your Vue app's origin
   methods: 'GET,POST,OPTIONS',  // Allow these methods
   allowedHeaders: 'Accept,Accept-Language,Content-Type,Content-Language,apiKey'  // Allow the custom headers
 }));
@@ -104,7 +104,7 @@ app.use(express.json());
 
 // Explicitly handle preflight OPTIONS requests
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');  // Allow origin
+  res.setHeader('Access-Control-Allow-Origin', `http://localhost:${PORT2}`);  // Allow origin
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');  // Allow methods
   res.setHeader('Access-Control-Allow-Headers', 'Accept, Accept-Language, Content-Type, Content-Language, apiKey');  // Allow custom headers
   res.setHeader('Access-Control-Allow-Credentials', true);  // Allow credentials
@@ -144,9 +144,12 @@ try {
   res.status(500).json({ error: error.message });
 }
 })
+//client buying items
 app.post('/send-sms-after-client-payment', async (req, res) => {
 //cons {to,message} = req.body || res.status
+
 console.log('POST /send-sms-after-client-payment hit');
+
 try {
   const { to, message } = req.body;
   console.log('Request body:', req.body);
@@ -167,7 +170,30 @@ try {
   console.error('Error in /send-sms-after-client-payment:', error.response ? error.response.data : error.message);  // Log the error
   res.status(500).json({ error: error.message });
 }
-})
+}),
+
+app.post('/verify-payment', async (req, res) => {
+  const { reference } = req.body;
+
+  try {
+    const paystackResponse = await axios.get(`https://api.paystack.co/transaction/verify/${reference}`, {
+      headers: {
+        Authorization: `Bearer your_paystack_secret_key`, // Replace with your Paystack secret key
+      },
+    });
+
+    const { status, data } = paystackResponse;
+    if (status === 200 && data.data.status === 'success') {
+      // Payment was successful
+      res.json({ status: 'success', message: 'Payment verified successfully.' });
+    } else {
+      // Payment verification failed
+      res.status(400).json({ status: 'error', message: 'Payment verification failed.' });
+    }
+  } catch (error) {
+    console.error('Payment verification error:', error);
+    res.status(500).json({ status: 'error', message: 'Server error. Please try again later.' });
+  }})
 
 const PORT = 3003||3000;
 

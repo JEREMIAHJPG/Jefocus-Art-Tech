@@ -45,7 +45,7 @@
               </div>
                 <div class=container1 >
 
-            <form  @submit.prevent="payment"  action="/action1_page.php">
+            <form  @submit.prevent="payWithPaystack"  action="/action1_page.php">
           <div class="row">
               <div class="col-255">
                   <label for="fname">First Name</label>
@@ -92,7 +92,7 @@
           
           <br>
           <div class="col-75">
-              <input class="btncart" type="submit" value="Make Payment">
+              <input class="btncart"  type="submit" value="Make Payment">
           </div>
       </form> 
     </div>
@@ -199,7 +199,8 @@ export default {
         cartdate:"",
         Order_No:'',
         cart_contents_list:[],
-        sum_real_value:[]
+        sum_real_value:[],
+        publicKey: 'pk_test_70231819d74842e084a7b62c56bd868430d3abaa', // Replace with your Paystack public key
         // items_to_display:[]
           //cartpostprofile:[],
          // number:'',
@@ -273,7 +274,51 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
           await this.total_new_cart_summation();
         },
 
-         async payment(payment_email){
+        //activating paystack and opening paystack modal
+              loadPaystackScript() {
+            return new Promise((resolve) => {
+              if (window.PaystackPop) {
+                resolve(true);
+                return;
+              }
+              const script = document.createElement('script');
+              script.src = 'https://js.paystack.co/v1/inline.js';
+              script.onload = () => {
+                resolve(true);
+              };
+              script.onerror = () => {
+                resolve(false);
+              };
+              document.head.appendChild(script);
+            });
+          },
+
+                  //verify payment
+                  async verifyPayment(reference) {
+      // You can verify the payment by sending the reference to your server
+      // and calling the Paystack verify endpoint from the backend.
+
+      try {
+        const response = await fetch('http://localhost:3000/verify-payment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ reference }),
+        });
+        const result = await response.json();
+        if (result.status === 'success') {
+          alert('Payment verified successfully!');
+        } else {
+          alert('Payment verification failed.');
+        }
+      } catch (error) {
+        console.error('Error verifying payment:', error);
+      }
+    },
+  
+          
+         async payWithPaystack(payment_email){
 
             var payment_email = this.payment_email;
             let checkcart_email_validation = this.check_cart_email_validation(payment_email);
@@ -288,16 +333,41 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
             var countryphonenumber = "+234" + this.phonenumber;
             
             console.log(this.sum_value);
-
+            ///// make payment
+            const isScriptLoaded = await this.loadPaystackScript();
+              if (!isScriptLoaded) {
+                alert('Paystack failed to load. Please try again later.');
+                return;
+              }
+                      
+                        //transaction ID generation
             //Order_No components
             var transaction_code_a = await Math.floor(1000 + Math.random() * 9000);
             var transaction_code_b = await Math.floor(1000 + Math.random() * 9000);
-            // make payment
-
-            //payment done
-            //transaction ID generation
+            
             var Order_No = await `YE${transaction_code_a}SH${transaction_code_b}UA`;
+            let reference = Order_No;
             this.Order_No = Order_No;
+
+            const handler = PaystackPop.setup({
+                        
+                key: this.publicKey,
+                email: this.payment_email, // Customer's email
+                amount: this.sum_real_value*100, // Amount in kobo (5000 kobo = 50 Naira)
+                currency: "NGN",
+                ref: reference,  // Generate a unique transaction reference
+                callback: (response) => {
+                  console.log(response);  // Handle successful transaction
+                  this.verifyPayment(response.reference);
+                },
+                onClose: () => {
+                  alert("Payment cancelled");
+                },
+              });
+
+              handler.openIframe();
+                          
+                        //payment done
             //get newcart
             for( var key in localStorage ){
             if(key.split('_')[0] == 'cart'){
