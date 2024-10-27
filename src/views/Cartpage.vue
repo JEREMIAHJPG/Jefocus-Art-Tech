@@ -345,6 +345,7 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
             onSnapshot(query(collection(db, 'admin_database'), where('user_ID', '==' , fetch_phone_numbers.seller_ID)),
             (contents) =>{contents.forEach((doc) => {
               //put the sms function 
+              // focus on payment today
                             var admin_phonenumber = doc.data().admin_phonenumber;
                             var username = doc.data().username
 
