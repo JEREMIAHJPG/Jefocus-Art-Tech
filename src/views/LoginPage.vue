@@ -9,12 +9,12 @@
                .input[type=submit]:hover{background-color: #04aa6d;}
                .input[type=password]:hover{ box-shadow: 0px 0px 10px  #04aa6d,}
                input[class=checkbox]{width: auto;}
-               .container{border-radius:5px; background-color: #f2f2f2; padding: 20px; margin-right: 20%; margin-left: 20%;}
+               .container{border-radius:5px; background-color: #f2f2f2; padding: 20px;}
                .col-25{float: left; width: 25%;margin-top: 6px;}
                .col-75{float: left; width: 75%; margin-top: 6px;}
                .col-75:hover{float: left; width: 75%; margin-top: 6px; box-shadow: 0px 0px 10px green}
                .row:after {content:""; display: table; clear:both;}
-               .error3{color:red; position:relative; left:30%;}
+               .error3{color:red; position:relative;}
                .error1{color:red; position:relative; left:50%;}
                .error{color:red; position:relative; left:0%;}
                @media screen and(max-width: 600px){.col-25,.col-75, input[type=submit]{width: 100%; margin-top:0;}}
@@ -24,15 +24,16 @@
            </style>
    
        <template>
+        <center>
            <div class=container>
-               <div style="margin-left: 45%;">
+               <center>
                    <img src="" alt="logo">
-               </div>
+               </center>
                <h1 style="text-align: center;"> Login {{ firstName }}</h1>
                
-               <div class="error3" v-if="error">
+               <center class="error3" v-if="error">
                 {{ error }}
-            </div>
+                </center>
                <form @submit.prevent="onLogin()" action="/action_page.php">
                   
                    <div class="row">
@@ -51,7 +52,7 @@
                        <label for="password">Password</label>
                        </div>
                        <div class="col-75">
-                           <input style="margin-top: 2%;" type="password" v-model.trim="password" id="password" name="password" placeholder="password..." required>
+                           <input style="margin-top: 2%; float: left;" type="password" v-model.trim="password" id="password" name="password" placeholder="password..." required>
                        </div>
                        <div class="error1" v-if="errors.password">{{ errors.password }}</div>
                    </div>
@@ -84,6 +85,7 @@
                    </div>
                </form>
            </div>
+        </center>
        </template>
 
        

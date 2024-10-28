@@ -366,7 +366,7 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
               });
 
               handler.openIframe();
-                          
+
                         //payment done
             //get newcart
             for( var key in localStorage ){
@@ -416,10 +416,11 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
             (contents) =>{contents.forEach((doc) => {
               //put the sms function 
               // focus on payment today
+              console.log('process reached here');
                             var admin_phonenumber = doc.data().admin_phonenumber;
                             var username = doc.data().username
 
-                            const targetUrl = 'http://localhost:3003/send-sms-after-client-payment';
+                            const targetUrl = 'http://localhost:3003/send-sms';
 
               fetch(targetUrl,{
                   method: 'POST',
@@ -435,15 +436,15 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
                             and input the tracking number for each item in your Order History page, 
                             please note that failure to provide the Tracking ID in 72hours will attract a fee prior payment,`
               })
-              })
+              }).then(response => response.json())
+              .then(data => console.log(data))
+              .catch(error => console.error(error));
                         
             }
           
           );
             })  
-          }) .then(response => response.json())
-              .then(data => console.log(data))
-              .catch(error => console.error(error));
+          }) 
               //send each order to the database for fetching in tracking input
               await this.get_all_new_items_data_in_cart().forEach((tracking_input)=>{
                 var seller_ID = tracking_input.seller_ID;
@@ -557,7 +558,7 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
           console.log(this.cart_contents_list);
           // return cart_contents_list;
          },
-//+2349069901678
+          //+2349069901678
          total_cart_summation(){
           var cart_items = this.get_all_items_in_cart();
           this.sum_real_value = this.cart_contents_list.reduce((prev, curr) => prev + curr.total_amount,0);
@@ -589,7 +590,7 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
          // this.removeitem({removeitem:this});
 
          update_cart(items_to_display=''){      
-          var new_amount = '',
+              var new_amount = '',
 
               updated_qty = document.querySelector(`#items_to_displaycart_qty_${items_to_display.Admin_item_token}`).value,
                 //get the existing data from localStorage and update it with the new data;
@@ -611,7 +612,8 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
                    items_to_display['qty'] = updated_qty;
                    items_to_display['total_amount']= new_real_amount;                   
                    //try add new_amount in totalamount 
-                   localStorage.setItem(`cart_`+items_to_display.Admin_item_token, JSON.stringify( items_to_display )); 
+                   localStorage.setItem(`cart_`+items_to_display.Admin_item_token, JSON.stringify( existing_data ));
+
                   };
 
                 console.log("updated cart qty");   
@@ -620,6 +622,8 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
                 // this.display_cart_items();               
          },
 
+    
+               
       //  numberofitems(number, cartpost){
       //   //localstorage for cart total number of items and price
       //              var numberofitem= JSON.stringify(number);

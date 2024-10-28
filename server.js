@@ -89,12 +89,12 @@ const app = express();
 
 // Require the AT package
 
-const PORT2 = 8080||8081;
+//const PORT2 = 8080||8081;
 //const sms = AT.SMS;
 //send SMS route
 //Enable CORS with specific settings
 app.use(cors({
-  origin: `http://localhost:${PORT2}`,  // Allow only your Vue app's origin
+  origin: `http://localhost:8080`,  // Allow only your Vue app's origin
   methods: 'GET,POST,OPTIONS',  // Allow these methods
   allowedHeaders: 'Accept,Accept-Language,Content-Type,Content-Language,apiKey'  // Allow the custom headers
 }));
@@ -104,7 +104,7 @@ app.use(express.json());
 
 // Explicitly handle preflight OPTIONS requests
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', `http://localhost:${PORT2}`);  // Allow origin
+  res.setHeader('Access-Control-Allow-Origin', `http://localhost:8080`);  // Allow origin
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');  // Allow methods
   res.setHeader('Access-Control-Allow-Headers', 'Accept, Accept-Language, Content-Type, Content-Language, apiKey');  // Allow custom headers
   res.setHeader('Access-Control-Allow-Credentials', true);  // Allow credentials
@@ -144,33 +144,33 @@ try {
   res.status(500).json({ error: error.message });
 }
 })
-//client buying items
-app.post('/send-sms-after-client-payment', async (req, res) => {
-//cons {to,message} = req.body || res.status
 
-console.log('POST /send-sms-after-client-payment hit');
+// app.post('/send-sms-after-client-payment', async (req, res) => {
+// //cons {to,message} = req.body || res.status
 
-try {
-  const { to, message } = req.body;
-  console.log('Request body:', req.body);
-  const response = await axios.post('https://api.sandbox.africastalking.com/version1/messaging', 
-    new URLSearchParams({
-      username: 'sandbox',
-      to,
-      message
-    })
-  , {
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'apiKey': 'atsk_fd221a40d30b04649873b9094a955a5ffaf688e6f56ec3eecd05dc520b220617e5d4fd8c'
-    }
-  });
-  res.json(response.data);
-} catch (error) {
-  console.error('Error in /send-sms-after-client-payment:', error.response ? error.response.data : error.message);  // Log the error
-  res.status(500).json({ error: error.message });
-}
-}),
+// console.log('POST /send-sms-after-client-payment hit');
+
+// try {
+//   const { to, message } = req.body;
+//   console.log('Request body:', req.body);
+//   const response = await axios.post('https://api.sandbox.africastalking.com/version1/messaging', 
+//     new URLSearchParams({
+//       username: 'sandbox',
+//       to,
+//       message
+//     })
+//   , {
+//     headers: {
+//       'Content-Type': 'application/x-www-form-urlencoded',
+//       'apiKey': 'atsk_fd221a40d30b04649873b9094a955a5ffaf688e6f56ec3eecd05dc520b220617e5d4fd8c'
+//     }
+//   });
+//   res.json(response.data);
+// } catch (error) {
+//   console.error('Error in /send-sms-after-client-payment:', error.response ? error.response.data : error.message);  // Log the error
+//   res.status(500).json({ error: error.message });
+// }
+// }),
 
 app.post('/verify-payment', async (req, res) => {
   const { reference } = req.body;

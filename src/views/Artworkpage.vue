@@ -244,9 +244,10 @@ data(){return{
 }
     },
     created(){
-      this.on_load_artworkpage();
+      
     },
     mounted(){
+      this.on_load_artworkpage();
     // axios.get('http://localhost:3000/cartpostprofile')
     // .then(response=> this.items_to_display_profile=response.data)
      
@@ -276,11 +277,13 @@ data(){return{
       //       (checkadvert) =>{checkadvert.forEach((doc) => {this.monitor_data.push(doc.data())
       //       })  }) ,
 
-      onSnapshot(query(collection(db, 'getting_token_user_id'), where('get_ID', '==' , localStorage.getItem(`user_id`))),
-            (client) =>{client.forEach((doc) => {
-              this.client_token_ID = doc.data().reclaimed_get_token
+      // onSnapshot(query(collection(db, 'getting_token_user_id'), where('get_ID', '==' , localStorage.getItem(`user_id`))),
+      //       (client) =>{client.forEach((doc) => {this.client_token_ID = doc.data().reclaimed_get_token
             
-            })  });
+      //       })  });
+
+      this.client_token_ID = JSON.parse(localStorage.getItem(`userData`)).token;
+
       onSnapshot(query(collection(db, 'approved_checked_adverts'), where('display_art', '==' , true)),
             (advert) =>{advert.forEach((doc) => {this.items_to_display_profile.push(doc.data())
             })  }) 
@@ -317,7 +320,7 @@ data(){return{
       // console.log(numberoforders);
     ///outline the received data
     // var total_amount = items_to_display.qty * items_to_display.price;
-      var data = {         seller_ID: items_to_display.user_ID,
+      var data_buy = {     seller_ID: items_to_display.user_ID,
                            id: this.client_selected_approved_item_token, 
                            main_quantity:items_to_display.main_quantity, 
                            First_image_selected:items_to_display.First_image_selected, 
@@ -335,7 +338,7 @@ data(){return{
                    
                    };
           // save the data to localStorage
-     if (items_to_display.addtocart)  {localStorage.setItem(`cart_${items_to_display.Admin_item_token}`, JSON.stringify(data))};
+     if (items_to_display.addtocart)  {localStorage.setItem(`cart_${items_to_display.Admin_item_token}`, JSON.stringify(data_buy))};
      if (!items_to_display.addtocart)  {localStorage.removeItem(`cart_${items_to_display.Admin_item_token}` );}
 
       this.$router.push({name:'Cartpage', params:{Cartpage: this.client_token_ID}})
@@ -360,7 +363,8 @@ data(){return{
               // console.log(numberoforders);
             ///outline the received data
             //  var total_amount = items_to_display.qty * items_to_display.price;
-              var data = { seller_ID: items_to_display.user_ID,
+              var data_addtocart = { 
+                           seller_ID: items_to_display.user_ID,
                            id: items_to_display.Admin_item_token, 
                            main_quantity:items_to_display.main_quantity, 
                            First_image_selected:items_to_display.First_image_selected, 
@@ -378,7 +382,7 @@ data(){return{
                            
                            };
                   // save the data to localStorage
-             if (items_to_display.addtocart)  {localStorage.setItem(`cart_${items_to_display.Admin_item_token}`, JSON.stringify(data))};
+             if (items_to_display.addtocart)  {localStorage.setItem(`cart_${items_to_display.Admin_item_token}`, JSON.stringify(data_addtocart))};
              if (!items_to_display.addtocart)  {localStorage.removeItem(`cart_${items_to_display.Admin_item_token}` );
 
              // 
