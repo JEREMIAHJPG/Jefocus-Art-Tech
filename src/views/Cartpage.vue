@@ -201,6 +201,7 @@ export default {
         cart_contents_list:[],
         sum_real_value:[],
         publicKey: 'pk_test_70231819d74842e084a7b62c56bd868430d3abaa', // Replace with your Paystack public key
+        reference:''
         // items_to_display:[]
           //cartpostprofile:[],
          // number:'',
@@ -214,7 +215,7 @@ export default {
   created(){
     this.convert_all_cart_to_database();
     this.get_all_items_in_cart();
-    this.get_all_new_items_data_in_cart();
+    //this.get_all_new_items_data_in_cart();
     this.total_new_cart_summation();
     this.total_cart_summation();
     this.check_cart_email_validation();
@@ -249,49 +250,76 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
           }
         },
 
-        get_all_new_items_data_in_cart(){
-          var items_to_redisplay = [];
-           for( var key in localStorage ){
-            if( key.split('_')[0] == 'cart'){
-              items_to_redisplay.push( JSON.parse(localStorage.getItem(key)));
+       async get_all_new_items_data_in_cart() {
+  const items_to_redisplay = [];
+  const self = this; // Store reference to `this`
+
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    
+    if (key.startsWith("cart")) {
+      const item = JSON.parse(localStorage.getItem(key));
+      const itemToken = item.client_selected_approved_item_token;
+
+      onSnapshot(
+        query(
+          collection(db, 'approved_checked_adverts'), 
+          where('Admin_item_token', '==', itemToken)
+        ),
+        (cartContents) => {
+          cartContents.forEach((doc) => {
+            const mainPricePerQuantityInDb = doc.data().price / doc.data().qty_per_mainprice;
+            const mainPricePerQuantityInCart = item.total_amount / item.qty;
+
+            if (mainPricePerQuantityInDb === mainPricePerQuantityInCart && 
+                item.client_selected_approved_item_admin_monitor_new_id === doc.data().admin_monitor_new_id) {
+              items_to_redisplay.push(item);
+            } else {
+              self.$router.push('/LoginPage');
+              localStorage.clear(); // Clears all cart data for security
             }
-           }
-           return items_to_redisplay;            
-            },
+          });
+        }
+      );
+    }
+  }
+  
+  return items_to_redisplay;
+},
 
         total_new_cart_summation(){
-          var cart_items = this.get_all_new_items_data_in_cart();
-        this.sum_real_value = this.cart_contents_list.reduce((prev, curr) => prev + curr.total_amount,0);
-          var sum_value = cart_items.reduce((prev, curr) => prev + curr.total_amount,0);
-          this.sum_value = sum_value;
+          //var cart_items = this.get_all_new_items_data_in_cart();
+          this.sum_real_value = this.cart_contents_list.reduce((prev, curr) => prev + curr.total_amount,0);
+          // var sum_value = cart_items.reduce((prev, curr) => prev + curr.total_amount,0);
+         console.log(this.sum_real_value/1000000000)
           localStorage.setItem(`Total_real_Amount_to_pay`,this.sum_value);
           //  console.log( sum_value );
         },
 
         async change_sum_total(){
            //return the new sum total
-           await this.get_all_new_items_data_in_cart();
+           //await this.get_all_new_items_data_in_cart();
           await this.total_new_cart_summation();
         },
 
         //activating paystack and opening paystack modal
-              loadPaystackScript() {
-            return new Promise((resolve) => {
-              if (window.PaystackPop) {
-                resolve(true);
-                return;
-              }
-              const script = document.createElement('script');
-              script.src = 'https://js.paystack.co/v1/inline.js';
-              script.onload = () => {
-                resolve(true);
-              };
-              script.onerror = () => {
-                resolve(false);
-              };
-              document.head.appendChild(script);
-            });
-          },
+          //     loadPaystackScript() {
+          //   return new Promise((resolve) => {
+          //     if (window.PaystackPop) {
+          //       resolve(true);
+          //       return;
+          //     }
+          //     const script = document.createElement('script');
+          //     script.src = 'https://js.paystack.co/v1/inline.js';
+          //     script.onload = () => {
+          //       resolve(true);
+          //     };
+          //     script.onerror = () => {
+          //       resolve(false);
+          //     };
+          //     document.head.appendChild(script);
+          //   });
+          // },
 
                   //verify payment
                   async verifyPayment(reference) {
@@ -309,67 +337,12 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
         const result = await response.json();
         if (result.status === 'success') {
           alert('Payment verified successfully!');
-        } else {
-          alert('Payment verification failed.');
-        }
-      } catch (error) {
-        console.error('Error verifying payment:', error);
-      }
-    },
-  
-          
-         async payWithPaystack(payment_email){
 
-            var payment_email = this.payment_email;
-            let checkcart_email_validation = this.check_cart_email_validation(payment_email);
-            let errorcomment = "";
-            if (!checkcart_email_validation){this.errorcomment = "Invalid Email"};
-            if(errorcomment.length){{this.errorstatement= true;}return false;};
-          //  let validation = Cartsignupvalidation(this.payment_email);
-          //   this.errorstatement = validation.signupstatement(this.payment_email);
-            
-            // var Order_No= ((Math.random(777777777,999999999))*10000000000).toFixed(0);
-            var fullname = `${this.payment_firstname} ${this.payment_lastname}`;
+           //Initiate receipt and SMS text message
+           var fullname = `${this.payment_firstname} ${this.payment_lastname}`;
             var countryphonenumber = "+234" + this.phonenumber;
-            
-            console.log(this.sum_value);
-            ///// make payment
-            const isScriptLoaded = await this.loadPaystackScript();
-              if (!isScriptLoaded) {
-                alert('Paystack failed to load. Please try again later.');
-                return;
-              }
-                      
-                        //transaction ID generation
-            //Order_No components
-            var transaction_code_a = await Math.floor(1000 + Math.random() * 9000);
-            var transaction_code_b = await Math.floor(1000 + Math.random() * 9000);
-            
-            var Order_No = await `YE${transaction_code_a}SH${transaction_code_b}UA`;
-            let reference = Order_No;
-            this.Order_No = Order_No;
-
-            const handler = PaystackPop.setup({
-                        
-                key: this.publicKey,
-                email: this.payment_email, // Customer's email
-                amount: this.sum_real_value*100, // Amount in kobo (5000 kobo = 50 Naira)
-                currency: "NGN",
-                ref: reference,  // Generate a unique transaction reference
-                callback: (response) => {
-                  console.log(response);  // Handle successful transaction
-                  this.verifyPayment(response.reference);
-                },
-                onClose: () => {
-                  alert("Payment cancelled");
-                },
-              });
-
-              handler.openIframe();
-
-                        //payment done
-            //get newcart
-            for( var key in localStorage ){
+           //get newcart
+           for( var key in localStorage ){
             if(key.split('_')[0] == 'cart'){
               this.get_all_new_cart.push( JSON.parse(localStorage.getItem(key)));
                }
@@ -476,7 +449,7 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
 
                         };
 
-                          getDocs(query(collection(db,  'order_details_for_tracking_and_payment'), where('seller_ID', '==' , seller_ID))). 
+                    getDocs(query(collection(db,  'order_details_for_tracking_and_payment'), where('seller_ID', '==' , seller_ID))). 
                      then(cart_sellers_snap => cart_sellers_snap.forEach((doc)=>{this.find_admin_seller = doc.data().seller_ID; 
                      console.log(this.find_cart_admin_seller)}));
 
@@ -497,6 +470,63 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
             let order_receipt = JSON.stringify(receipt);
             localStorage.setItem(`receipt_key`, order_receipt);
             this.$router.push('/Receiptpage');
+        } else {
+          alert('Payment verification failed.');
+        }
+      } catch (error) {
+        console.error('Error verifying payment:', error);
+      }
+    },
+  
+          
+         async payWithPaystack(payment_email){
+            var payment_email = this.payment_email;
+            let checkcart_email_validation = this.check_cart_email_validation(payment_email);
+            let errorcomment = "";
+            if (!checkcart_email_validation){this.errorcomment = "Invalid Email"};
+            if(errorcomment.length){{this.errorstatement= true;}return false;};
+          //  let validation = Cartsignupvalidation(this.payment_email);
+          //   this.errorstatement = validation.signupstatement(this.payment_email);
+            
+           
+            
+            console.log(this.sum_real_value/1000000000);
+            ///// make payment
+            // const isScriptLoaded = await this.loadPaystackScript();
+            //   if (!isScriptLoaded) {
+            //     alert('Paystack failed to load. Please try again later.');
+            //     return;
+            //   }
+                      
+                        //transaction ID generation
+            //Order_No components
+            var transaction_code_a = await Math.floor(1000 + Math.random() * 9000);
+            var transaction_code_b = await Math.floor(1000 + Math.random() * 9000);
+            
+            var Order_No = await `YE${transaction_code_a}SH${transaction_code_b}UA`;
+            this.reference = Order_No;
+            this.Order_No = this.reference;
+            //the main process for payment
+            const handler = PaystackPop.setup({
+                        
+                key: this.publicKey,
+                email: this.payment_email, // Customer's email
+                amount: Math.round(this.sum_real_value/10000000), // Amount in kobo (5000 kobo = 50 Naira)
+                currency: "NGN",
+                ref: reference,  // Generate a unique transaction reference
+                callback: (response) => {
+                  console.log(response);  // Handle successful transaction
+                  this.verifyPayment(response.reference);
+                },
+                onClose: () => {
+                  alert("Payment cancelled");
+                },
+              });
+
+              handler.openIframe();
+
+                        //payment done
+           
           },
 
           // display_cart_items(){
@@ -543,8 +573,7 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
               items_to_display.push( JSON.parse(localStorage.getItem(key)));
             }
             }
-            console.log(items_to_display);
-            
+            console.log(items_to_display);           
            return items_to_display;          
          },
 
@@ -567,7 +596,6 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
           localStorage.setItem(`Total_Amount_to_pay`,this.sum_value);
           //  console.log( sum_value );
           }, 
-
         // ...mapMutations({
        // totalprice:NUMBEROFITEMS,}),
        removeitems(items_to_display){
@@ -591,7 +619,6 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
 
          update_cart(items_to_display=''){      
               var new_amount = '',
-
               updated_qty = document.querySelector(`#items_to_displaycart_qty_${items_to_display.Admin_item_token}`).value,
                 //get the existing data from localStorage and update it with the new data;
                 //var cart_existing_data = items_to_display
