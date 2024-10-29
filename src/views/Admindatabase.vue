@@ -243,7 +243,8 @@ export default {
                 admin_database_token:   this.admin_database_token,
                 account_details:        account_details,
                 deduction_amount_late_shipment :'',
-                final_net_profit:               '',                
+                final_net_profit:               '',
+                history_profit:                 '',               
                 Admin_Membership_Time:  new Date()
                                               };
 

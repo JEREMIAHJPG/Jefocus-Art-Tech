@@ -299,6 +299,8 @@ data(){
         iframe_link_data:'',
         admin_database_uid:'',
         net_profit:'',
+        final_net_profit:'',
+        history_profit:'',
         ID_order_delete:'',
         ID_delete:'',
         tracking_statement:'',
@@ -376,6 +378,7 @@ await getDocs(query(collection(db,'admin_database'),
                 
                 admin_database_admin.forEach ((doc)=>{
                   this.final_net_profit = doc.data().final_net_profit;
+                  this.history_profit = doc.data().history_profit;
                     this.admin_database_uid =  doc.id;                              
                 } )
                 });
@@ -383,17 +386,19 @@ await getDocs(query(collection(db,'admin_database'),
                 await updateDoc(doc(db,'admin_database', this.admin_database_uid),
                 {
                 final_net_profit :  deleteField(),                                                        
+                history_profit :  deleteField(),                                                        
                 },
                
 );
 // setdoc final_net_profit
                  await setDoc(doc(db,'admin_database',this.admin_database_uid), 
                 {
-                 final_net_profit: this.final_net_profit + this.net_profit                            
+                 final_net_profit: this.final_net_profit + this.net_profit ,                           
+                 history_profit: this.history_profit + this.net_profit ,                           
                 }, {merge:true});
 
 //via specific_order_id is pushed to history for reference purposes then delete the ones in the order_details_for_tracking_and_payment
-    onSnapshot(query(collection(db, 'order_details_for_tracking_and_payment'), where('seller_ID', '==', Tracking_data_list_data.seller_ID)),
+    await onSnapshot(query(collection(db, 'order_details_for_tracking_and_payment'), where('seller_ID', '==', Tracking_data_list_data.seller_ID)),
       (check_id) => {
         check_id.forEach((doc) => {
           this.specific_order_id = doc.data().specific_order_id;
@@ -402,11 +407,17 @@ await getDocs(query(collection(db,'admin_database'),
           setDoc(doc(db,'order_details_for_tracking_and_payment', doc.id), 
                 {
                   payment_status:        'payment assured'         
-                }, {merge:true})
+                }, {merge:true}).then(()=>{
 
-          addDoc(collection(db, 'HistoryofOrderplaced'), doc.data()).then(()=>{
+          addDoc(collection(db, 'HistoryofOrderplaced'), doc.data())}).then(()=>{
+            setDoc(doc(db,'HistoryofOrderplaced',this.admin_database_uid), 
+                {
+                 final_net_profit: this.final_net_profit + this.net_profit ,                           
+                 history_profit: this.history_profit + this.net_profit ,
+                 time_of_payment_assurance: new Date(),                         
+                }, {merge:true});
             deleteDoc(doc(db, 'order_details_for_tracking_and_payment', doc.id));
-            
+            console.log(`${doc.id} focus_do deleted`);
           })
         });
       });
@@ -418,7 +429,7 @@ await getDocs(query(collection(db,'admin_database'),
           this.ID_delete = doc.id;
           addDoc(collection(db, 'HistoryofOrderitemsplaced'), doc.data()).then(() => {
             deleteDoc(doc(db, 'list_of_order_details_for_tracking_and_payment', doc.id));
-            
+            console.log(`${doc.id} focus_dl deleted`);
         });
         });
       });
@@ -442,6 +453,7 @@ onSnapshot(query(collection(db, 'order_details_for_tracking_and_payment'),where(
           addDoc(collection(db, 'HistoryofOrderplaced'), doc.data()).then(()=>{
 
             deleteDoc(doc(db, 'order_details_for_tracking_and_payment', doc.id))
+            console.log(`${doc.id} focus_ro deleted`);
           })
         });
       });
@@ -456,6 +468,7 @@ onSnapshot(query(collection(db, 'order_details_for_tracking_and_payment'),where(
           addDoc(collection(db, 'HistoryofOrderitemsplaced'), doc.data()).then(() => {
             
             deleteDoc(doc(db, 'list_of_order_details_for_tracking_and_payment', doc.id));
+            console.log(`${doc.id} focus_rl deleted`);
           });
         });
       });
@@ -465,7 +478,8 @@ onSnapshot(query(collection(db, 'order_details_for_tracking_and_payment'),where(
     //CHECK DOCUMENTATION FOR ORDER QUERIES FOR ASCENDING AND DESCENDING ORDER---
     //do images and the iteraton contents---
     //
-
+//pay forEach admindatabase with paystack .then and .catch message the admins
+//retouch receipt page and integrate share receipt to whatsapp, email etc
 //Ayo
 //+2348127208187
   },

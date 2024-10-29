@@ -28,7 +28,7 @@ import Jefocus_Art_product_and_services from '@/views/Jefocus_Art_product_and_se
 import vuetify_practice from '@/views/vuetify_practice.vue';
 import Trackinginput from '@/views/Trackinginput.vue';
 import Trackingpage from '@/views/Trackingpage.vue';
-import HistoryofOrderplaced from '@/views/HistoryofOrderplaced.vue';
+import AdminHistoryofOrderplaced from '@/views/AdminHistoryofOrderplaced.vue';
 
 //  Vue.use(router);
 const routes = [
@@ -200,9 +200,9 @@ const routes = [
   },
 
   {
-    path: '/HistoryofOrderplaced',
-    name: 'HistoryofOrderplaced',
-    component: HistoryofOrderplaced,
+    path: '/AdminHistoryofOrderplaced/:AdminHistoryofOrderplaced',
+    name: 'AdminHistoryofOrderplaced',
+    component: AdminHistoryofOrderplaced,
     meta:{auth:true}
   }
   
