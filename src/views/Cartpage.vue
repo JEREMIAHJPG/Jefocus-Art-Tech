@@ -488,8 +488,8 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
                      console.log(this.find_cart_admin_seller)}));
 
                     switch(this.find_cart_admin_seller){ 
-                    case '' : addDoc(collection(db, 'list_of_order_details_for_tracking_and_payment'), order_details_for_tracking_and_payment),
-                              addDoc(collection(db, 'order_details_for_tracking_and_payment'), order_details_for_tracking_and_payment)
+                    case '' :  addDoc(collection(db, 'list_of_order_details_for_tracking_and_payment'), order_details_for_tracking_and_payment),
+                              addDoc(collection(db, 'order_details_for_tracking_and_payment'), order_details_for_tracking_and_payment);
                     
                     break;
                     default: addDoc(collection(db, 'list_of_order_details_for_tracking_and_payment'), order_details_for_tracking_and_payment);
