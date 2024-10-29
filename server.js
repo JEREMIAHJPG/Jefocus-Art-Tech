@@ -178,7 +178,7 @@ app.post('/verify-payment', async (req, res) => {
   try {
     const paystackResponse = await axios.get(`https://api.paystack.co/transaction/verify/${reference}`, {
       headers: {
-        Authorization: `Bearer your_paystack_secret_key`, // Replace with your Paystack secret key
+        Authorization: `Bearer sk_test_6808ef0eebdbc3e57f5c9838ca4273fadd8e29bd`, // Replace with your Paystack secret key
       },
     });
 

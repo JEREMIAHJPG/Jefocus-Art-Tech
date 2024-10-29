@@ -250,10 +250,10 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
           }
         },
 
-       async get_all_new_items_data_in_cart() {
+        async get_all_new_items_data_in_cart() {
   const items_to_redisplay = [];
-  const self = this; // Store reference to `this`
-
+  const snapshotPromises = []; // Array to store promises for each onSnapshot
+  
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
     
@@ -261,29 +261,47 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
       const item = JSON.parse(localStorage.getItem(key));
       const itemToken = item.client_selected_approved_item_token;
 
-      onSnapshot(
-        query(
-          collection(db, 'approved_checked_adverts'), 
-          where('Admin_item_token', '==', itemToken)
-        ),
-        (cartContents) => {
-          cartContents.forEach((doc) => {
-            const mainPricePerQuantityInDb = doc.data().price / doc.data().qty_per_mainprice;
-            const mainPricePerQuantityInCart = item.total_amount / item.qty;
+      // Create a new Promise for each snapshot
+      const snapshotPromise = new Promise((resolve, reject) => {
+        onSnapshot(
+          query(
+            collection(db, 'approved_checked_adverts'), 
+            where('Admin_item_token', '==', itemToken)
+          ),
+          (cartContents) => {
+            let itemFound = false;
+            cartContents.forEach((doc) => {
+              const mainPricePerQuantityInDb = doc.data().price / doc.data().qty_per_mainprice;
+              const mainPricePerQuantityInCart = item.total_amount / item.qty;
 
-            if (mainPricePerQuantityInDb === mainPricePerQuantityInCart && 
-                item.client_selected_approved_item_admin_monitor_new_id === doc.data().admin_monitor_new_id) {
-              items_to_redisplay.push(item);
+              if (
+                mainPricePerQuantityInDb === mainPricePerQuantityInCart && 
+                item.client_selected_approved_item_admin_monitor_new_id === doc.data().admin_monitor_new_id
+              ) {
+                items_to_redisplay.push(item);
+                itemFound = true;
+              }
+            });
+
+            if (itemFound) {
+              resolve(); // Resolve if item is found and added to the array
             } else {
-              self.$router.push('/LoginPage');
-              localStorage.clear(); // Clears all cart data for security
+              // Optionally redirect if the item is invalid and clear local storage
+              this.$router.push('/LoginPage');
+              localStorage.clear();
+              reject(new Error('Item not found or validation failed'));
             }
-          });
-        }
-      );
+          }
+        );
+      });
+      
+      // Add each snapshot promise to the array
+      snapshotPromises.push(snapshotPromise);
     }
   }
-  
+
+  // Wait for all snapshot promises to resolve before returning the array
+  await Promise.all(snapshotPromises);
   return items_to_redisplay;
 },
 
@@ -327,7 +345,7 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
       // and calling the Paystack verify endpoint from the backend.
 
       try {
-        const response = await fetch('http://localhost:3000/verify-payment', {
+        const response = await fetch('http://localhost:3003/verify-payment', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -372,22 +390,33 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
                                               }
                                              }
             var receipt = {total_amount:this.sum_value, fullname:fullname, payment_email: this.payment_email, countryphonenumber:countryphonenumber, 
-            pickuplocation : this.pickuplocation, Order_No: Order_No, cartdate: Date()
+            pickuplocation : this.pickuplocation, Order_No: this.Order_No, cartdate: Date()
             };
             console.log(receipt);
 
            var database_for_paid_orders = {
-            Order_No:                         Order_No,
+            Order_No:                         this.Order_No,
             new_cart_info_from_localstorage:  this.get_all_new_cart,
             time_details_of_order_placed:     time_details_of_order_placed,
             receipt:                          receipt
           }
-
+          console.log(database_for_paid_orders);
+          //const cartItems = this.get_all_new_items_data_in_cart();
+          // const cartItems = Array.isArray(this.get_all_new_items_data_in_cart()) 
+          // ? this.get_all_new_items_data_in_cart() 
+          // : [];
+          
+            
           //fetch phonenumbers from the userid of the admindatabase from the seller_ID send sms to
-           await this.get_all_new_items_data_in_cart().forEach((fetch_phone_numbers)=>{
+           try{const itemsData = await this.get_all_new_items_data_in_cart();
+    
+    // Now you can safely call forEach on itemsData, which is an array
+    itemsData.forEach((fetch_phone_numbers)=>{
+           // console.log(this.get_all_new_items_data_in_cart)
             onSnapshot(query(collection(db, 'admin_database'), where('user_ID', '==' , fetch_phone_numbers.seller_ID)),
             (contents) =>{contents.forEach((doc) => {
-              //put the sms function 
+               //console.log('Cart items:', cartItems);
+              //put the sms function
               // focus on payment today
               console.log('process reached here');
                             var admin_phonenumber = doc.data().admin_phonenumber;
@@ -403,7 +432,7 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
                            },
                   body: JSON.stringify({
                   to: admin_phonenumber,
-                  message: `JEfocus Art and Tech : Hello ${username} You have a new order. Order No: ${Order_No}
+                  message: `JEfocus Art and Tech : Hello ${username} You have a new order. Order No: ${this.Order_No}
                             placed at ${time_of_order_placed} your client ${fullname} has paid.
                             You have 72hrs to ship this order, please kindly ship the order at the nearest kxpress location
                             and input the tracking number for each item in your Order History page, 
@@ -417,9 +446,14 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
           
           );
             })  
-          }) 
+          })}catch (error) {
+    console.error('Error verifying payment:', error);
+  }
               //send each order to the database for fetching in tracking input
-              await this.get_all_new_items_data_in_cart().forEach((tracking_input)=>{
+              try{const itemsData2 = await this.get_all_new_items_data_in_cart();
+    
+    // Now you can safely call forEach on itemsData, which is an array
+    itemsData2.forEach((tracking_input)=>{
                 var seller_ID = tracking_input.seller_ID;
                 var order_details_for_tracking_and_payment = {
                           seller_ID: tracking_input.seller_ID,
@@ -453,19 +487,21 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
                      then(cart_sellers_snap => cart_sellers_snap.forEach((doc)=>{this.find_admin_seller = doc.data().seller_ID; 
                      console.log(this.find_cart_admin_seller)}));
 
-            switch(this.find_cart_admin_seller){ 
-            case '' : addDoc(collection(db, 'list_of_order_details_for_tracking_and_payment'), order_details_for_tracking_and_payment),
-                      addDoc(collection(db, 'order_details_for_tracking_and_payment'), order_details_for_tracking_and_payment)
-             
-            break;
-            default: addDoc(collection(db, 'list_of_order_details_for_tracking_and_payment'), order_details_for_tracking_and_payment);
-          }
-                         })
+                    switch(this.find_cart_admin_seller){ 
+                    case '' : addDoc(collection(db, 'list_of_order_details_for_tracking_and_payment'), order_details_for_tracking_and_payment),
+                              addDoc(collection(db, 'order_details_for_tracking_and_payment'), order_details_for_tracking_and_payment)
+                    
+                    break;
+                    default: addDoc(collection(db, 'list_of_order_details_for_tracking_and_payment'), order_details_for_tracking_and_payment);
+                  }
+                                })}catch (error) {
+                    console.error("Error collecting data:", error);
+                    }
             
              //code for if qty is greater than or equal to main_quantity let the item in approved_adverts be deleted
             
              //add database_for_paid_orders FOR RECIEPT AND  HISTORY
-            await addDoc( collection(db, 'database_for_paid_orders_database'), database_for_paid_orders )
+            await addDoc(collection(db, 'database_for_paid_orders_database'), database_for_paid_orders)
             
             let order_receipt = JSON.stringify(receipt);
             localStorage.setItem(`receipt_key`, order_receipt);
@@ -475,11 +511,12 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
         }
       } catch (error) {
         console.error('Error verifying payment:', error);
-      }
+                      }
     },
   
-          
          async payWithPaystack(payment_email){
+          await this.get_all_new_items_data_in_cart();
+          console.log(this.get_all_new_items_data_in_cart())
             var payment_email = this.payment_email;
             let checkcart_email_validation = this.check_cart_email_validation(payment_email);
             let errorcomment = "";
@@ -488,8 +525,7 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
           //  let validation = Cartsignupvalidation(this.payment_email);
           //   this.errorstatement = validation.signupstatement(this.payment_email);
             
-           
-            
+
             console.log(this.sum_real_value/1000000000);
             ///// make payment
             // const isScriptLoaded = await this.loadPaystackScript();
@@ -505,7 +541,7 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
             
             var Order_No = await `YE${transaction_code_a}SH${transaction_code_b}UA`;
             this.reference = Order_No;
-            this.Order_No = this.reference;
+            this.Order_No = this.reference ;
             //the main process for payment
             const handler = PaystackPop.setup({
                         
@@ -513,7 +549,7 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
                 email: this.payment_email, // Customer's email
                 amount: Math.round(this.sum_real_value/10000000), // Amount in kobo (5000 kobo = 50 Naira)
                 currency: "NGN",
-                ref: reference,  // Generate a unique transaction reference
+                ref: this.reference,  // Generate a unique transaction reference
                 callback: (response) => {
                   console.log(response);  // Handle successful transaction
                   this.verifyPayment(response.reference);
