@@ -447,6 +447,8 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
                           tracking_id:                      "Input Tracking ID",
                           net_profit:                       null,
                           currentTime:                      currentTime,
+                          countryphonenumber:               `+234${this.phonenumber}`,
+                          pickuplocation :                  this.pickuplocation,
                           time_delay_commission:            null
                         };
                         

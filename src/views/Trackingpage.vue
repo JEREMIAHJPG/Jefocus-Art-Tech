@@ -87,7 +87,7 @@
           <iframe
           width="500"
           height="300"
-          :href= "'www.kongatracking.com/'+{iframe_link_data}"
+          :src= "`https://logistics.konga.com/track?order_number=${this.iframe_link_data}`"
           >
 
           </iframe>
