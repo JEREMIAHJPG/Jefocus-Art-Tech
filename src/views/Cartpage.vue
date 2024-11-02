@@ -45,13 +45,13 @@
               </div>
                 <div class=container1 >
 
-            <form  @submit.prevent="payWithPaystack"  action="/action1_page.php">
+            <form  @submit.prevent="payWithPaystack" @click="change_sum_total()" action="/action1_page.php">
           <div class="row">
               <div class="col-255">
                   <label for="fname">First Name</label>
               </div>
               
-                  <input class="col-755" type="text" id="fname" @click="change_sum_total()" v-model="payment_firstname" name="firstname" placeholder="your name...">
+                  <input class="col-755" type="text" id="fname" @input="change_sum_total()" v-model="payment_firstname" name="firstname" placeholder="your name...">
               
           </div>
           <div class="row">
@@ -201,7 +201,8 @@ export default {
         cart_contents_list:[],
         sum_real_value:[],
         publicKey: 'pk_test_70231819d74842e084a7b62c56bd868430d3abaa', // Replace with your Paystack public key
-        reference:''
+        reference:'',
+        find_cart_admin_seller:'',
         // items_to_display:[]
           //cartpostprofile:[],
          // number:'',
@@ -389,31 +390,124 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
                                                                    deadline_Time:                  deadline_Time
                                               }
                                              }
-            var receipt = {total_amount:this.sum_value, fullname:fullname, payment_email: this.payment_email, countryphonenumber:countryphonenumber, 
+            var receipt = {client_token_ID:this.$route.params.Cartpage, total_amount:this.sum_value, fullname:fullname, payment_email: this.payment_email, countryphonenumber:countryphonenumber, 
             pickuplocation : this.pickuplocation, Order_No: this.Order_No, cartdate: Date()
             };
+
             console.log(receipt);
 
            var database_for_paid_orders = {
             Order_No:                         this.Order_No,
             new_cart_info_from_localstorage:  this.get_all_new_cart,
             time_details_of_order_placed:     time_details_of_order_placed,
-            receipt:                          receipt
+            receipt:                          receipt,
+            client_token_ID:                  this.$route.params.Cartpage,
           }
+
           console.log(database_for_paid_orders);
           //const cartItems = this.get_all_new_items_data_in_cart();
           // const cartItems = Array.isArray(this.get_all_new_items_data_in_cart()) 
           // ? this.get_all_new_items_data_in_cart() 
-          // : [];
-          
-            
+          // : [];        
+
           //fetch phonenumbers from the userid of the admindatabase from the seller_ID send sms to
            try{const itemsData = await this.get_all_new_items_data_in_cart();
     
     // Now you can safely call forEach on itemsData, which is an array
-    itemsData.forEach((fetch_phone_numbers)=>{
-           // console.log(this.get_all_new_items_data_in_cart)
-            onSnapshot(query(collection(db, 'admin_database'), where('user_ID', '==' , fetch_phone_numbers.seller_ID)),
+    itemsData.forEach((fetch_phone_numbers_and_tracking_input)=>{
+
+    //    //send each order to the database for fetching in tracking input
+    //    try{const itemsData2 = await this.get_all_new_items_data_in_cart();
+    
+    // // Now you can safely call forEach on itemsData, which is an array
+    // itemsData2.forEach((tracking_input)=>{
+               // var seller_ID = tracking_input.seller_ID;
+
+                var order_details_for_tracking_and_payment = {
+                          seller_ID: fetch_phone_numbers_and_tracking_input.seller_ID,
+                          id: fetch_phone_numbers_and_tracking_input.id, 
+                          main_quantity:fetch_phone_numbers_and_tracking_input.main_quantity, 
+                          First_image_selected:fetch_phone_numbers_and_tracking_input.First_image_selected, 
+                          Second_image_selected:fetch_phone_numbers_and_tracking_input.Second_image_selected, 
+                          title: fetch_phone_numbers_and_tracking_input.title,
+                          qty:  fetch_phone_numbers_and_tracking_input.qty,
+                          total_amount: fetch_phone_numbers_and_tracking_input.total_amount,
+                          size: fetch_phone_numbers_and_tracking_input.size,
+                          price: fetch_phone_numbers_and_tracking_input.price, 
+                          client_token_ID:  this.$route.params.Cartpage,
+                          client_email : localStorage.getItem(`client_email`),
+                          client_selected_approved_item_token : fetch_phone_numbers_and_tracking_input.client_selected_approved_item_token,
+                          client_selected_approved_item_admin_monitor_new_id : fetch_phone_numbers_and_tracking_input.client_selected_approved_item_admin_monitor_new_id,
+                          specific_order_id:                `${this.Order_No}+${fetch_phone_numbers_and_tracking_input.client_selected_approved_item_admin_monitor_new_id}`,
+                          addtocart:                        fetch_phone_numbers_and_tracking_input.addtocart,
+                          Order_No:                         this.Order_No,          
+                          time_details_of_order_placed:     time_details_of_order_placed,
+                          delivery_status:                  "delivery pending",
+                          shipment_status:                  "shipment pending",
+                          tracking_id:                      "Input Tracking ID",
+                          net_profit:                       null,
+                          currentTime:                      currentTime,
+                          time_delay_commission:            null
+                        };
+                        
+                        debugger; // Inspect variables and code flow here
+                        // --
+                        // Step 1: Confirm initial data
+console.log("order_details_for_tracking_and_payment:", order_details_for_tracking_and_payment);
+
+// Step 2: Run the query and check results
+getDocs(query(
+    collection(db, 'order_details_for_tracking_and_payment'),
+    where('seller_ID', '==', order_details_for_tracking_and_payment.seller_ID)
+))
+.then(cart_sellers_snap => {
+    console.log("Number of documents found:", cart_sellers_snap.size);
+
+    if (cart_sellers_snap.empty) {
+        console.log("No documents found matching this seller_ID");
+    } else {
+        cart_sellers_snap.forEach(docinstant => {
+            const sellerID = docinstant.data().seller_ID;
+            console.log("Document data seller_ID:", sellerID);
+
+            // Step 3: Switch case handling
+            switch (sellerID) {
+                case '':
+                    console.log("Empty seller_ID case");
+                    // Add to both collections if seller_ID is empty
+                    addDoc(collection(db, 'list_of_order_details_for_tracking_and_payment'), order_details_for_tracking_and_payment)
+                        .then(() => console.log("Added to list_of_order_details_for_tracking_and_payment"))
+                        .catch(err => console.error("Error adding to list:", err));
+
+                    addDoc(collection(db, 'order_details_for_tracking_and_payment'), order_details_for_tracking_and_payment)
+                        .then(() => console.log("Added to order_details_for_tracking_and_payment"))
+                        .catch(err => console.error("Error adding to order details:", err));
+                    break;
+
+                default:
+                    console.log("Default case for seller_ID:", sellerID);
+                    // Default case only adds to 'list_of_order_details_for_tracking_and_payment'
+                    addDoc(collection(db, 'list_of_order_details_for_tracking_and_payment'), order_details_for_tracking_and_payment)
+                        .then(() => console.log("Added to list_of_order_details_for_tracking_and_payment in default case"))
+                        .catch(err => console.error("Error adding to list:", err));
+                    break;
+
+            }
+        });
+    }
+})
+.catch(error => {
+    console.error("Error retrieving documents:", error);
+});
+
+
+                        // --
+                //     getDocs(query(collection(db,  'order_details_for_tracking_and_payment'), where('seller_ID', '==' , fetch_phone_numbers_and_tracking_input.seller_ID))). 
+                //      then(cart_sellers_snap => cart_sellers_snap.forEach((doc)=>{
+                // }));
+                                
+            // console.log(this.get_all_new_items_data_in_cart)
+            onSnapshot(query(collection(db, 'admin_database'), where('user_ID', '==' , fetch_phone_numbers_and_tracking_input.seller_ID)),
             (contents) =>{contents.forEach((doc) => {
                //console.log('Cart items:', cartItems);
               //put the sms function
@@ -437,67 +531,23 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
                             You have 72hrs to ship this order, please kindly ship the order at the nearest kxpress location
                             and input the tracking number for each item in your Order History page, 
                             please note that failure to provide the Tracking ID in 72hours will attract a fee prior payment,`
+
               })
               }).then(response => response.json())
               .then(data => console.log(data))
               .catch(error => console.error(error));
                         
             }
+            //SEND RECEIPT TO CLIENT EMAIL AND SMS
           
           );
             })  
+            //langchain.js
+            addDoc(collection(db, 'receipt'), database_for_paid_orders)
           })}catch (error) {
     console.error('Error verifying payment:', error);
   }
-              //send each order to the database for fetching in tracking input
-              try{const itemsData2 = await this.get_all_new_items_data_in_cart();
-    
-    // Now you can safely call forEach on itemsData, which is an array
-    itemsData2.forEach((tracking_input)=>{
-                var seller_ID = tracking_input.seller_ID;
-                var order_details_for_tracking_and_payment = {
-                          seller_ID: tracking_input.seller_ID,
-                           id: tracking_input.id, 
-                           main_quantity:tracking_input.main_quantity, 
-                           First_image_selected:tracking_input.First_image_selected, 
-                           Second_image_selected:tracking_input.Second_image_selected, 
-                           title: tracking_input.title,
-                           qty:  tracking_input.qty,
-                           total_amount: tracking_input.total_amount,
-                           size: tracking_input.size,
-                          price: tracking_input.price, 
-                          client_token_ID:  this.$route.params.Cartpage,
-                          client_email : localStorage.getItem(`client_email`),
-                          client_selected_approved_item_token : tracking_input.client_selected_approved_item_token,
-                          client_selected_approved_item_admin_monitor_new_id : tracking_input.client_selected_approved_item_admin_monitor_new_id,
-                          specific_order_id:                `${this.Order_No}+${tracking_input.client_selected_approved_item_admin_monitor_new_id}`,
-                          addtocart:                        tracking_input.addtocart,
-                          Order_No:                         this.Order_No,          
-                          time_details_of_order_placed:     time_details_of_order_placed,
-                          delivery_status:                  "delivery pending",
-                          shipment_status:                  "shipment pending",
-                          tracking_id:                      "Input Tracking ID",
-                          net_profit:                       null,
-                          currentTime:                      currentTime,
-                          time_delay_commission:            null
-
-                        };
-
-                    getDocs(query(collection(db,  'order_details_for_tracking_and_payment'), where('seller_ID', '==' , seller_ID))). 
-                     then(cart_sellers_snap => cart_sellers_snap.forEach((doc)=>{this.find_admin_seller = doc.data().seller_ID; 
-                     console.log(this.find_cart_admin_seller)}));
-
-                    switch(this.find_cart_admin_seller){ 
-                    case '' :  addDoc(collection(db, 'list_of_order_details_for_tracking_and_payment'), order_details_for_tracking_and_payment),
-                              addDoc(collection(db, 'order_details_for_tracking_and_payment'), order_details_for_tracking_and_payment);
-                    
-                    break;
-                    default: addDoc(collection(db, 'list_of_order_details_for_tracking_and_payment'), order_details_for_tracking_and_payment);
-                  }
-                                })}catch (error) {
-                    console.error("Error collecting data:", error);
-                    }
-            
+                        
              //code for if qty is greater than or equal to main_quantity let the item in approved_adverts be deleted
             
              //add database_for_paid_orders FOR RECIEPT AND  HISTORY
@@ -525,7 +575,6 @@ filtered_get_all_items_in_cart(){return this.cartpostprofile.filter((cartpostpro
           //  let validation = Cartsignupvalidation(this.payment_email);
           //   this.errorstatement = validation.signupstatement(this.payment_email);
             
-
             console.log(this.sum_real_value/1000000000);
             ///// make payment
             // const isScriptLoaded = await this.loadPaystackScript();

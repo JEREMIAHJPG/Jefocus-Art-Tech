@@ -29,6 +29,7 @@ import vuetify_practice from '@/views/vuetify_practice.vue';
 import Trackinginput from '@/views/Trackinginput.vue';
 import Trackingpage from '@/views/Trackingpage.vue';
 import AdminHistoryofOrderplaced from '@/views/AdminHistoryofOrderplaced.vue';
+import Admin_Client_Controlling_Room from '@/views/Admin_Client_Controlling_Room.vue';
 
 //  Vue.use(router);
 const routes = [
@@ -163,6 +164,12 @@ const routes = [
     path: '/Adminspage',
     name: 'Adminspage',
     component: Adminspage,
+     
+  },
+  {
+    path: '/Admin_Client_Controlling_Room',
+    name: 'Admin_Client_Controlling_Room',
+    component: Admin_Client_Controlling_Room,
      
   },
   

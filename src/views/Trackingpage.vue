@@ -20,7 +20,7 @@
     <thead>
       <tr>
         <!-- <th class="text-left">
-          Order Transaciion ID
+          Order Transaction ID
         </th> -->
         <th class="text-left">
           Order.No
@@ -269,7 +269,7 @@
   </div>
 </td> -->
         <td>{{History_data_list_data.delivery_success_record_date}}</td>
-        <td>{{History_data_list_data.delivery_status}} </td>
+        <td>{{History_data_list_data.delivery_status}}</td>
         <td>{{History_data_list_data.net_profit}}</td>
 
       </tr>
@@ -286,7 +286,7 @@
 
 <script>
 import { db } from '@/firebase';
-import { onSnapshot,collection, getAggregateFromServer,sum,updateDoc,deleteField,addDoc, setDoc, getDoc, getDocs, where, doc } from 'firebase/firestore';
+import { onSnapshot,collection,query, getAggregateFromServer,sum,updateDoc,deleteField,addDoc, setDoc, getDoc, getDocs, where, doc } from 'firebase/firestore';
 export default {
 name:'Trackingpage',
 data(){
@@ -406,16 +406,18 @@ await getDocs(query(collection(db,'admin_database'),
 
           setDoc(doc(db,'order_details_for_tracking_and_payment', doc.id), 
                 {
-                  payment_status:        'payment assured'         
+                  payment_status:        'payment assured',
+                  final_net_profit: this.final_net_profit + this.net_profit ,                           
+                 history_profit: this.history_profit + this.net_profit ,
+                 time_of_payment_assurance: new Date(),          
                 }, {merge:true}).then(()=>{
 
           addDoc(collection(db, 'HistoryofOrderplaced'), doc.data())}).then(()=>{
-            setDoc(doc(db,'HistoryofOrderplaced',this.admin_database_uid), 
-                {
-                 final_net_profit: this.final_net_profit + this.net_profit ,                           
-                 history_profit: this.history_profit + this.net_profit ,
-                 time_of_payment_assurance: new Date(),                         
-                }, {merge:true});
+            //address to this
+            // setDoc(doc(db,'HistoryofOrderplaced',this.admin_database_uid), 
+            //     {
+                                         
+            //     }, {merge:true});
             deleteDoc(doc(db, 'order_details_for_tracking_and_payment', doc.id));
             console.log(`${doc.id} focus_do deleted`);
           })
@@ -427,10 +429,20 @@ await getDocs(query(collection(db,'admin_database'),
         check.forEach((doc) => {
           this.specific_order_id = doc.data().specific_order_id;
           this.ID_delete = doc.id;
-          addDoc(collection(db, 'HistoryofOrderitemsplaced'), doc.data()).then(() => {
-            deleteDoc(doc(db, 'list_of_order_details_for_tracking_and_payment', doc.id));
-            console.log(`${doc.id} focus_dl deleted`);
-        });
+
+          setDoc(doc(db, 'list_of_order_details_for_tracking_and_payment', doc.id),
+            {
+              final_net_profit: this.final_net_profit + this.net_profit,
+              history_profit: this.history_profit + this.net_profit,
+              time_of_payment_assurance: new Date(),
+            }, { merge: true }).then(() => {
+
+              addDoc(collection(db, 'HistoryofOrderitemsplaced'), doc.data());
+            }).then(() => {
+
+              deleteDoc(doc(db, 'list_of_order_details_for_tracking_and_payment', this.ID_delete));
+              console.log(`${doc.id} focus_dl deleted`);
+            });
         });
       });
   this.tracking_statement = 'delivery successfull';
@@ -480,6 +492,7 @@ onSnapshot(query(collection(db, 'order_details_for_tracking_and_payment'),where(
     //
 //pay forEach admindatabase with paystack .then and .catch message the admins
 //retouch receipt page and integrate share receipt to whatsapp, email etc
+
 //Ayo
 //+2348127208187
   },
