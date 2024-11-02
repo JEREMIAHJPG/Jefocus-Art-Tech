@@ -85,8 +85,8 @@
       <v-card title="Tracking Iframe">
         <template v-slot:text>
           <iframe
-          width="500"
-          height="300"
+          width="100%"
+          height="600px"
           :src= "`https://logistics.konga.com/track?order_number=${this.iframe_link_data}`"
           >
 
